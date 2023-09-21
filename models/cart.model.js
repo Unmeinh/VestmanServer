@@ -5,7 +5,6 @@ let CartSchema = new db.mongoose.Schema(
         id_client: { type: db.mongoose.Schema.Types.ObjectId, ref: 'ClientModel' },
         quantity: { type: String, required: true },
         size: { type: String, required: true },
-        color: { type: String, required: true },
         created_at: { type: Date, required: true },
     },
     {

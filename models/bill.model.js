@@ -6,11 +6,10 @@ let BillSchema = new db.mongoose.Schema(
             {
                 id_product: { type: db.mongoose.Schema.Types.ObjectId, ref: 'ProductModel' },
                 size: { type: String, required: true },
-                color: { type: String, required: true },
                 quantity: { type: String, required: true },
             }
         ],
-        total: { type: String, required: true },
+        total: { type: Number, required: true },
         created_at: { type: Date, required: true },
     },
     {
