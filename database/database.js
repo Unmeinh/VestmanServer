@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://vestadmin:7mnmkvo1ALUpo8lW@cluster0.hrig0fm.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://admin:Abc123@cluster0.purxtfc.mongodb.net/VestmanDB?retryWrites=true&w=majorit')
 .then(()=>{
     console.log('[mongodb] Kết nối với CSDL Vestman thành công.');
 })
