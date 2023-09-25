@@ -29,29 +29,24 @@ exports.insertCart = async (req, res, next) => {
             if (!req.body) {
                 return res.status(500).json({ success: false, data: {}, message: "Không đọc được dữ liệu tải lên! " });
             }
-            let cart = await cartModel.findOne({
-                $and: [
-                    // { 'id_client': { $exists: true } },
-                    { 'id_client': idClient },
-                    { 'id_product': id_product }
-                ]
-            })
+            let cart = await cartModel.findOne({ id_client: idClient, id_product: id_product })
             if (cart) {
-                await updateProduct(cart.id_product, quantity);
-                cart.quantity = quantity;
+                await updateProduct(cart.id_product, quantity, res);
+                cart.quantity += quantity;
                 cart.size = size;
-                await cartModel.findByIdAndUpdate(cart_id, cart);
+                await cartModel.findByIdAndUpdate(cart._id, cart);
+                return res.status(201).json({ success: true, data: {}, message: "Thêm vào giỏ hàng thành công." });
+            } else {
+                let newCart = new cartModel();
+                newCart.id_client = idClient;
+                newCart.id_product = id_product;
+                newCart.quantity = quantity;
+                newCart.size = size;
+                newCart.created_at = new Date();
+                await updateProduct(id_product, quantity, res);
+                await newCart.save();
                 return res.status(201).json({ success: true, data: {}, message: "Thêm vào giỏ hàng thành công." });
             }
-            let newCart = new cartModel();
-            newCart.id_client = idClient;
-            newCart.id_product = id_product;
-            newCart.quantity = quantity;
-            newCart.size = size;
-            newCart.created_at = new Date();
-            await updateProduct(cart.id_product, quantity);
-            await newCart.save();
-            return res.status(201).json({ success: true, data: {}, message: "Thêm vào giỏ hàng thành công." });
         }
     } catch (error) {
         return res.status(500).json({ success: false, data: {}, message: "Lỗi: " + error.message });
@@ -81,7 +76,7 @@ exports.updateCart = async (req, res, next) => {
     }
 }
 
-async function updateProduct(id_product, cartQuantity) {
+async function updateProduct(id_product, cartQuantity, res) {
     let product = await productModel.findById(id_product);
     if (product) {
         if (product.quantity > 0) {
