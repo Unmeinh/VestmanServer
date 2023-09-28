@@ -8,6 +8,7 @@ let ProductSchema = new db.mongoose.Schema(
         color: { type: String, required: true },
         quantity: { type: Number, required: true },
         price: { type: Number, required: true },
+        quantitySold: { type: Number, required: true },
         images: { type: Array, required: true },
         created_at: { type: Date, required: true },
     },

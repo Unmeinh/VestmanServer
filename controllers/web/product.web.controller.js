@@ -15,6 +15,7 @@ exports.insert = async (req, res, next) => {
         newProduct.sizes = sizes;
         newProduct.color = color;
         newProduct.quantity = quantity;
+        newProduct.quantitySold = 0;
         newProduct.price = price;
         newProduct.created_at = new Date();
         newProduct.images = [];

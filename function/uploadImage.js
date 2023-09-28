@@ -1,18 +1,11 @@
 const { onGenerateRandomString } = require("./functionName");
-// import { getStorage, ref } from "firebase/storage";
-
-// // Create a root reference
-// const storage = getStorage();
-
-// // Create a reference to 'mountains.jpg'
-// const mountainsRef = ref(storage, 'mountains.jpg');
-
-// // Create a reference to 'images/mountains.jpg'
-// const mountainImagesRef = ref(storage, 'images/mountains.jpg');
-
-// // While the file names are the same, the references point to different files
-// mountainsRef.name === mountainImagesRef.name;           // true
-// mountainsRef.fullPath === mountainImagesRef.fullPath;   // false 
+const cloudinary = require('cloudinary').v2;
+          
+cloudinary.config({ 
+  cloud_name: 'ddzmeaxld', 
+  api_key: '474589438589538', 
+  api_secret: '0y4_UPL1HqhHOzKlLaBZZfozPWQ' 
+});
 
 exports.onUploadImages = async (files, folder) => {
     try {
@@ -22,7 +15,11 @@ exports.onUploadImages = async (files, folder) => {
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 const fileName = onGenerateRandomString(10);
-                
+                const result = await cloudinary.uploader.upload(file.path, {
+                    public_id: `${folderName}/${fileName}`,
+                });
+
+                images.push(result.secure_url);
             }
             return images;
         } else {
