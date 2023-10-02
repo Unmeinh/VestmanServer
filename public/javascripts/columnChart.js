@@ -1,35 +1,45 @@
-const months = [];
-const endDate = new Date(); // current date
-const startDate = new Date(endDate.getFullYear(), endDate.getMonth() - 5, 1);
-
-let currentDate = new Date(startDate);
-
-while (currentDate <= endDate) {
-    console.log(currentDate.toISOString());
-    console.log(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1).toISOString());
-    months.push(currentDate.toLocaleString('default', { month: '2-digit', year: 'numeric' }));
-    currentDate.setMonth(currentDate.getMonth() + 1);
-}
-
-console.log(months);
+var months = document.currentScript.getAttribute('months');
+months = JSON.parse(months)
+var totalBills = document.currentScript.getAttribute('totalBills');
+totalBills = JSON.parse(totalBills)
+var totalProducts = document.currentScript.getAttribute('totalProducts');
+totalProducts = JSON.parse(totalProducts)
+var totalInterests = document.currentScript.getAttribute('totalInterests');
+totalInterests = JSON.parse(totalInterests)
 
 var options = {
+    title: {
+        text: 'Revenue statistics table',
+        align: 'center',
+        style: {
+            fontSize: '23px',
+            fontWeight: 'bold',
+            fontFamily: 'Arial, Helvetica, sans-serif',
+            color: '#263238'
+        },
+    },
     series: [{
-        name: 'Net Profit',
-        data: [44, 57, 61, 63, 60, 66]
+        name: 'Product costs',
+        data: totalProducts
+    }, {
+        name: 'Sales profit',
+        data: totalInterests
     }, {
         name: 'Revenue',
-        data: [76, 85, 101, 87, 114, 94]
-    }, {
-        name: 'Free Cash Flow',
-        data: [35, 36, 26, 45, 52, 41]
+        data: totalBills
     }],
+    colors: [
+        'rgb(0, 143, 251)',
+        'rgb(0, 227, 150)',
+        'rgb(254, 176, 25)'
+    ],
     chart: {
         type: 'bar',
         height: 350
     },
     plotOptions: {
         bar: {
+            distributed: false,
             horizontal: false,
             columnWidth: '55%',
             endingShape: 'rounded'
@@ -48,7 +58,7 @@ var options = {
     },
     yaxis: {
         title: {
-            text: '$ (thousands)'
+            text: 'vnd (dong)'
         }
     },
     fill: {
@@ -57,7 +67,7 @@ var options = {
     tooltip: {
         y: {
             formatter: function (val) {
-                return "$ " + val + " thousands"
+                return val + " vnd"
             }
         }
     }

@@ -71,32 +71,80 @@ exports.register = async (req, res, next) => {
 }
 
 exports.statistical = async (req, res, next) => {
-  let lastYear = new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toISOString().slice(0, 10);
-  let listBillByYear = await billModel.find({ created_at: { $gte: lastYear } });
-  let listProduct = await productModel.find().sort({ quantitySold: -1 }).limit(5);
-  const months = [];
-  const endDate = new Date();
-  const last6Month = new Date(endDate.getFullYear(), endDate.getMonth() - 5, 1);
-  let currentDate = new Date(last6Month);
+  try {
+    let listProduct = await productModel.find().sort({ quantitySold: -1 }).limit(5);
+    const months = [];
+    const totalBills = [];
+    const totalProducts = [];
+    const totalInterests = [];
+    const endDate = new Date();
+    const last6Month = new Date(endDate.getFullYear(), endDate.getMonth() - 5, 1);
+    let currentDate = new Date(last6Month);
 
-  while (currentDate <= endDate) {
-    let backDate = currentDate.toISOString();
-    let nowDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1).toISOString();
-    months.push(currentDate.toLocaleString('default', { month: '2-digit', year: 'numeric' }));
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    let sum = await billModel.aggregate([
-      {
-        $match: {
-          $and: [
-            { created_at: { $gte: backDate } },
-            { created_at: { $lte: nowDate } }
-          ]
-        }
-      },
-      { $group: { _id: null, sum: { $sum: "$total" } } },
-      { $project: { _id: 0, total: '$sum' } }
-    ]);
-    console.log(sum);
+    while (currentDate <= endDate) {
+      let previusDate = currentDate.toISOString();
+      let nowDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1).toISOString();
+      let date = currentDate.toLocaleString('en', { month: 'long', year: 'numeric' });
+      months.push(date.substring(0, 1).toLocaleUpperCase() + date.substring(1));
+      currentDate.setMonth(currentDate.getMonth() + 1);
+
+      let total = await getTotalBill(previusDate, nowDate);
+      let product = await getTotalProduct(previusDate, nowDate);
+      totalBills.push(total);
+      totalProducts.push(product);
+      totalInterests.push(total - product)
+    }
+    res.render('admin/statisticalAdm', {
+      title: 'Statistical',
+      listProduct: JSON.stringify(listProduct),
+      months: JSON.stringify(months),
+      totalBills: JSON.stringify(totalBills),
+      totalProducts: JSON.stringify(totalProducts),
+      totalInterests: JSON.stringify(totalInterests),
+    })
+  } catch (error) {
+    console.log(error);
+    res.send(error);
   }
-  res.render('admin/statisticalAdm', { title: 'Statistical', listProduct: JSON.stringify(listProduct) })
+}
+
+async function getTotalBill(previusDate, nowDate) {
+  var match_stage = {
+    $match: {
+      'created_at': {
+        '$gte': new Date(previusDate),
+        '$lte': new Date(nowDate)
+      }
+    }
+  }
+  var group_stage = {
+    $group: { _id: null, sum: { $sum: "$total" } }
+  }
+  var project_stage = {
+    $project: { _id: 0, total: '$sum' }
+  }
+
+  var pipeline = [match_stage, group_stage, project_stage]
+  let sumTotal = await billModel.aggregate(pipeline);
+  if (sumTotal[0] != undefined) {
+    return sumTotal[0].total;
+  } else {
+    return 0;
+  }
+}
+
+async function getTotalProduct(previusDate, nowDate) {
+  let productPrice = await productModel.find(
+    {
+      created_at: {
+        $gte: previusDate,
+        $lte: nowDate
+      }
+    }
+  );
+  if (productPrice[0] != undefined) {
+    return productPrice[0].price * productPrice[0].quantity;
+  } else {
+    return 0;
+  }
 }

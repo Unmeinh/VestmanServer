@@ -9,6 +9,16 @@ for (let i = 0; i < listProduct.length; i++) {
 }
 
 var options = {
+    title: {
+        text: 'Top best selling products',
+        align: 'left',
+        style: {
+            fontSize: '18px',
+            fontWeight: 'bold',
+            fontFamily: 'Arial, Helvetica, sans-serif',
+            color: '#263238'
+        },
+    },
     series: [{
         data: quantitySolds
     }],
