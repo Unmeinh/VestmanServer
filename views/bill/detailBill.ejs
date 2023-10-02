@@ -1,0 +1,80 @@
+<div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Detail</h1>
+    <div class="btn-toolbar mb-2 mb-md 0">
+      <div class="btn-group me-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col py-3">
+  
+    <div class="row">
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Bill</a></li>
+            <li class="breadcrumb-item active"></li>
+          </ol>
+        </nav>
+      </div>
+      <div class="col text-end fw-lighter">
+        <!-- <b>Last Updated <%= new Date(customer.updatedAt).toUTCString() %> </b> -->
+        <b>BillId:</b> <%= customer._id %>
+      </div>
+    </div>
+  
+  </div>
+  
+  <ul class="list-group">
+  
+  
+    <li class="list-group-item"> 
+      <div class="row">
+        <div class="col" style="max-width: 140px"> <b>Customer accoun:</b></div>
+        <div class="col"><%= kh.username %></div>
+      </div>
+    </li>
+  
+  
+    <li class="list-group-item"> 
+      <div class="row">
+        <div class="col" style="max-width: 140px"> <b>Product:</b></div>
+        <% for (var i = 0; i<customer.arr_product.length; i++) {%>
+          <div class="col">
+            <tr>
+              <td>
+                  <img class="col" style="max-width: 150px" src="<%= arrPro[i].images[0] %>" alt="">
+              </td>
+              <td class="text-bottom">
+                <div>Name: <%= arrPro[i].name_product %></div>
+                <div>Size: <%= customer.arr_product[i].size %></div>
+                <div>Quantity: <%= customer.arr_product[i].quantity %></div>
+                <div class="text-danger">Price: <%= arrPro[i].price %></div>
+              </td>   
+            </tr>   
+          </div>         
+        <% } %>
+        <!-- <div class="col"><%= customer.arr_product %></div> -->
+      </div>
+    </li>
+
+    <li class="list-group-item"> 
+        <div class="row">
+          <div class="col" style="max-width: 140px"> <b>Total:</b></div>
+          <div class="col"><%= customer.total %></div>
+        </div>
+      </li>
+  
+   
+    <li class="list-group-item"> 
+      <div class="row">
+        <div class="col" style="max-width: 140px"> <b>Date Created:</b></div>
+        <div class="col"><%= customer.created_at %></div>
+      </div>
+    </li>
+  
+    
+  
+  </ul>
