@@ -1,9 +1,11 @@
 var months = document.currentScript.getAttribute('months');
 months = JSON.parse(months)
+var totalCustomers = document.currentScript.getAttribute('totalCustomers');
+totalCustomers = JSON.parse(totalCustomers)
 
 var options = {
     title: {
-        text: 'Number of customers by month',
+        text: 'Number of new customers by month',
         align: 'left',
         style: {
             fontSize: '18px',
@@ -17,7 +19,7 @@ var options = {
     ],
     series: [{
         name: "Customer",
-        data: [10, 41, 35, 51, 49, 62]
+        data: totalCustomers
     }],
     chart: {
         height: 350,

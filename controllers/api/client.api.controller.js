@@ -15,6 +15,19 @@ exports.list = async (req, res, next) => {
     }
 }
 
+exports.getUser = async (req, res, next) => {
+    try {
+        let arr_client = await clientModel.findById(req.params.idClient);
+        if (arr_client) {
+            return res.status(200).json({ success: true, data: arr_client, message: "Lấy danh sách sản phẩm thành công." });
+        } else {
+            return res.status(200).json({ success: false, data: {}, message: "Không có sản phẩm nào!" });
+        }
+    } catch (error) {
+        return res.status(500).json({ success: false, data: {}, message: "Lỗi: " + error.message });
+    }
+}
+
 exports.register = async (req, res, next) => {
     try {
         if (req.method == "POST") {
