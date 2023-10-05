@@ -1,6 +1,11 @@
 let adminModel = require('../../models/admin.model').AdminModel;
 let productModel = require('../../models/product.model').ProductModel;
 let billModel = require('../../models/bill.model').BillModel;
+let clientModel = require('../../models/client.model').ClientModel;
+
+exports.home = async (req, res, next) => {
+  res.render('home', {title: 'Home'});
+}
 
 exports.list = async (req, res, next) => {
   const messages = await req.consumeFlash('info');
@@ -70,13 +75,14 @@ exports.register = async (req, res, next) => {
   res.send('List')
 }
 
-exports.statistical = async (req, res, next) => {
+exports.dashboard = async (req, res, next) => {
   try {
     let listProduct = await productModel.find().sort({ quantitySold: -1 }).limit(5);
     const months = [];
     const totalBills = [];
     const totalProducts = [];
     const totalInterests = [];
+    const totalCustomers = [];
     const endDate = new Date();
     const last6Month = new Date(endDate.getFullYear(), endDate.getMonth() - 5, 1);
     let currentDate = new Date(last6Month);
@@ -90,17 +96,20 @@ exports.statistical = async (req, res, next) => {
 
       let total = await getTotalBill(previusDate, nowDate);
       let product = await getTotalProduct(previusDate, nowDate);
+      let client = await getTotalCustomer(previusDate, nowDate);
       totalBills.push(total);
       totalProducts.push(product);
-      totalInterests.push(total - product)
+      totalInterests.push(total - product);
+      totalCustomers.push(client);
     }
-    res.render('admin/statisticalAdm', {
-      title: 'Statistical',
+    res.render('admin/dashboard', {
+      title: 'Dashboard',
       listProduct: JSON.stringify(listProduct),
       months: JSON.stringify(months),
       totalBills: JSON.stringify(totalBills),
       totalProducts: JSON.stringify(totalProducts),
       totalInterests: JSON.stringify(totalInterests),
+      totalCustomers: JSON.stringify(totalCustomers),
     })
   } catch (error) {
     console.log(error);
@@ -144,6 +153,22 @@ async function getTotalProduct(previusDate, nowDate) {
   );
   if (productPrice[0] != undefined) {
     return productPrice[0].price * productPrice[0].quantity;
+  } else {
+    return 0;
+  }
+}
+
+async function getTotalCustomer(previusDate, nowDate) {
+  let listClient = await clientModel.find(
+    {
+      created_at: {
+        $gte: previusDate,
+        $lte: nowDate
+      }
+    }
+  );
+  if (listClient) {
+    return listClient.length;
   } else {
     return 0;
   }
