@@ -15,13 +15,12 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Bill</a></li>
-            <li class="breadcrumb-item active"></li>
+            <li class="breadcrumb-item active"><%= arrPro[0].name_product %>...</li>
           </ol>
         </nav>
       </div>
       <div class="col text-end fw-lighter">
-        <!-- <b>Last Updated <%= new Date(customer.updatedAt).toUTCString() %> </b> -->
-        <b>BillId:</b> <%= customer._id %>
+        <b>Bill</b>
       </div>
     </div>
   
@@ -51,19 +50,18 @@
                 <div>Name: <%= arrPro[i].name_product %></div>
                 <div>Size: <%= customer.arr_product[i].size %></div>
                 <div>Quantity: <%= customer.arr_product[i].quantity %></div>
-                <div class="text-danger">Price: <%= arrPro[i].price %></div>
+                <div class="text-danger">Price: <%= arrPro[i].price.toLocaleString() %> VND</div>
               </td>   
             </tr>   
           </div>         
         <% } %>
-        <!-- <div class="col"><%= customer.arr_product %></div> -->
       </div>
     </li>
 
     <li class="list-group-item"> 
         <div class="row">
           <div class="col" style="max-width: 140px"> <b>Total:</b></div>
-          <div class="col"><%= customer.total %></div>
+          <div class="col"><%= customer.total.toLocaleString() %> VND</div>
         </div>
       </li>
   
@@ -71,7 +69,7 @@
     <li class="list-group-item"> 
       <div class="row">
         <div class="col" style="max-width: 140px"> <b>Date Created:</b></div>
-        <div class="col"><%= customer.created_at %></div>
+        <div class="col"><%= customer.created_at.toLocaleString('en') %></div>
       </div>
     </li>
   

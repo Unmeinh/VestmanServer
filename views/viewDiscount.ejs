@@ -3,7 +3,7 @@
     <h1 class="h2">Discount</h1>
     <div class="btn-toolbar mb-2 mb-md 0">
       <div class="btn-group me-2">
-        <a href="/add" class="btn btn-sm btn-outline-secondary">+ New discount</a>
+        <a href="/discount/insert" class="btn btn-sm btn-outline-secondary">+ New discount</a>
       </div>
     </div>
   </div>
@@ -32,9 +32,9 @@
       <tbody>
         <% clients.forEach(element => { %>
           <tr class="align-middle">
-            <td><%= element.started_at %></td>
-            <td><%= element.expires_at %></td>
-            <td><%= element.value %></td>
+            <td><%= element.started_at.toLocaleString('en') %></td>
+            <td><%= element.expires_at.toLocaleString('en') %></td>
+            <td><%= element.value %>%</td>
           
             <td class="text-end">
   

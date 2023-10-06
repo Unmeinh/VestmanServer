@@ -50,15 +50,6 @@ exports.view = async (req, res) => {
   try {
     const customer = await blogModel.findOne({ _id: req.params.id });
 
-    let arrDes = [];
-    let descrip;
-    
-    for (i = 0; i < customer.description.length; i++) {
-      descrip = customer.description[i];
-
-      arrDes.push(descrip);
-    }
-
     const pro = await productModel.findOne({ _id: customer.id_product });
 
     const locals = {
@@ -69,7 +60,6 @@ exports.view = async (req, res) => {
     res.render("blog/detailBlog", {
       locals,
       customer,
-      arrDes,
       pro,
     });
   } catch (error) {
@@ -86,7 +76,12 @@ exports.insert = async (req, res, next) => {
     newBlog.expires_at = expires_at;
     newBlog.created_at = new Date();
     await newBlog.save();
-    return res.send(newBlog);
+    return res.redirect('/blog');
   }
-  res.send("List");
+
+  let arr_Pro = await productModel.find();
+  res.render("blog/addBlog",{
+    arr_Pro
+  });
 };
+

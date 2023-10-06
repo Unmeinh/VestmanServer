@@ -1,6 +1,6 @@
-const { ClientModel } = require('../../models/client.model');
-
 let clientModel = require('../../models/client.model').ClientModel;
+const { onUploadImages } = require("../../function/uploadImage");
+
 
 exports.list = async (req, res, next) => {
     const messages = await req.consumeFlash('info');
@@ -9,7 +9,7 @@ exports.list = async (req, res, next) => {
       description: 'Free NodeJs User Management System'
     }
 
-    let perPage = 2;
+    let perPage = 5;
     let page = req.query.page || 1;
 
     try {
@@ -56,6 +56,7 @@ exports.view = async (req, res) => {
 
 exports.insert = async (req, res, next) => {
     if (req.method == "POST") {
+        let imageUrl = await onUploadImages(req.files, 'admin');
         let { username, password, email, full_name, phone_number, address } = req.body;
         let newClient = new clientModel();
         newClient.username = username;
@@ -65,9 +66,9 @@ exports.insert = async (req, res, next) => {
         newClient.phone_number = phone_number;
         newClient.address = address;
         newClient.created_at = new Date();
-        newClient.avatar = "https://png.pngtree.com/png-vector/20190822/ourmid/pngtree-avatar-client-face-happy-man-person-user-business-flat-li-png-image_1695892.jpg";
+        newClient.avatar = imageUrl[0];
         await newClient.save();
-        return res.send(newClient);
+        return res.redirect('/client');
     }
-    res.send('List')
+    res.render('client/add')
 }

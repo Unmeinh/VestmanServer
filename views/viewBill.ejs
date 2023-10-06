@@ -22,9 +22,10 @@
     <table class="table table-striped table-sm">
       <thead>
         <tr>
-          <th scope="col">Customer accoun</th>
+          <th scope="col">Full name</th>
           <th scope="col">Product number</th>
           <th scope="col">Total</th>
+          <th scope="col">Create at</th>
           <th scope="col" class="text-end">Action</th>
         </tr>
       </thead>
@@ -32,9 +33,11 @@
       <tbody>
         <% for(let i = 0; i<clients.length; i++) { %>
           <tr class="align-middle">
-            <td><%= arrCli[i].username %></td>
+            <td><%= arrCli[i].full_name %></td>
             <td><%= clients[i].arr_product.length %></td>
-            <td><%= clients[i].total %></td>
+            <td><%= clients[i].total.toLocaleString() %> VND</td>
+            <td><%= clients[i].created_at.toLocaleString('en') %></td>
+
             <td class="text-end">
   
               <div class="d-flex flex-row justify-content-end gap-2">

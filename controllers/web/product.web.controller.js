@@ -1,4 +1,6 @@
 let productModel = require('../../models/product.model').ProductModel;
+let discountModel = require('../../models/discount.model').DiscountModel;
+const { onUploadImages } = require("../../function/uploadImage");
 
 exports.list = async (req, res, next) => {
     const messages = await req.consumeFlash('info');
@@ -7,7 +9,7 @@ exports.list = async (req, res, next) => {
       description: 'Free NodeJs User Management System'
     }
 
-    let perPage = 2;
+    let perPage = 5;
     let page = req.query.page || 1;
 
     try {
@@ -32,9 +34,10 @@ exports.list = async (req, res, next) => {
 }
 
 exports.view = async (req, res) => {
-
+  
   try {
     const customer = await productModel.findOne({ _id: req.params.id })
+    const discount = await discountModel.findOne({ _id: customer.id_discount })
 
     const locals = {
       title: "View Customer Data",
@@ -43,17 +46,22 @@ exports.view = async (req, res) => {
 
     res.render('product/detailPro', {
       locals,
-      customer
+      customer,
+      discount
     })
 
   } catch (error) {
     console.log(error);
   }
 
-}
+}  
 
 exports.insert = async (req, res, next) => {
     if (req.method == "POST") {
+
+      let imageUrl = await onUploadImages(req.files, 'admin');
+
+
         let { name_product, detail_product, id_discount, sizes, color, quantity, price } = req.body;
         let newProduct = new productModel();
         newProduct.name_product = name_product;
@@ -65,9 +73,13 @@ exports.insert = async (req, res, next) => {
         newProduct.quantitySold = 0;
         newProduct.price = price;
         newProduct.created_at = new Date();
-        newProduct.images = [];
+        newProduct.images = imageUrl;
         await newProduct.save();
-        return res.send(newProduct);
+        return res.redirect('/product');
     }
-    res.send('List')
+
+    let arr_dis = await discountModel.find();
+    res.render('product/addPro',{
+      arr_dis
+    })
 }

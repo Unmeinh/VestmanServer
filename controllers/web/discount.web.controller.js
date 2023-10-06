@@ -7,7 +7,7 @@ exports.list = async (req, res, next) => {
       description: 'Free NodeJs User Management System'
     }
 
-    let perPage = 2;
+    let perPage = 5;
     let page = req.query.page || 1;
 
     try {
@@ -32,15 +32,18 @@ exports.list = async (req, res, next) => {
 }
 
 
+
 exports.insert = async (req, res, next) => {
+  console.log('ok');
+
     if (req.method == "POST") {
         let { value, started_at, expires_at } = req.body;
         let newDiscount = new discountModel();
         newDiscount.value = value;
         newDiscount.started_at = new Date();
-        newDiscount.expires_at = new Date();
+        newDiscount.expires_at = expires_at;
         await newDiscount.save();
-        return res.send(newDiscount);
+        return res.redirect('/discount');
     }
-    res.send('List')
+    res.render('discount/addDis');
 }
