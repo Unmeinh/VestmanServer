@@ -10,9 +10,9 @@ router.get('/high', controller.listHigh);
 router.get('/view/:id', controller.view);
 router.get('/register', controller.register);
 router.post('/register', uploader.any(), controller.register);
-router.get('/statistical', controller.statistical);
 router.get('/edit/:id', controller.edit);
 router.post('/edit', uploader.any(), controller.editPost);
 router.post('/delete/:id', controller.delete);
+router.get('/admin/dashboard', controller.dashboard);
 
 module.exports = router;
