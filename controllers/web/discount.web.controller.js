@@ -31,6 +31,70 @@ exports.list = async (req, res, next) => {
     }
 }
 
+exports.listSort = async (req, res, next) => {
+  const messages = await req.consumeFlash('info');
+  const locals = {
+    title: 'NodeJs',
+    description: 'Free NodeJs User Management System'
+  }
+
+  let perPage = 5;
+  let page = req.query.page || 1;
+
+  try {
+    const clients = await discountModel.aggregate()
+      .sort({value: 1})
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec(); 
+    const count = await discountModel.count();
+    console.log("cus: ",clients);
+
+    res.render('viewDiscount', {
+      locals,
+      clients,
+      current: page,
+      pages: Math.ceil(count / perPage),
+      messages
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+exports.listHigh = async (req, res, next) => {
+  const messages = await req.consumeFlash('info');
+  const locals = {
+    title: 'NodeJs',
+    description: 'Free NodeJs User Management System'
+  }
+
+  let perPage = 5;
+  let page = req.query.page || 1;
+
+  try {
+    const clients = await discountModel.aggregate()
+      .sort({value: -1})
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec(); 
+    const count = await discountModel.count();
+    console.log("cus: ",clients);
+
+    res.render('viewDiscount', {
+      locals,
+      clients,
+      current: page,
+      pages: Math.ceil(count / perPage),
+      messages
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 
 
 exports.insert = async (req, res, next) => {
@@ -46,4 +110,33 @@ exports.insert = async (req, res, next) => {
         return res.redirect('/discount');
     }
     res.render('discount/addDis');
+}
+
+exports.edit = async (req, res, next) => {
+  try {
+    const dis = await discountModel.findById({_id : req.params.id});
+   
+    res.render("discount/editDis",{
+      dis
+    })
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+exports.editPost = async (req, res, next) => {
+  let { value, started_at, expires_at, _id } = req.body;
+  await discountModel.findByIdAndUpdate(_id,{
+    value : value,
+    started_at : started_at,
+    expires_at : expires_at
+  });
+
+  res.redirect('/discount');
+
+}
+exports.delete = async (req, res, next) => {
+  await discountModel.deleteOne({_id: req.params.id})
+  res.redirect('/discount');
 }

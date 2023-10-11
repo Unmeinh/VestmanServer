@@ -35,6 +35,70 @@ exports.list = async (req, res, next) => {
   }
 }
 
+exports.listSort = async (req, res, next) => {
+  const messages = await req.consumeFlash('info');
+  const locals = {
+    title: 'NodeJs',
+    description: 'Free NodeJs User Management System'
+  }
+
+  let perPage = 5;
+  let page = req.query.page || 1;
+
+  try {
+    const clients = await adminModel.aggregate()
+      .sort({'full_name': 1})
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec();
+    const count = await adminModel.count();
+    console.log("cus: ", clients);
+
+    res.render('viewAdmin', {
+      locals,
+      clients,
+      current: page,
+      pages: Math.ceil(count / perPage),
+      messages
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+exports.listHigh = async (req, res, next) => {
+  const messages = await req.consumeFlash('info');
+  const locals = {
+    title: 'NodeJs',
+    description: 'Free NodeJs User Management System'
+  }
+
+  let perPage = 5;
+  let page = req.query.page || 1;
+
+  try {
+    const clients = await adminModel.aggregate()
+      .sort({'full_name': -1})
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec();
+    const count = await adminModel.count();
+    console.log("cus: ", clients);
+
+    res.render('viewAdmin', {
+      locals,
+      clients,
+      current: page,
+      pages: Math.ceil(count / perPage),
+      messages
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 exports.view = async (req, res) => {
 
   try {
@@ -76,6 +140,45 @@ exports.register = async (req, res, next) => {
   
 }
 
+exports.edit = async (req, res, next) => {
+  try {
+    const adm = await adminModel.findById({_id : req.params.id});
+    
+    res.render("admin/editAdm",{
+      adm
+    })
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+  
+exports.editPost = async (req, res, next) => {
+  let { username, password, permission, full_name, avatar, _id, created_at } = req.body;
+  const imageUrl = await onUploadImages(req.files, 'admin');
+
+  if(!imageUrl.length==0){
+    avatar = imageUrl[0];
+  }
+
+  await adminModel.findByIdAndUpdate(_id,{
+    username : username,
+    password : password,
+    permission : permission,
+    full_name : full_name,
+    avatar : avatar,
+    created_at : created_at,
+  });
+
+  res.redirect('/admin');
+}
+
+exports.delete = async (req, res, next) => {
+  await adminModel.deleteOne({_id: req.params.id})
+  res.redirect('/client');
+}
+
+
 exports.statistical = async (req, res, next) => {
   let lastYear = new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toISOString().slice(0, 10);
   let listBillByYear = await billModel.find({ created_at: { $gte: lastYear } });
@@ -106,3 +209,4 @@ exports.statistical = async (req, res, next) => {
   }
   res.render('admin/statisticalAdm', { title: 'Statistical', listProduct: JSON.stringify(listProduct) })
 }
+

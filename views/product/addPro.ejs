@@ -59,7 +59,7 @@
     <div class="col">
       <label for="tel">Quantity</label>
       <input
-        type="text"
+        type="number"
         class="form-control"
         id="quantity"
         name="quantity"
@@ -68,18 +68,23 @@
         required
       />
     </div>
+
+
     <div class="col">
       <label for="lastName">Sizes</label>
       <input
         type="text"
         class="form-control"
-        id="sizes"
-        name="sizes[]"
+        id="size"
+        name="size"
         value=""
-        placeholder="Sizes"
+        placeholder="sizes"
         required
       />
+      
     </div>
+
+    
   </div>
 
   <div class="row form-group mb-4">
@@ -143,3 +148,5 @@
     <button type="submit" class="btn btn-primary">Add Product</button>
   </div>
 </form>
+
+

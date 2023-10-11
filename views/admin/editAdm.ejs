@@ -1,0 +1,124 @@
+<div
+  class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+>
+  <h1 class="h2">Admin</h1>
+  <div class="btn-toolbar mb-2 mb-md 0">
+    <div class="btn-group me-2">
+      <button class="btn btn-sm btn-outline-secondary">?</button>
+    </div>
+  </div>
+</div>
+
+<div class="col py-3">
+  <div class="row">
+    <div class="col">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/admin">Admin</a></li>
+          <li class="breadcrumb-item active">Edit admin</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col text-end fw-lighter">
+      <b>User</b>
+    </div>
+  </div>
+</div>
+
+<form action="/admin/edit" method="POST" enctype="multipart/form-data">
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="lastName">User name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        name="username"
+        value="<%= adm.username %>"
+        placeholder="User name"
+        required
+      />
+    </div>
+
+    <div class="col">
+      <label for="tel">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        value="<%= adm.password %>"
+        placeholder="Password"
+        required
+      />
+    </div>
+  </div>
+
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="lastName">Full name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="full_name"
+        name="full_name"
+        value="<%= adm.full_name %>"
+        placeholder="Full name"
+        required
+      />
+    </div>
+
+    <div class="col">
+      <label for="lastName">Permission</label>
+      <select id="permission" name="permission" class="form-select">
+        <option value="<%= adm.permission %>"><%= adm.permission %></option>
+        <option value="manage 1">manage 1</option>
+        <option value="manage 2">manage 2</option>
+        <option value="manage 3">manage 3</option>
+      </select>
+    </div>
+    
+  </div>
+
+  <div class="row">
+    <label for="lastName">Avatar</label>
+    <tr>
+      <td>
+        <img
+          class="col"
+          style="max-width: 150px"
+          src="<%= adm.avatar %>"
+          alt=""
+        />
+      </td>
+    </tr>
+  </div>
+
+  <div class="row form-group mb-4">
+    <div class="col">
+      <input
+        type="file"
+        class="form-control"
+        id="avatar"
+        name="avatar"
+        multiple
+        value="<%= adm.avatar %>"
+        placeholder=""
+      />
+    </div>
+  </div>
+
+
+  <input
+    type="text"
+    hidden
+    id="created_at"
+    name="created_at"
+    value="<%= adm.created_at %>"
+  />
+  <input type="text" hidden id="_id" name="_id" value="<%= adm._id %>" />
+
+  <div class="form-group mb-4">
+    <button type="submit" class="btn btn-primary">Edit Admin</button>
+  </div>
+</form>
