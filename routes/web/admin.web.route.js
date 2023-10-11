@@ -14,6 +14,6 @@ router.post('/register', uploader.any(), controller.register);
 router.get('/edit/:id', controller.edit);
 router.post('/edit', uploader.any(), controller.editPost);
 router.post('/delete/:id', controller.delete);
-router.get('/admin/dashboard', controller.dashboard);
+router.get('/dashboard', controller.dashboard);
 
 module.exports = router;

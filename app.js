@@ -70,13 +70,13 @@ app.use('/api/client', clientApiRoute);
 app.use('/api/discount', discountApiRoute);
 app.use('/api/product', productApiRoute);
 //web
-app.use('/', adminRoute);
+app.use('/', productRoute);
+app.use('/admin', adminRoute);
 app.use('/bill', billRoute);
 app.use('/blog', blogRoute);
 app.use('/chatbot', chatbotRoute);
 app.use('/client', clientRoute);
 app.use('/discount', discountRoute);
-app.use('/product', productRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

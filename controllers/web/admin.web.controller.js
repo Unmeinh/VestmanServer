@@ -4,10 +4,6 @@ let billModel = require('../../models/bill.model').BillModel;
 const { onUploadImages } = require("../../function/uploadImage");
 let clientModel = require('../../models/client.model').ClientModel;
 
-exports.home = async (req, res, next) => {
-  res.render('home', {title: 'Home'});
-}
-
 exports.list = async (req, res, next) => {
   const messages = await req.consumeFlash('info');
   const locals = {
