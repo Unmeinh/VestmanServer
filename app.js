@@ -70,7 +70,7 @@ app.use('/api/client', clientApiRoute);
 app.use('/api/discount', discountApiRoute);
 app.use('/api/product', productApiRoute);
 //web
-app.use('/admin', adminRoute);
+app.use('/', adminRoute);
 app.use('/bill', billRoute);
 app.use('/blog', blogRoute);
 app.use('/chatbot', chatbotRoute);
