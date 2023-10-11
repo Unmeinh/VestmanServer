@@ -1,0 +1,152 @@
+<div
+  class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+>
+  <h1 class="h2">Product</h1>
+  <div class="btn-toolbar mb-2 mb-md 0">
+    <div class="btn-group me-2">
+      <button class="btn btn-sm btn-outline-secondary">?</button>
+    </div>
+  </div>
+</div>
+
+<div class="col py-3">
+  <div class="row">
+    <div class="col">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/product">Product</a></li>
+          <li class="breadcrumb-item active">New product</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col text-end fw-lighter">
+      <b>Product</b>
+    </div>
+  </div>
+</div>
+
+
+
+<form action="/product/insert" method="POST" enctype="multipart/form-data">
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="firstName">Product Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name_product"
+        name="name_product"
+        value=""
+        placeholder="Product Name"
+        required
+      />
+    </div>
+    <div class="col">
+      <label for="lastName">Price</label>
+      <input
+        type="number"
+        class="form-control"
+        id="price"
+        name="price"
+        value=""
+        placeholder="Price"
+        required
+      />
+    </div>
+  </div>
+
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="tel">Quantity</label>
+      <input
+        type="number"
+        class="form-control"
+        id="quantity"
+        name="quantity"
+        value=""
+        placeholder="Quantity"
+        required
+      />
+    </div>
+
+
+    <div class="col">
+      <label for="lastName">Sizes</label>
+      <input
+        type="text"
+        class="form-control"
+        id="size"
+        name="size"
+        value=""
+        placeholder="sizes"
+        required
+      />
+      
+    </div>
+
+    
+  </div>
+
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="tel">Color</label>
+      <input
+        type="text"
+        class="form-control"
+        id="color"
+        name="color"
+        value=""
+        placeholder="Color"
+        required
+      />
+    </div>
+  
+    <div class="col">
+      <label for="lastName">Discount</label>
+      <select id="id_discount" name="id_discount" class="form-select">    
+        <% for(var i=0; i <arr_dis.length; i++) { %>
+          <option value="<%= arr_dis[i]._id %>">
+              <%= arr_dis[i].value %>%
+          </option>
+        <%}%>
+      </select>
+    </div>
+
+
+  </div>
+
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="file">File image</label>
+      <input
+        type="file"
+        class="form-control"
+        id="image"
+        name="image"
+        multiple
+        value=""
+        placeholder=""
+        required
+      />
+    </div>
+  </div>
+
+  <div class="form-group mb-4">
+    <label for="details">Detail product</label>
+    <textarea
+      class="form-control"
+      name="detail_product"
+      id="detail_product"
+      cols="30"
+      rows="12"
+      placeholder="Detail"
+      required
+    ></textarea>
+  </div>
+
+  <div class="form-group mb-4">
+    <button type="submit" class="btn btn-primary">Add Product</button>
+  </div>
+</form>
+
+

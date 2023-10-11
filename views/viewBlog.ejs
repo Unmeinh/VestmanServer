@@ -3,7 +3,7 @@
     <h1 class="h2">Blog</h1>
     <div class="btn-toolbar mb-2 mb-md 0">
       <div class="btn-group me-2">
-        <a href="/add" class="btn btn-sm btn-outline-secondary">+ New </a>
+        <a href="/blog/insert" class="btn btn-sm btn-outline-secondary">+ New blog</a>
       </div>
     </div>
   </div>
@@ -33,8 +33,8 @@
         <% for(let i = 0; i<clients.length; i++) { %>
           <tr class="align-middle">
             <td><%= arrPro[i].name_product %></td>
-            <td><%= clients[i].description.length %></td>
-            <td><%= clients[i].created_at %></td>
+            <td><%= clients[i].description %></td>
+            <td><%= clients[i].created_at.toLocaleString('en') %></td>
             <td class="text-end">
   
               <div class="d-flex flex-row justify-content-end gap-2">
@@ -47,7 +47,7 @@
                   <i class="bi bi-pencil"></i>
                 </a>
   
-                <form action="/blog/edit/<%= clients[i]._id %>?_method=DELETE" method="POST" class="position-relative">
+                <form action="/blog/delete/<%= clients[i]._id %>" method="POST" class="position-relative">
                   <button type="submit" class="btn btn-danger btn-small">
                     <i class="bi bi-person-x"></i>
                   </button>

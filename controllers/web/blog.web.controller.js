@@ -46,18 +46,15 @@ exports.list = async (req, res, next) => {
   }
 };
 
+exports.listSort = async (req, res, next) => {
+}
+
+exports.listHigh = async (req, res, next) => {
+}
+
 exports.view = async (req, res) => {
   try {
     const customer = await blogModel.findOne({ _id: req.params.id });
-
-    let arrDes = [];
-    let descrip;
-    
-    for (i = 0; i < customer.description.length; i++) {
-      descrip = customer.description[i];
-
-      arrDes.push(descrip);
-    }
 
     const pro = await productModel.findOne({ _id: customer.id_product });
 
@@ -69,7 +66,6 @@ exports.view = async (req, res) => {
     res.render("blog/detailBlog", {
       locals,
       customer,
-      arrDes,
       pro,
     });
   } catch (error) {
@@ -86,7 +82,49 @@ exports.insert = async (req, res, next) => {
     newBlog.expires_at = expires_at;
     newBlog.created_at = new Date();
     await newBlog.save();
-    return res.send(newBlog);
+    return res.redirect('/blog');
   }
-  res.send("List");
+
+  let arr_Pro = await productModel.find();
+  res.render("blog/addBlog",{
+    arr_Pro
+  });
 };
+
+exports.edit = async (req, res) => {
+  try {
+    const blog = await blogModel.findById({_id : req.params.id});
+    let arr_Pro = await productModel.find();
+    let pro = await productModel.findById({_id : blog.id_product})
+
+    res.render("blog/editBlog",{
+      blog,
+      arr_Pro,
+      pro
+    })
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+exports.editPost = async (req, res) => {
+  let { id_product, description, expires_at, created_at, _id } = req.body;
+
+  console.log(req.body);
+
+  await blogModel.findByIdAndUpdate(_id,{
+    id_product : id_product,
+    description : description,
+    expires_at : expires_at,
+    created_at : created_at,
+  });
+
+  res.redirect('/blog');
+
+}
+exports.delete = async (req, res, next) => {
+  await blogModel.deleteOne({_id: req.params.id})
+  res.redirect('/blog');
+}
+
