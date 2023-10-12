@@ -4,6 +4,10 @@ let billModel = require('../../models/bill.model').BillModel;
 const { onUploadImages } = require("../../function/uploadImage");
 let clientModel = require('../../models/client.model').ClientModel;
 
+exports.home = async (req, res, next) => {
+  res.render('home', { title: 'Home' });
+}
+
 exports.list = async (req, res, next) => {
   const messages = await req.consumeFlash('info');
   const locals = {
@@ -278,5 +282,32 @@ async function getTotalCustomer(previusDate, nowDate) {
   }
 }
 
+async function getProductCount(previusDate, nowDate) {
+  var match_stage = {
+    $match: {
+      'created_at': {
+        '$gte': new Date(previusDate),
+        '$lte': new Date(nowDate)
+      }
+    }
+  }
+  var unwind_stage = {
+    $unwind: "$arr_product",
+  }
+  var group_stage = {
+    $group: { _id: null, sum: { $sum: "$arr_product.quantity" } }
+  }
+  var project_stage = {
+    $project: { _id: 0, count: '$sum' }
+  }
+
+  var pipeline = [match_stage, unwind_stage, group_stage, project_stage]
+  let sumCount = await billModel.aggregate(pipeline);
+  if (sumCount[0] != undefined) {
+    return sumCount[0].count;
+  } else {
+    return 0;
+  }
+}
 
 
