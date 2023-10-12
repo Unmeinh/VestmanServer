@@ -161,7 +161,7 @@ exports.insert = async (req, res, next) => {
         newProduct.images = imageUrl;
 
         await newProduct.save();
-        return res.redirect('/product');
+        return res.redirect('/');
     }
 
     let arr_dis = await discountModel.find();
@@ -192,7 +192,7 @@ exports.edit = async(req, res) =>{
 
   } catch (error) {
     console.log(error);
-  }
+  } 
 
 }
 
@@ -223,11 +223,11 @@ exports.editPost = async(req, res) =>{
       created_at : created_at,
     });
 
-    res.redirect('/product');
+    res.redirect('/');
 }
 
 exports.delete = async(req, res) =>{
   await productModel.deleteOne({_id: req.params.id})
-  res.redirect('/product');
+  res.redirect('/');
 }
 
