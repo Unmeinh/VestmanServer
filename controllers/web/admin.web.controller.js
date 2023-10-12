@@ -205,3 +205,4 @@ async function getProductCount(previusDate, nowDate) {
     return 0;
   }
 }
+
