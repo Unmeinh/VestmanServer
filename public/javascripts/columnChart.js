@@ -22,10 +22,10 @@ var options = {
         name: 'Product costs',
         data: totalProducts
     }, {
-        name: 'Sales profit',
+        name: 'Revenue',
         data: totalInterests
     }, {
-        name: 'Revenue',
+        name: 'Sales money',
         data: totalBills
     }],
     colors: [

@@ -3,7 +3,7 @@ let CartSchema = new db.mongoose.Schema(
     {
         id_product: { type: db.mongoose.Schema.Types.ObjectId, ref: 'ProductModel' },
         id_client: { type: db.mongoose.Schema.Types.ObjectId, ref: 'ClientModel' },
-        quantity: { type: String, required: true },
+        quantity: { type: Number, required: true },
         size: { type: String, required: true },
         created_at: { type: Date, required: true },
     },
