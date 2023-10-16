@@ -31,7 +31,7 @@ exports.getUser = async (req, res, next) => {
 exports.register = async (req, res, next) => {
     try {
         if (req.method == "POST") {
-            let { username, password, email } = req.body;
+            let { username, password, email, phone_number } = req.body;
             if (!req.body) {
                 return res.status(500).json({ success: false, data: {}, message: "Không đọc được dữ liệu tải lên! " });
             }
@@ -40,7 +40,7 @@ exports.register = async (req, res, next) => {
             newClient.password = password;
             newClient.email = email;
             newClient.full_name = "Client-" + onGenerateRandomString(5);
-            newClient.phone_number = "Not yet set up";
+            newClient.phone_number = phone_number;
             newClient.address = "Not yet set up";
             newClient.created_at = new Date();
             newClient.avatar = "https://firebasestorage.googleapis.com/v0/b/vestman-firebase-ada53.appspot.com/o/images%2Favatar%2Fclient%2Fclient-default.png?alt=media&token=b7db5aa3-5027-4724-a415-9a3e606c40d1";

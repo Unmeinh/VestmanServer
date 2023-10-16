@@ -32,7 +32,7 @@ exports.insertCart = async (req, res, next) => {
             let cart = await cartModel.findOne({ id_client: idClient, id_product: id_product })
             if (cart) {
                 await updateProduct(cart.id_product, quantity, res);
-                cart.quantity += quantity;
+                cart.quantity = Number(cart.quantity) + Number(quantity);
                 cart.size = size;
                 await cartModel.findByIdAndUpdate(cart._id, cart);
                 return res.status(201).json({ success: true, data: {}, message: "Thêm vào giỏ hàng thành công." });
@@ -49,7 +49,7 @@ exports.insertCart = async (req, res, next) => {
             }
         }
     } catch (error) {
-        return res.status(500).json({ success: false, data: {}, message: "Lỗi: " + error.message });
+        // return res.status(500).json({ success: false, data: {}, message: "Lỗi: " + error.message });
     }
 }
 
@@ -72,7 +72,7 @@ exports.updateCart = async (req, res, next) => {
             return res.status(201).json({ success: true, data: {}, message: "Cập nhật giỏ hàng thành công." });
         }
     } catch (error) {
-        return res.status(500).json({ success: false, data: {}, message: "Lỗi: " + error.message });
+        // return res.status(500).json({ success: false, data: {}, message: "Lỗi: " + error.message });
     }
 }
 

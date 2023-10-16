@@ -113,7 +113,11 @@ exports.dashboard = async (req, res, next) => {
       totalProducts: JSON.stringify(totalProducts),
       totalInterests: JSON.stringify(totalInterests),
       totalCustomers: JSON.stringify(totalCustomers),
-      totalPrdCount: JSON.stringify(totalPrdCount)
+      totalPrdCount: JSON.stringify(totalPrdCount),
+      toastify: {
+        type: 'success',
+        message: 'Statistical calculation successful.'
+      }
     })
   } catch (error) {
     console.log(error);
