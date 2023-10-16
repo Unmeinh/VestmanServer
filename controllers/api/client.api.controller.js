@@ -31,7 +31,7 @@ exports.getUser = async (req, res, next) => {
 exports.register = async (req, res, next) => {
     try {
         if (req.method == "POST") {
-            let { username, password, email } = req.body;
+            let { username, password, email, phone_number } = req.body;
             if (!req.body) {
                 return res.status(500).json({ success: false, data: {}, message: "Không đọc được dữ liệu tải lên! " });
             }
