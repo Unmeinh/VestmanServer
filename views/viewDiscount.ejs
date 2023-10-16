@@ -1,9 +1,16 @@
 
 <div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Discount</h1>
+    <div class="col-md-3">  
+      <select id="" name="" class="form-select" onchange="location = this.value;"> 
+        <option value="">Arrange discounts</option>
+        <option value="/discount/sort">From low to high</option>
+        <option value="/discount/high">From high to low</option>
+      </select>
+    </div>
     <div class="btn-toolbar mb-2 mb-md 0">
       <div class="btn-group me-2">
-        <a href="/add" class="btn btn-sm btn-outline-secondary">+ New discount</a>
+        <a href="/discount/insert" class="btn btn-sm btn-outline-secondary">+ New discount</a>
       </div>
     </div>
   </div>
@@ -32,9 +39,9 @@
       <tbody>
         <% clients.forEach(element => { %>
           <tr class="align-middle">
-            <td><%= element.started_at %></td>
-            <td><%= element.expires_at %></td>
-            <td><%= element.value %></td>
+            <td><%= element.started_at.toLocaleString('en') %></td>
+            <td><%= element.expires_at.toLocaleString('en') %></td>
+            <td><%= element.value %>%</td>
           
             <td class="text-end">
   
@@ -44,7 +51,7 @@
                   <i class="bi bi-pencil"></i>
                 </a>
   
-                <form action="/discount/edit/<%= element._id %>?_method=DELETE" method="POST" class="position-relative">
+                <form action="/discount/delete/<%= element._id %>" method="POST" class="position-relative">
                   <button type="submit" class="btn btn-danger btn-small">
                     <i class="bi bi-person-x"></i>
                   </button>

@@ -1,9 +1,16 @@
 
 <div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h1 class="h2">Product</h1>
+  <div class="col-md-3">  
+    <select id="" name="" class="form-select" onchange="location = this.value;"> 
+      <option value="">Sort by price</option>
+      <option value="/product/sort">Prices range from low to high</option>
+      <option value="/product/high">Prices range from high to low</option>
+    </select>
+  </div>
   <div class="btn-toolbar mb-2 mb-md 0">
     <div class="btn-group me-2">
-      <a href="/add" class="btn btn-sm btn-outline-secondary">+ New Product</a>
+      <a href="/product/insert" class="btn btn-sm btn-outline-secondary">+ New Product</a>
     </div>
   </div>
 </div>
@@ -25,6 +32,7 @@
         <th scope="col">Product's name</th>
         <th scope="col">Price</th>
         <th scope="col">Quantity</th>
+        <th scope="col">Created at</th>
         <th scope="col" class="text-end">Action</th>
       </tr>
     </thead>
@@ -33,8 +41,9 @@
       <% clients.forEach(element => { %>
         <tr class="align-middle">
           <td><%= element.name_product %></td>
-          <td><%= element.price %></td>
+          <td><%= element.price.toLocaleString() %> VND</td>
           <td><%= element.quantity %></td>
+          <td><%= element.created_at.toLocaleString('en') %></td>
           <td class="text-end">
 
             <div class="d-flex flex-row justify-content-end gap-2">
@@ -47,7 +56,7 @@
                 <i class="bi bi-pencil"></i>
               </a>
 
-              <form action="/product/edit/<%= element._id %>?_method=DELETE" method="POST" class="position-relative">
+              <form action="/product/delete/<%= element._id %>" method="POST" class="position-relative">
                 <button type="submit" class="btn btn-danger btn-small">
                   <i class="bi bi-person-x"></i>
                 </button>

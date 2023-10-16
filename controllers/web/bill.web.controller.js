@@ -46,6 +46,96 @@ exports.list = async (req, res, next) => {
   }
 };
 
+exports.listSort = async (req, res, next) => {
+  const messages = await req.consumeFlash("info");
+
+  const locals = {
+    title: "NodeJs",
+    description: "Free NodeJs User Management System",
+  };
+
+  let perPage = 5;
+  let page = req.query.page || 1;
+
+  try {
+    const clients = await billModel
+      .aggregate()
+      .sort({total: 1})
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec();
+    const count = await billModel.count();
+    // console.log("cus: ", clients);
+
+    let arrCli = [];
+    let idCli;
+    for (let i = 0; i < clients.length; i++) {
+      idCli = clients[i].id_client;
+
+      const cli = await clientModel.findOne({ _id: idCli });
+
+      arrCli.push(cli);
+      // console.log("client: "+clients[i].id_client);
+    }
+
+    res.render("viewBill", {
+      locals,
+      clients,
+      current: page,
+      pages: Math.ceil(count / perPage),
+      messages,
+      arrCli,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+exports.listHigh = async (req, res, next) => {
+  const messages = await req.consumeFlash("info");
+
+  const locals = {
+    title: "NodeJs",
+    description: "Free NodeJs User Management System",
+  };
+
+  let perPage = 5;
+  let page = req.query.page || 1;
+
+  try {
+    const clients = await billModel
+      .aggregate()
+      .sort({total: -1})
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec();
+    const count = await billModel.count();
+    // console.log("cus: ", clients);
+
+    let arrCli = [];
+    let idCli;
+    for (let i = 0; i < clients.length; i++) {
+      idCli = clients[i].id_client;
+
+      const cli = await clientModel.findOne({ _id: idCli });
+
+      arrCli.push(cli);
+      // console.log("client: "+clients[i].id_client);
+    }
+
+    res.render("viewBill", {
+      locals,
+      clients,
+      current: page,
+      pages: Math.ceil(count / perPage),
+      messages,
+      arrCli,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 exports.view = async (req, res) => {
   try {
     const customer = await billModel.findOne({ _id: req.params.id });

@@ -29,9 +29,6 @@ var app = express();
 
 app.use(methodOverride('_method'));
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 
 
 app.use(logger('dev'));
@@ -39,6 +36,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.set('views', path.join(__dirname, 'views'));
+
 
 app.use(
   session({
@@ -54,6 +53,9 @@ app.use(
 // Flash Messages
 app.use(flash({ sessionKeyName: 'flashMessage' }));
 
+app.get('/ok', (req, res)=>{
+  res.render('auth/login.ejs');
+})
 // Templating Engine
 app.use(expressLayout);
 app.set('layout', './layouts/main');
@@ -68,19 +70,18 @@ app.use('/api/client', clientApiRoute);
 app.use('/api/discount', discountApiRoute);
 app.use('/api/product', productApiRoute);
 //web
-app.use('/', adminRoute);
+app.use('/', productRoute);
+app.use('/admin', adminRoute);
 app.use('/bill', billRoute);
 app.use('/blog', blogRoute);
 app.use('/chatbot', chatbotRoute);
 app.use('/client', clientRoute);
 app.use('/discount', discountRoute);
-app.use('/product', productRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
 
 
 // error handler
