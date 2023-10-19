@@ -1,13 +1,6 @@
 
 <div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h1 class="h2">Product</h1>
-  <div class="col-md-3">  
-    <select id="" name="" class="form-select" onchange="location = this.value;"> 
-      <option value="">Sort by price</option>
-      <option value="/product/sort">Prices range from low to high</option>
-      <option value="/product/high">Prices range from high to low</option>
-    </select>
-  </div>
   <div class="btn-toolbar mb-2 mb-md 0">
     <div class="btn-group me-2">
       <a href="/product/insert" class="btn btn-sm btn-outline-secondary">+ New Product</a>
@@ -29,10 +22,10 @@
   <table class="table table-striped table-sm">
     <thead>
       <tr>
-        <th scope="col">Product's name</th>
-        <th scope="col">Price</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Created at</th>
+        <th scope="col">Product's name  <a href="/product/sort/?_sort&column=name_product&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/product/sort/?_sort&column=name_product&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+        <th scope="col">Price <a href="/product/sort/?_sort&column=price&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/product/sort/?_sort&column=price&type=asc"><i class="bi bi-arrow-up"></i></a> </th>
+        <th scope="col">Quantity  <a href="/product/sort/?_sort&column=quantity&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/product/sort/?_sort&column=quantity&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+        <th scope="col">Created at  <a href="/product/sort/?_sort&column=created_at&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/product/sort/?_sort&column=created_at&type=asc"><i class="bi bi-arrow-up"></i></a></th>
         <th scope="col" class="text-end">Action</th>
       </tr>
     </thead>

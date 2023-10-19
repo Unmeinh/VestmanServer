@@ -1,12 +1,5 @@
 <div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Admin</h1>
-    <div class="col-md-3">  
-      <select id="" name="" class="form-select" onchange="location = this.value;"> 
-        <option value="">Sort names</option>
-        <option value="/admin/sort">From a to z</option>
-        <option value="/admin/high">From z to a</option>
-      </select>
-    </div>
     <div class="btn-toolbar mb-2 mb-md 0">
       <div class="btn-group me-2">
         <a href="/admin/register" class="btn btn-sm btn-outline-secondary">+ New User</a>
@@ -28,32 +21,32 @@
     <table class="table table-striped table-sm">
       <thead>
         <tr>
-          <th scope="col">Full name</th>
-          <th scope="col">Permission</th>
-          <th scope="col">Created at</th>
+          <th scope="col">Full name <a href="/admin/sort/?_sort&column=full_name&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/admin/sort/?_sort&column=full_name&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+          <th scope="col">Permission <a href="/admin/sort/?_sort&column=permission&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/admin/sort/?_sort&column=permission&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+          <th scope="col">Created at <a href="/admin/sort/?_sort&column=created_at&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/admin/sort/?_sort&column=created_at&type=asc"><i class="bi bi-arrow-up"></i></a></th>
           <th scope="col" class="text-end">Action</th>
         </tr>
       </thead>
   
       <tbody>
-        <% clients.forEach(element => { %>
+        <% for(let i = 0; i<clients.length; i++) { %>
           <tr class="align-middle">
-            <td><%= element.full_name %></td>
-            <td><%= element.permission %></td>
-            <td><%= element.created_at.toLocaleString('en') %></td>
+            <td><%= clients[i].full_name %></td>
+            <td><%= per[i] %></td>
+            <td><%= clients[i].created_at.toLocaleString('en') %></td>
             <td class="text-end">
   
               <div class="d-flex flex-row justify-content-end gap-2">
   
-                <a href="/admin/view/<%= element._id %>" type="button" class="btn btn-primary btn-small">
+                <a href="/admin/view/<%= clients[i]._id %>" type="button" class="btn btn-primary btn-small">
                   <i class="bi bi-eye"></i>
                 </a>
   
-                <a href="/admin/edit/<%= element._id %>" type="button" class="btn btn-warning btn-small">
+                <a href="/admin/edit/<%= clients[i]._id %>" type="button" class="btn btn-warning btn-small">
                   <i class="bi bi-pencil"></i>
                 </a>
   
-                <form action="/admin/delete/<%= element._id %>" method="POST" class="position-relative">
+                <form action="/admin/delete/<%= clients[i]._id %>" method="POST" class="position-relative">
                   <button type="submit" class="btn btn-danger btn-small">
                     <i class="bi bi-person-x"></i>
                   </button>
@@ -64,7 +57,7 @@
   
             </td>
           </tr>
-        <% }) %>
+        <% } %>
       </tbody>
     </table>
   </div>

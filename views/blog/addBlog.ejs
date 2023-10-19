@@ -25,7 +25,7 @@
   </div>
 </div>
 
-<form action="/blog/insert" method="POST">
+<form action="/blog/insert" method="POST" enctype="multipart/form-data">
   
 
   <div class="row form-group mb-4">
@@ -50,6 +50,20 @@
         </option>
         <%}%>
       </select>
+    </div>
+  </div>
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="lastName">Image</label>
+      <input
+        type="file"
+        class="form-control"
+        id="thumbnailImage"
+        name="thumbnailImage"
+        value=""
+        placeholder="Image"
+        required
+      />
     </div>
   </div>
 

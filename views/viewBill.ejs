@@ -1,13 +1,6 @@
 
 <div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Bill</h1>
-    <div class="col-md-3">  
-      <select id="" name="" class="form-select" onchange="location = this.value;"> 
-        <option value="">Sort by bill</option>
-        <option value="/bill/sort">From low to high</option>
-        <option value="/bill/high">From high to low</option>
-      </select>
-    </div>
     <div class="btn-toolbar mb-2 mb-md 0">
       <div class="btn-group me-2">
         <a href="/add" class="btn btn-sm btn-outline-secondary">+ New </a>
@@ -29,10 +22,10 @@
     <table class="table table-striped table-sm">
       <thead>
         <tr>
-          <th scope="col">Full name</th>
-          <th scope="col">Product number</th>
-          <th scope="col">Total</th>
-          <th scope="col">Create at</th>
+          <th scope="col">Full name  <a href="/bill/sort/?_sort&column=full_name&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/bill/sort/?_sort&column=full_name&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+          <th scope="col">Product number <a href="/bill/sort/?_sort&column=arr_product&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/bill/sort/?_sort&column=arr_product&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+          <th scope="col">Total <a href="/bill/sort/?_sort&column=total&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/bill/sort/?_sort&column=total&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+          <th scope="col">Create at <a href="/bill/sort/?_sort&column=created_at&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/bill/sort/?_sort&column=created_at&type=asc"><i class="bi bi-arrow-up"></i></a></th>
           <th scope="col" class="text-end">Action</th>
         </tr>
       </thead>

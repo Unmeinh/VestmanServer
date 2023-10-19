@@ -7,7 +7,6 @@ var uploader = multer({dest:'/public/tmp'});
 
 router.get('/', controller.list);
 router.get('/sort', controller.listSort);
-router.get('/high', controller.listHigh);
 router.get('/view/:id', controller.view);
 router.get('/register', controller.register);
 router.post('/register', uploader.any(), controller.register);

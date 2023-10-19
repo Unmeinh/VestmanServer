@@ -19,16 +19,33 @@ exports.list = async (req, res, next) => {
   let page = req.query.page || 1;
 
   try {
-    const clients = await adminModel.aggregate([{ $sort: { createdAt: -1 } }])
+    const clients = await adminModel.aggregate()
       .skip(perPage * page - perPage)
       .limit(perPage)
       .exec();
     const count = await adminModel.count();
+
+    let per = [];
+    for (let i = 0; i < clients.length; i++) {
+      if(clients[i].permission == 0){
+        per.push('Owner')
+      }
+
+      if(clients[i].permission == 1){
+        per.push('Manager')
+      }
+
+      if(clients[i].permission == 2){
+        per.push('Participant')
+      }
+      
+    }
     console.log("cus: ", clients);
 
     res.render('viewAdmin', {
       locals,
       clients,
+      per,
       current: page,
       pages: Math.ceil(count / perPage),
       messages
@@ -40,64 +57,29 @@ exports.list = async (req, res, next) => {
 }
 
 exports.listSort = async (req, res, next) => {
-  const messages = await req.consumeFlash('info');
-  const locals = {
-    title: 'NodeJs',
-    description: 'Free NodeJs User Management System'
-  }
+  const messages = await req.consumeFlash("info");
 
   let perPage = 5;
   let page = req.query.page || 1;
 
   try {
-    const clients = await adminModel.aggregate()
-      .sort({'full_name': 1})
-      .skip(perPage * page - perPage)
-      .limit(perPage)
-      .exec();
-    const count = await adminModel.count();
-    console.log("cus: ", clients);
+    if (req.query.hasOwnProperty("_sort")) {
+    
+      const clients = await adminModel
+        .aggregate()
+        .sort({ [req.query.column]: req.query.type })
+        .skip(perPage * page - perPage)
+        .limit(perPage)
+        .exec();
+      const count = await adminModel.count();
 
-    res.render('viewAdmin', {
-      locals,
-      clients,
-      current: page,
-      pages: Math.ceil(count / perPage),
-      messages
-    });
-
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-exports.listHigh = async (req, res, next) => {
-  const messages = await req.consumeFlash('info');
-  const locals = {
-    title: 'NodeJs',
-    description: 'Free NodeJs User Management System'
-  }
-
-  let perPage = 5;
-  let page = req.query.page || 1;
-
-  try {
-    const clients = await adminModel.aggregate()
-      .sort({'full_name': -1})
-      .skip(perPage * page - perPage)
-      .limit(perPage)
-      .exec();
-    const count = await adminModel.count();
-    console.log("cus: ", clients);
-
-    res.render('viewAdmin', {
-      locals,
-      clients,
-      current: page,
-      pages: Math.ceil(count / perPage),
-      messages
-    });
-
+      res.render("viewAdmin", {
+        clients,
+        current: page,
+        pages: Math.ceil(count / perPage),
+        messages,
+      });
+    }
   } catch (error) {
     console.log(error);
   }
@@ -108,6 +90,17 @@ exports.view = async (req, res) => {
   try {
     const customer = await adminModel.findOne({ _id: req.params.id })
 
+    let per;
+    if(customer.permission == 0){
+      per = "Owner"
+    }
+    if(customer.permission == 1){
+      per = "Manager"
+    }
+    if(customer.permission == 2){
+      per = "Participant"
+    }
+
     const locals = {
       title: "View Customer Data",
       description: "Free NodeJs User Management System",
@@ -115,7 +108,8 @@ exports.view = async (req, res) => {
 
     res.render('admin/detailAdm', {
       locals,
-      customer
+      customer,
+      per
     })
 
   } catch (error) {
@@ -148,8 +142,19 @@ exports.edit = async (req, res, next) => {
   try {
     const adm = await adminModel.findById({_id : req.params.id});
     
+    let per;
+    if(adm.permission == 0){
+      per = "Owner"
+    }
+    if(adm.permission == 1){
+      per = "Manager"
+    }
+    if(adm.permission == 2){
+      per = "Participant"
+    }
     res.render("admin/editAdm",{
-      adm
+      adm,
+      per
     })
 
   } catch (error) {
@@ -317,5 +322,6 @@ async function getProductCount(previusDate, nowDate) {
     return 0;
   }
 }
+
 
 
