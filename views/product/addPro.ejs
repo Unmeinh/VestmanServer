@@ -71,17 +71,11 @@
 
 
     <div class="col">
-      <label for="lastName">Sizes</label>
-      <input
-        type="text"
-        class="form-control"
-        id="size"
-        name="size"
-        value=""
-        placeholder="sizes"
-        required
-      />
-      
+      <label  for="lastName">Sizes: </label>
+      <input style="margin-left: 10px; margin-top: 23px; width: 300px; height: 35px;" type="number" id="box"/>
+      <button style="margin-bottom: 5px;" type="button" id="button" value="submit" onclick="return guardarNumeros()" class="btn btn-info">Add</button>
+      <p id="par"></p>
+      <textarea name="sizes" id="por" hidden></textarea>
     </div>
 
     
@@ -138,7 +132,7 @@
       name="detail_product"
       id="detail_product"
       cols="30"
-      rows="12"
+      rows="10"
       placeholder="Detail"
       required
     ></textarea>
@@ -150,3 +144,26 @@
 </form>
 
 
+<script>
+  var items = [];
+  var items2 = [];
+
+  function guardarNumeros() {
+    boxvalue = document.getElementById("box").value;
+    if(!boxvalue=='')
+    items.push(boxvalue);
+    items2 = Array.from(new Set(items))
+    document.getElementById("box").value = "";
+    document.getElementById("par").innerHTML = items2; 
+    document.getElementById("por").innerHTML = items2; 
+    
+    if(items2.length == 5){
+      let element = document.getElementById("button");
+      let hidden = element.getAttribute("hidden");
+      element.setAttribute("hidden", "hidden");
+
+    }
+    
+    return false;
+  }
+</script>

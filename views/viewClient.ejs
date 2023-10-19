@@ -1,12 +1,5 @@
 <div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h1 class="h2">Client</h1>
-  <div class="col-md-3">  
-    <select id="" name="" class="form-select" onchange="location = this.value;"> 
-      <option value="">Sort names</option>
-      <option value="/client/sort">From a to z</option>
-      <option value="/client/high">From z to a</option>
-    </select>
-  </div>
   <div class="btn-toolbar mb-2 mb-md 0">
     <div class="btn-group me-2">
       <a href="/client/insert" class="btn btn-sm btn-outline-secondary">+ New User</a>
@@ -28,9 +21,9 @@
   <table class="table table-striped table-sm">
     <thead>
       <tr>
-        <th scope="col">Full Name</th>
-        <th scope="col">Address</th>
-        <th scope="col">Created at</th>
+        <th scope="col">Full Name <a href="/client/sort/?_sort&column=full_name&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/client/sort/?_sort&column=full_name&type=asc"><i class="bi bi-arrow-up"></i></a> </th>
+        <th scope="col">Address <a href="/client/sort/?_sort&column=address&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/client/sort/?_sort&column=address&type=asc"><i class="bi bi-arrow-up"></i></a> </th>
+        <th scope="col">Created at <a href="/client/sort/?_sort&column=created_at&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/client/sort/?_sort&column=created_at&type=asc"><i class="bi bi-arrow-up"></i></a> </th>
         <th scope="col" class="text-end">Action</th>
       </tr>
     </thead>
@@ -48,11 +41,7 @@
               <a href="/client/view/<%= element._id %>" type="button" class="btn btn-primary btn-small">
                 <i class="bi bi-eye"></i>
               </a>
-
-              <a href="/client/edit/<%= element._id %>" type="button" class="btn btn-warning btn-small">
-                <i class="bi bi-pencil"></i>
-              </a>
-
+           
               <form action="/client/delete/<%= element._id %>" method="POST" class="position-relative">
                 <button type="submit" class="btn btn-danger btn-small">
                   <i class="bi bi-person-x"></i>
