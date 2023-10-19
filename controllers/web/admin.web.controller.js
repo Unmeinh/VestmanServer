@@ -192,6 +192,7 @@ exports.dashboard = async (req, res, next) => {
     const totalProducts = [];
     const totalInterests = [];
     const totalCustomers = [];
+    const totalPrdCount = [];
     const endDate = new Date();
     const last6Month = new Date(endDate.getFullYear(), endDate.getMonth() - 5, 1);
     let currentDate = new Date(last6Month);
@@ -206,10 +207,12 @@ exports.dashboard = async (req, res, next) => {
       let total = await getTotalBill(previusDate, nowDate);
       let product = await getTotalProduct(previusDate, nowDate);
       let client = await getTotalCustomer(previusDate, nowDate);
+      let count = await getProductCount(previusDate, nowDate);
       totalBills.push(total);
       totalProducts.push(product);
       totalInterests.push(total - product);
       totalCustomers.push(client);
+      totalPrdCount.push(count);
     }
     res.render('admin/dashboard', {
       title: 'Dashboard',
@@ -219,6 +222,11 @@ exports.dashboard = async (req, res, next) => {
       totalProducts: JSON.stringify(totalProducts),
       totalInterests: JSON.stringify(totalInterests),
       totalCustomers: JSON.stringify(totalCustomers),
+      totalPrdCount: JSON.stringify(totalPrdCount),
+      toastify: {
+        type: 'success',
+        message: 'Statistical calculation successful.'
+      }
     })
   } catch (error) {
     console.log(error);
@@ -278,6 +286,34 @@ async function getTotalCustomer(previusDate, nowDate) {
   );
   if (listClient) {
     return listClient.length;
+  } else {
+    return 0;
+  }
+}
+
+async function getProductCount(previusDate, nowDate) {
+  var match_stage = {
+    $match: {
+      'created_at': {
+        '$gte': new Date(previusDate),
+        '$lte': new Date(nowDate)
+      }
+    }
+  }
+  var unwind_stage = {
+    $unwind: "$arr_product",
+  }
+  var group_stage = {
+    $group: { _id: null, sum: { $sum: "$arr_product.quantity" } }
+  }
+  var project_stage = {
+    $project: { _id: 0, count: '$sum' }
+  }
+
+  var pipeline = [match_stage, unwind_stage, group_stage, project_stage]
+  let sumCount = await billModel.aggregate(pipeline);
+  if (sumCount[0] != undefined) {
+    return sumCount[0].count;
   } else {
     return 0;
   }

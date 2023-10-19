@@ -22,10 +22,10 @@ var options = {
         name: 'Product costs',
         data: totalProducts
     }, {
-        name: 'Sales profit',
+        name: 'Revenue',
         data: totalInterests
     }, {
-        name: 'Revenue',
+        name: 'Sales money',
         data: totalBills
     }],
     colors: [
@@ -59,7 +59,12 @@ var options = {
     yaxis: {
         title: {
             text: 'vnd (dong)'
-        }
+        },
+        labels: {
+            formatter: function (val) {
+                return Number(val).toLocaleString() 
+            }
+        },
     },
     fill: {
         opacity: 1
@@ -67,7 +72,7 @@ var options = {
     tooltip: {
         y: {
             formatter: function (val) {
-                return val + " vnd"
+                return Number(val).toLocaleString() + " dong"
             }
         }
     }
