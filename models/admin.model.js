@@ -5,7 +5,9 @@ let AdminSchema = new db.mongoose.Schema(
         password: { type: String, required: true },
         full_name: { type: String, required: true },
         permission: { type: String, required: true },
-        created_at: { type: Date, required: true },
+        created_at: { type: Date, required: false },
+        email:{type:String,required:true},
+        adress:{type:String,required:true},
         avatar: { type: String, required: false },
     },
     {
