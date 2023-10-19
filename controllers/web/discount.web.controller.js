@@ -11,7 +11,7 @@ exports.list = async (req, res, next) => {
     let page = req.query.page || 1;
 
     try {
-      const clients = await discountModel.aggregate([ { $sort: { createdAt: -1 } } ])
+      const clients = await discountModel.aggregate()
         .skip(perPage * page - perPage)
         .limit(perPage)
         .exec(); 
@@ -32,69 +32,33 @@ exports.list = async (req, res, next) => {
 }
 
 exports.listSort = async (req, res, next) => {
-  const messages = await req.consumeFlash('info');
-  const locals = {
-    title: 'NodeJs',
-    description: 'Free NodeJs User Management System'
-  }
+  const messages = await req.consumeFlash("info");
 
   let perPage = 5;
   let page = req.query.page || 1;
 
   try {
-    const clients = await discountModel.aggregate()
-      .sort({value: 1})
-      .skip(perPage * page - perPage)
-      .limit(perPage)
-      .exec(); 
-    const count = await discountModel.count();
-    console.log("cus: ",clients);
+    if (req.query.hasOwnProperty("_sort")) {
+    
+      const clients = await discountModel
+        .aggregate()
+        .sort({ [req.query.column]: req.query.type })
+        .skip(perPage * page - perPage)
+        .limit(perPage)
+        .exec();
+      const count = await discountModel.count();
 
-    res.render('viewDiscount', {
-      locals,
-      clients,
-      current: page,
-      pages: Math.ceil(count / perPage),
-      messages
-    });
-
+      res.render("viewDiscount", {
+        clients,
+        current: page,
+        pages: Math.ceil(count / perPage),
+        messages,
+      });
+    }
   } catch (error) {
     console.log(error);
   }
 }
-
-exports.listHigh = async (req, res, next) => {
-  const messages = await req.consumeFlash('info');
-  const locals = {
-    title: 'NodeJs',
-    description: 'Free NodeJs User Management System'
-  }
-
-  let perPage = 5;
-  let page = req.query.page || 1;
-
-  try {
-    const clients = await discountModel.aggregate()
-      .sort({value: -1})
-      .skip(perPage * page - perPage)
-      .limit(perPage)
-      .exec(); 
-    const count = await discountModel.count();
-    console.log("cus: ",clients);
-
-    res.render('viewDiscount', {
-      locals,
-      clients,
-      current: page,
-      pages: Math.ceil(count / perPage),
-      messages
-    });
-
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 
 
 exports.insert = async (req, res, next) => {

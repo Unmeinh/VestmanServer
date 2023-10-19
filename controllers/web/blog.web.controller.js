@@ -1,5 +1,6 @@
 let blogModel = require("../../models/blog.model").BlogModel;
 let productModel = require("../../models/product.model").ProductModel;
+const { onUploadImages } = require("../../function/uploadImage");
 
 exports.list = async (req, res, next) => {
   const messages = await req.consumeFlash("info");
@@ -47,10 +48,34 @@ exports.list = async (req, res, next) => {
 };
 
 exports.listSort = async (req, res, next) => {
+  const messages = await req.consumeFlash("info");
+
+  let perPage = 5;
+  let page = req.query.page || 1;
+
+  try {
+    if (req.query.hasOwnProperty("_sort")) {
+    
+      const clients = await blogModel
+        .aggregate()
+        .sort({ [req.query.column]: req.query.type })
+        .skip(perPage * page - perPage)
+        .limit(perPage)
+        .exec();
+      const count = await adminModel.count();
+
+      res.render("viewBlog", {
+        clients,
+        current: page,
+        pages: Math.ceil(count / perPage),
+        messages,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-exports.listHigh = async (req, res, next) => {
-}
 
 exports.view = async (req, res) => {
   try {
@@ -75,10 +100,13 @@ exports.view = async (req, res) => {
 
 exports.insert = async (req, res, next) => {
   if (req.method == "POST") {
+    let imageUrl = await onUploadImages(req.files, 'admin');
+
     let { id_product, description, expires_at } = req.body;
     let newBlog = new blogModel();
     newBlog.id_product = id_product;
     newBlog.description = description;
+    newBlog.thumbnailImage = imageUrl[0];
     newBlog.expires_at = expires_at;
     newBlog.created_at = new Date();
     await newBlog.save();
@@ -109,13 +137,18 @@ exports.edit = async (req, res) => {
 }
 
 exports.editPost = async (req, res) => {
-  let { id_product, description, expires_at, created_at, _id } = req.body;
+  let { id_product, description, expires_at, thumbnailImage, created_at, _id } = req.body;
 
-  console.log(req.body);
+  let imageUrl = await onUploadImages(req.files, 'admin');
+
+  if(!imageUrl.length==0){
+    thumbnailImage = imageUrl[0];
+  }
 
   await blogModel.findByIdAndUpdate(_id,{
     id_product : id_product,
     description : description,
+    thumbnailImage: thumbnailImage,
     expires_at : expires_at,
     created_at : created_at,
   });
