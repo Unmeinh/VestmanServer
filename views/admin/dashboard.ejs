@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+
+<body>
+  <h1>
+    <%= 'Dashboard' %>
+  </h1>
+  <div id="chartColumn" style="margin-bottom: 35px; margin-top: 35px;"></div>
+  <div style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: space-between; width: 100%;">
+    <div id="chartBar" style="width: 45%;"></div>
+    <div id="lineChart" style="width: 45%;"></div>
+  </div>
+  <button onclick="showToast()" type="button"></button>
+  <script src="/javascripts/columnChart.js" months="<%= months %>" totalBills="<%= totalBills %>"
+    totalProducts="<%= totalProducts %>" totalInterests="<%= totalInterests %>"
+    totalPrdCount="<%= totalPrdCount %>"></script>
+  <script src="/javascripts/barChart.js" products="<%= listProduct %>"></script>
+  <script src="/javascripts/lineChart.js" months="<%= months %>" totalCustomers="<%= totalCustomers %>"></script>
+</body>
+
+</html>
+
+

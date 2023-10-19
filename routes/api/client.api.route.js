@@ -5,6 +5,7 @@ var multer = require('multer');
 var uploader = multer({dest:'/public/tmp'});
 
 router.get('/list', controller.list);
+router.get('/detailClient/:idClient', controller.getUser);
 router.post('/login', controller.login);
 router.post('/register', controller.register);
 router.put('/updateClient/:idClient', controller.updateClient);

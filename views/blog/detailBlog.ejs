@@ -15,19 +15,25 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Blog</a></li>
-            <li class="breadcrumb-item active"></li>
+            <li class="breadcrumb-item active">product</li>
           </ol>
         </nav>
       </div>
-      <div class="col text-end fw-lighter">
-        <!-- <b>Last Updated <%= new Date(customer.updatedAt).toUTCString() %> </b> -->
-        <b>BlogId:</b> <%= customer._id %>
+      <div class="col text-end fw-lighter"> 
+        <b>Blog</b>
       </div>
     </div>
   
   </div>
   
   <ul class="list-group">
+
+    <li class="list-group-item"> 
+      <div class="row">
+        <div class="col" style="max-width: 140px" > <b>Image: </b></div>
+        <img class="col" style="max-width: 150px" src="<%= customer.thumbnailImage %>" alt="">
+      </div>
+    </li>
   
   
     <li class="list-group-item"> 
@@ -41,28 +47,21 @@
     <li class="list-group-item"> 
       <div class="row">
         <div class="col" style="max-width: 140px"> <b>Description:</b></div>
-        <% for (var i = 0; i<arrDes.length; i++) {%>
-          <div class="col">
-            <tr>
-              <td><%= arrDes[i] %></td>
-            </tr>   
-          </div>         
-        <% } %>
-        <!-- <div class="col"><%= customer.arr_product %></div> -->
+        <div class="col"><%= customer.description %></div>
       </div>
     </li>
    
     <li class="list-group-item"> 
       <div class="row">
         <div class="col" style="max-width: 140px"> <b>Date Created:</b></div>
-        <div class="col"><%= customer.created_at %></div>
+        <div class="col"><%= customer.created_at.toLocaleString('en') %></div>
       </div>
     </li>
 
     <li class="list-group-item"> 
       <div class="row">
-        <div class="col" style="max-width: 140px"> <b>Total:</b></div>
-        <div class="col"><%= customer.expires_at %></div>
+        <div class="col" style="max-width: 140px"> <b>Expires at:</b></div>
+        <div class="col"><%= customer.expires_at.toLocaleString('en') %></div>
       </div>
     </li>
 

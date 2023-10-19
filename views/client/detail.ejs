@@ -21,7 +21,7 @@
     </div>
     <div class="col text-end fw-lighter">
       <!-- <b>Last Updated <%= new Date(customer.updatedAt).toUTCString() %> </b> -->
-      <b>UserId:</b> <%= customer._id %>
+      <b>Client</b>
     </div>
   </div>
 
@@ -75,7 +75,7 @@
   <li class="list-group-item"> 
     <div class="row">
       <div class="col" style="max-width: 140px"> <b>Date Created:</b></div>
-      <div class="col"><%= customer.created_at %></div>
+      <div class="col"><%= customer.created_at.toLocaleString('en') %></div>
     </div>
   </li>
 

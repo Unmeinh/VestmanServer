@@ -1,0 +1,169 @@
+<div
+  class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+>
+  <h1 class="h2">Product</h1>
+  <div class="btn-toolbar mb-2 mb-md 0">
+    <div class="btn-group me-2">
+      <button class="btn btn-sm btn-outline-secondary">?</button>
+    </div>
+  </div>
+</div>
+
+<div class="col py-3">
+  <div class="row">
+    <div class="col">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/product">Product</a></li>
+          <li class="breadcrumb-item active">New product</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col text-end fw-lighter">
+      <b>Product</b>
+    </div>
+  </div>
+</div>
+
+
+
+<form action="/product/insert" method="POST" enctype="multipart/form-data">
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="firstName">Product Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name_product"
+        name="name_product"
+        value=""
+        placeholder="Product Name"
+        required
+      />
+    </div>
+    <div class="col">
+      <label for="lastName">Price</label>
+      <input
+        type="number"
+        class="form-control"
+        id="price"
+        name="price"
+        value=""
+        placeholder="Price"
+        required
+      />
+    </div>
+  </div>
+
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="tel">Quantity</label>
+      <input
+        type="number"
+        class="form-control"
+        id="quantity"
+        name="quantity"
+        value=""
+        placeholder="Quantity"
+        required
+      />
+    </div>
+
+
+    <div class="col">
+      <label  for="lastName">Sizes: </label>
+      <input style="margin-left: 10px; margin-top: 23px; width: 300px; height: 35px;" type="number" id="box"/>
+      <button style="margin-bottom: 5px;" type="button" id="button" value="submit" onclick="return guardarNumeros()" class="btn btn-info">Add</button>
+      <p id="par"></p>
+      <textarea name="sizes" id="por" hidden></textarea>
+    </div>
+
+    
+  </div>
+
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="tel">Color</label>
+      <input
+        type="text"
+        class="form-control"
+        id="color"
+        name="color"
+        value=""
+        placeholder="Color"
+        required
+      />
+    </div>
+  
+    <div class="col">
+      <label for="lastName">Discount</label>
+      <select id="id_discount" name="id_discount" class="form-select">    
+        <% for(var i=0; i <arr_dis.length; i++) { %>
+          <option value="<%= arr_dis[i]._id %>">
+              <%= arr_dis[i].value %>%
+          </option>
+        <%}%>
+      </select>
+    </div>
+
+
+  </div>
+
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="file">File image</label>
+      <input
+        type="file"
+        class="form-control"
+        id="image"
+        name="image"
+        multiple
+        value=""
+        placeholder=""
+        required
+      />
+    </div>
+  </div>
+
+  <div class="form-group mb-4">
+    <label for="details">Detail product</label>
+    <textarea
+      class="form-control"
+      name="detail_product"
+      id="detail_product"
+      cols="30"
+      rows="10"
+      placeholder="Detail"
+      required
+    ></textarea>
+  </div>
+
+  <div class="form-group mb-4">
+    <button type="submit" class="btn btn-primary">Add Product</button>
+  </div>
+</form>
+
+
+<script>
+  var items = [];
+  var items2 = [];
+
+  function guardarNumeros() {
+    boxvalue = document.getElementById("box").value;
+    if(!boxvalue=='')
+    items.push(boxvalue);
+    items2 = Array.from(new Set(items))
+    document.getElementById("box").value = "";
+    document.getElementById("par").innerHTML = items2; 
+    document.getElementById("por").innerHTML = items2; 
+    
+    if(items2.length == 5){
+      let element = document.getElementById("button");
+      let hidden = element.getAttribute("hidden");
+      element.setAttribute("hidden", "hidden");
+
+    }
+    
+    return false;
+  }
+</script>

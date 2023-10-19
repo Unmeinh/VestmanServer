@@ -32,7 +32,7 @@ exports.insertCart = async (req, res, next) => {
             let cart = await cartModel.findOne({ id_client: idClient, id_product: id_product })
             if (cart) {
                 await updateProduct(cart.id_product, quantity, res);
-                cart.quantity += quantity;
+                cart.quantity = Number(cart.quantity) + Number(quantity);
                 cart.size = size;
                 await cartModel.findByIdAndUpdate(cart._id, cart);
                 return res.status(201).json({ success: true, data: {}, message: "Thêm vào giỏ hàng thành công." });
@@ -49,13 +49,13 @@ exports.insertCart = async (req, res, next) => {
             }
         }
     } catch (error) {
-        return res.status(500).json({ success: false, data: {}, message: "Lỗi: " + error.message });
+        // return res.status(500).json({ success: false, data: {}, message: "Lỗi: " + error.message });
     }
 }
 
 exports.updateCart = async (req, res, next) => {
     try {
-        if (req.method == "POST") {
+        if (req.method == "PUT") {
             let idCart = req.params.idCart;
             let { quantity, size } = req.body;
             if (!idCart) {
@@ -70,6 +70,21 @@ exports.updateCart = async (req, res, next) => {
             await updateProduct(cart.id_product, quantity);
             await cartModel.findByIdAndUpdate(cart_id, cart);
             return res.status(201).json({ success: true, data: {}, message: "Cập nhật giỏ hàng thành công." });
+        }
+    } catch (error) {
+        // return res.status(500).json({ success: false, data: {}, message: "Lỗi: " + error.message });
+    }
+}
+
+exports.deleteCart = async (req, res, next) => {
+    try {
+        if (req.method == "DELETE") {
+            let idCart = req.params.idCart;
+            if (!idCart) {
+                return res.status(200).json({ success: false, data: {}, message: "Không đọc được dữ liệu giỏ hàng!" });
+            }
+            await cartModel.findByIdAndDelete(idCart)
+            return res.status(203).json({ success: true, data: {}, message: "Xóa khỏi giỏ hàng thành công." });
         }
     } catch (error) {
         return res.status(500).json({ success: false, data: {}, message: "Lỗi: " + error.message });

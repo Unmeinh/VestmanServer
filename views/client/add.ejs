@@ -1,5 +1,7 @@
-<div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h1 class="h2">Customer</h1>
+<div
+  class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+>
+  <h1 class="h2">Client</h1>
   <div class="btn-toolbar mb-2 mb-md 0">
     <div class="btn-group me-2">
       <button class="btn btn-sm btn-outline-secondary">?</button>
@@ -12,55 +14,118 @@
     <div class="col">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-          <li class="breadcrumb-item active">New Customer</li>
+          <li class="breadcrumb-item"><a href="/client">Client</a></li>
+          <li class="breadcrumb-item active">New client</li>
         </ol>
       </nav>
     </div>
     <div class="col text-end fw-lighter">
-      <b>UserId</b>
+      <b>User</b>
     </div>
   </div>
-
 </div>
 
-
-<form action="/client/add" method="POST">
-
+<form action="/client/insert" method="POST" enctype="multipart/form-data">
   <div class="row form-group mb-4">
     <div class="col">
-      <label for="firstName">First Name</label>
-      <input type="text" class="form-control" id="firstName" name="firstName" value="" placeholder="First Name" required>
+      <label for="firstName">User Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        name="username"
+        value=""
+        placeholder="User Name"
+        required
+      />
     </div>
 
     <div class="col">
-      <label for="lastName">Last Name</label>
-      <input type="text" class="form-control" id="lastName" name="lastName" value="" placeholder="Last Name" required>
+      <label for="lastName">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        value=""
+        placeholder="Password"
+        required
+      />
     </div>
   </div>
 
   <div class="row form-group mb-4">
     <div class="col">
-      <label for="tel">Telephone</label>
-      <input type="text" class="form-control" id="tel" name="tel" value="" placeholder="Telephone" required>
+      <label for="tel">Full name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="full_name"
+        name="full_name"
+        value=""
+        placeholder="Full name"
+        required
+      />
     </div>
 
     <div class="col">
-      <label for="email">Email</label>
-      <input type="text" class="form-control" id="email" name="email" value="" placeholder="Email" required>
+      <label for="lastName">Phone number</label>
+      <input
+        type="number"
+        class="form-control"
+        id="phone_number"
+        name="phone_number"
+        value=""
+        placeholder="Phone number"
+        required
+      />
     </div>
   </div>
 
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="firstName">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        value=""
+        placeholder="Email"
+        required
+      />
+    </div>
 
-  <div class="form-group mb-4">
-      <label for="details">Customer Details</label>
-      <textarea class="form-control" name="details" id="details" cols="30" rows="12" placeholder="Customer Details"></textarea>
+    <div class="col">
+      <label for="email">Address</label>
+      <input
+        type="text"
+        class="form-control"
+        id="address"
+        name="address"
+        value=""
+        placeholder="Address"
+        required
+      />
+    </div>
+  </div>
+
+  <div class="row form-group mb-4">
+    <div class="col">
+      <label for="file">File image</label>
+      <input
+        type="file"
+        class="form-control"
+        id="image"
+        name="image"
+        value=""
+        placeholder=""
+        required
+      />
+    </div>
   </div>
 
   <div class="form-group mb-4">
     <button type="submit" class="btn btn-primary">Add Customer</button>
   </div>
-
-  
-
 </form>
