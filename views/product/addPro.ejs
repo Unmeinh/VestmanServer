@@ -1,6 +1,4 @@
-<div
-  class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
->
+<div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h1 class="h2">Product</h1>
   <div class="btn-toolbar mb-2 mb-md 0">
     <div class="btn-group me-2">
@@ -25,84 +23,53 @@
   </div>
 </div>
 
-
-
 <form action="/product/insert" method="POST" enctype="multipart/form-data">
   <div class="row form-group mb-4">
     <div class="col">
       <label for="firstName">Product Name</label>
-      <input
-        type="text"
-        class="form-control"
-        id="name_product"
-        name="name_product"
-        value=""
-        placeholder="Product Name"
-        required
-      />
+      <input type="text" class="form-control" id="name_product" name="name_product" value="" placeholder="Product Name"
+        required />
     </div>
     <div class="col">
       <label for="lastName">Price</label>
-      <input
-        type="number"
-        class="form-control"
-        id="price"
-        name="price"
-        value=""
-        placeholder="Price"
-        required
-      />
+      <input type="number" class="form-control" id="price" name="price" value="" placeholder="Price" required />
     </div>
   </div>
 
   <div class="row form-group mb-4">
     <div class="col">
       <label for="tel">Quantity</label>
-      <input
-        type="number"
-        class="form-control"
-        id="quantity"
-        name="quantity"
-        value=""
-        placeholder="Quantity"
-        required
-      />
+      <input type="number" class="form-control" id="quantity" name="quantity" value="" placeholder="Quantity"
+        required />
     </div>
 
 
     <div class="col">
-      <label  for="lastName">Sizes: </label>
-      <input style="margin-left: 10px; margin-top: 23px; width: 300px; height: 35px;" type="number" id="box"/>
-      <button style="margin-bottom: 5px;" type="button" id="button" value="submit" onclick="return guardarNumeros()" class="btn btn-info">Add</button>
+      <label for="lastName">Sizes: </label>
+      <input style="margin-left: 10px; margin-top: 23px; width: 300px; height: 35px;" type="number" id="box" />
+      <button style="margin-bottom: 5px;" type="button" id="button" value="submit" onclick="return guardarNumeros()"
+        class="btn btn-info">Add</button>
       <p id="par"></p>
       <textarea name="sizes" id="por" hidden></textarea>
     </div>
 
-    
+
   </div>
 
   <div class="row form-group mb-4">
     <div class="col">
       <label for="tel">Color</label>
-      <input
-        type="text"
-        class="form-control"
-        id="color"
-        name="color"
-        value=""
-        placeholder="Color"
-        required
-      />
+      <input type="text" class="form-control" id="color" name="color" value="" placeholder="Color" required />
     </div>
-  
+
     <div class="col">
       <label for="lastName">Discount</label>
-      <select id="id_discount" name="id_discount" class="form-select">    
+      <select id="id_discount" name="id_discount" class="form-select">
         <% for(var i=0; i <arr_dis.length; i++) { %>
           <option value="<%= arr_dis[i]._id %>">
-              <%= arr_dis[i].value %>%
+            <%= arr_dis[i].value %>%
           </option>
-        <%}%>
+          <%}%>
       </select>
     </div>
 
@@ -112,34 +79,123 @@
   <div class="row form-group mb-4">
     <div class="col">
       <label for="file">File image</label>
-      <input
-        type="file"
-        class="form-control"
-        id="image"
-        name="image"
-        multiple
-        value=""
-        placeholder=""
-        required
-      />
+      <input type="file" class="form-control" id="image" name="image" multiple value="" placeholder="" required />
     </div>
   </div>
 
   <div class="form-group mb-4">
     <label for="details">Detail product</label>
-    <textarea
-      class="form-control"
-      name="detail_product"
-      id="detail_product"
-      cols="30"
-      rows="10"
-      placeholder="Detail"
-      required
-    ></textarea>
+    <textarea class="form-control" name="detail_product" id="detail_product" cols="30" rows="10" placeholder="Detail"
+      required></textarea>
   </div>
 
-  <div class="form-group mb-4">
-    <button type="submit" class="btn btn-primary">Add Product</button>
+  <div class="form-group mb-4 d-block" id="buttonContinue">
+    <button type="button" class="btn btn-primary" onclick="onAddChatbot()">Continue</button>
+  </div>
+
+  <div id="divAddChatbot" class="d-none">
+    <hr />
+    <h5>Add Chatbot</h5>
+    <div class="row" style="margin-top: 20px; padding-left: 10px; padding-right: 10px; justify-content: space-between;">
+      <div style="width: 48%;">
+        <label for="firstName">Question 1:</label>
+        <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
+          <input type="radio" class="col-1" name="radio_question1" value="DefaultQuestion1" required
+            style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_question1.disabled=true">
+          <input type="text" class="form-control col-11" id="default_question1" value="Bộ vest này còn hàng không shop?"
+            placeholder="" disabled />
+        </div>
+        <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
+          <input type="radio" class="col-1" name="radio_question1" value="CustomQuestion1"
+            style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_question1.disabled=false">
+          <input type="text" class="form-control col-11" id="custom_question1" name="custom_question1" value=""
+            placeholder="Custom question?" />
+        </div>
+      </div>
+      <div style="width: 48%;">
+        <label for="firstName">Reply 1:</label>
+        <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
+          <input type="radio" class="col-1" name="radio_reply1" value="DefaultReply1" required
+            style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_reply1.disabled=true">
+          <input type="text" class="form-control col-11" id="default_reply1"
+            value="(Auto) Sản phẩm này còn hàng bạn nhé!" placeholder="" disabled />
+        </div>
+        <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
+          <input type="radio" class="col-1" name="radio_reply1" value="CustomReply1"
+            style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_reply1.disabled=false">
+          <input type="text" class="form-control col-11" id="custom_reply1" name="custom_reply1" value=""
+            placeholder="Custom reply?" />
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 20px; padding-left: 10px; padding-right: 10px; justify-content: space-between;">
+      <div style="width: 48%;">
+        <label for="firstName">Question 2:</label>
+        <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
+          <input type="radio" class="col-1" name="radio_question2" value="DefaultQuestion2" required
+            style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_question2.disabled=true">
+          <input type="text" class="form-control col-11" id="default_question2"
+            value="Tôi muốn biết mình vừa với size bao nhiêu thì phải làm sao?" placeholder="" disabled  />
+        </div>
+        <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
+          <input type="radio" class="col-1" name="radio_question2" value="CustomQuestion2"
+            style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_question2.disabled=false">
+          <input type="text" class="form-control col-11" id="custom_question2" name="custom_question2" value=""
+            placeholder="Custom question?"  />
+        </div>
+      </div>
+      <div style="width: 48%;">
+        <label for="firstName">Reply 2:</label>
+        <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
+          <input type="radio" class="col-1" name="radio_reply2" value="DefaultReply2" required
+            style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_reply2.disabled=true">
+          <input type="text" class="form-control col-11" id="default_reply2" value="Mời bạn xem ảnh bên dưới để biết được size phù hợp nhé?
+          https://theme.hstatic.net/1000333436/1001040510/14/vendor_value_4.jpg?v=141" placeholder="" disabled
+             />
+        </div>
+        <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
+          <input type="radio" class="col-1" name="radio_reply2" value="CustomReply2"
+            style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_reply2.disabled=false">
+          <input type="text" class="form-control col-11" id="custom_reply2" name="custom_reply2" value=""
+            placeholder="Custom reply?" required/>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 20px; padding-left: 10px; padding-right: 10px; justify-content: space-between;">
+      <div style="width: 48%;">
+        <label for="firstName">Question 3:</label>
+        <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
+          <input type="radio" class="col-1" name="radio_question3" value="DefaultQuestion3" required
+            style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_question3.disabled=true">
+          <input type="text" class="form-control col-11" id="default_question3" value="Bộ vest này còn màu khác không?"
+            placeholder="" disabled />
+        </div>
+        <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
+          <input type="radio" class="col-1" name="radio_question3" value="CustomQuestion3"
+            style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_question3.disabled=false">
+          <input type="text" class="form-control col-11" id="custom_question3" name="custom_question3" value=""
+            placeholder="Custom question?" required/>
+        </div>
+      </div>
+      <div style="width: 48%;">
+        <label for="firstName">Reply 3:</label>
+        <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
+          <input type="radio" class="col-1" name="radio_reply3" value="DefaultReply3" required
+            style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_reply3.disabled=true">
+          <input type="text" class="form-control col-11" id="default_reply3"
+            value="Bạn hãy xem danh sách vest để tìm màu phù hợp với mình nhé!" placeholder="" disabled />
+        </div>
+        <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
+          <input type="radio" class="col-1" name="radio_reply3" value="CustomReply1"
+            style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_reply3.disabled=false">
+          <input type="text" class="form-control col-11" id="custom_reply3" name="custom_reply3" value=""
+            placeholder="Custom reply?" required/>
+        </div>
+      </div>
+    </div>
+    <div class="form-group mb-4" id="buttonContinue">
+      <button type="submit" class="btn btn-primary">Add Product</button>
+    </div>
   </div>
 </form>
 
@@ -150,20 +206,29 @@
 
   function guardarNumeros() {
     boxvalue = document.getElementById("box").value;
-    if(!boxvalue=='')
-    items.push(boxvalue);
+    if (!boxvalue == '')
+      items.push(boxvalue);
     items2 = Array.from(new Set(items))
     document.getElementById("box").value = "";
-    document.getElementById("par").innerHTML = items2; 
-    document.getElementById("por").innerHTML = items2; 
-    
-    if(items2.length == 5){
+    document.getElementById("par").innerHTML = items2;
+    document.getElementById("por").innerHTML = items2;
+
+    if (items2.length == 5) {
       let element = document.getElementById("button");
       let hidden = element.getAttribute("hidden");
       element.setAttribute("hidden", "hidden");
 
     }
-    
+
     return false;
+  }
+
+  function onAddChatbot() {
+    let divAddChatbot = document.getElementById('divAddChatbot');
+    divAddChatbot.classList.remove("d-none");
+    divAddChatbot.classList.add("d-block");
+    let buttonContinue = document.getElementById('buttonContinue');
+    buttonContinue.classList.remove("d-block");
+    buttonContinue.classList.add("d-none");
   }
 </script>

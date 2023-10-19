@@ -4,8 +4,8 @@ var router = express.Router();
 var multer = require('multer');
 var uploader = multer({dest:'/public/tmp'});
 
-
 router.get('/', controller.list);
+router.get('/list', controller.list);
 router.get('/sort', controller.listSort);
 router.get('/view/:id', controller.view);
 router.get('/register', controller.register);
