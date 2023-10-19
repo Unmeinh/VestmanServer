@@ -1,5 +1,6 @@
 let productModel = require("../../models/product.model").ProductModel;
 let discountModel = require("../../models/discount.model").DiscountModel;
+let chatbotModel = require("../../models/chatbot.model").ChatbotModel;
 const { onUploadImages } = require("../../function/uploadImage");
 
 exports.list = async (req, res, next) => {
@@ -40,7 +41,7 @@ exports.listSort = async (req, res, next) => {
 
   try {
     if (req.query.hasOwnProperty("_sort")) {
-    
+
       const clients = await productModel
         .aggregate()
         .sort({ [req.query.column]: req.query.type })
@@ -89,8 +90,10 @@ exports.insert = async (req, res, next) => {
     let sizes = [];
     sizes = sizeStr.split(",");
 
-    let { name_product, detail_product, id_discount, color, quantity, price } =
-      req.body;
+    let {
+      name_product, detail_product,
+      id_discount, color,
+      quantity, price } = req.body;
     let newProduct = new productModel();
     newProduct.name_product = name_product;
     newProduct.detail_product = detail_product;
@@ -102,7 +105,8 @@ exports.insert = async (req, res, next) => {
     newProduct.price = price;
     newProduct.created_at = new Date();
     newProduct.images = imageUrl;
-
+    let idChatbot = await addChatbot(newProduct._id, req.body);
+    newProduct.id_chatbot = idChatbot;
     await newProduct.save();
     return res.redirect("/product");
   }
@@ -122,11 +126,16 @@ exports.edit = async (req, res) => {
     const Pro = await productModel.findById({ _id: req.params.id });
     let arr_dis = await discountModel.find();
     let dis = await discountModel.findById({ _id: Pro.id_discount });
+    let chatbot = {};
+    if (Pro.id_chatbot) {
+      chatbot = await chatbotModel.findById(Pro.id_chatbot);
+    } 
 
     res.render("product/editPro", {
       Pro,
       arr_dis,
       dis,
+      chatbot
     });
   } catch (error) {
     console.log(error);
@@ -155,20 +164,19 @@ exports.editPost = async (req, res) => {
   let sizes = [];
   let str = req.body.size;
   sizes = str.split(",");
+  let product = await productModel.findById(_id);
+  product.name_product = name_product;
+  product.detail_product = detail_product;
+  product.id_discount = id_discount;
+  product.sizes = sizes;
+  product.color = color;
+  product.quantity = quantity;
+  product.quantity = price;
+  product.images = images;
 
-  await productModel.findByIdAndUpdate(_id, {
-    name_product: name_product,
-    detail_product: detail_product,
-    id_discount: id_discount,
-    sizes: sizes,
-    color: color,
-    quantity: quantity,
-    quantitySold: 0,
-    price: price,
-    images: images,
-    created_at: created_at,
-  });
-
+  let idChatbot = await editChatbot(_id, product.id_chatbot, req.body);
+  product.id_chatbot = idChatbot;
+  await productModel.findByIdAndUpdate(_id, product);
   res.redirect("/product");
 };
 
@@ -176,3 +184,111 @@ exports.delete = async (req, res) => {
   await productModel.deleteOne({ _id: req.params.id });
   res.redirect("/product");
 };
+
+async function addChatbot(productId, body) {
+  let newChatbot = new chatbotModel();
+  let {
+    radio_question1,
+    radio_question2,
+    radio_question3,
+    radio_reply1,
+    radio_reply2,
+    radio_reply3
+  } = body;
+  newChatbot.id_product = productId;
+  let questions = [];
+  if (radio_question1 == "DefaultQuestion1") {
+    questions.push("Bộ vest này còn hàng không shop?");
+  } else {
+    questions.push(body.custom_question1);
+  }
+  if (radio_question2 == "DefaultQuestion2") {
+    questions.push("Tôi muốn biết mình vừa với size bao nhiêu thì phải làm sao?");
+  } else {
+    questions.push(body.custom_question2);
+  }
+  if (radio_question3 == "DefaultQuestion3") {
+    questions.push("Bộ vest này còn màu khác không?");
+  } else {
+    questions.push(body.custom_question3);
+  }
+  newChatbot.questions = questions;
+  let replies = [];
+  if (radio_reply1 == "DefaultReply1") {
+    replies.push("Sản phẩm này còn hàng bạn nhé!");
+  } else {
+    replies.push(body.custom_reply1);
+  }
+  if (radio_reply2 == "DefaultReply2") {
+    replies.push("Mời bạn xem ảnh bên dưới để biết được size phù hợp nhé? image:'https://theme.hstatic.net/1000333436/1001040510/14/vendor_value_4.jpg?v=141'");
+  } else {
+    replies.push(body.custom_reply2);
+  }
+  if (radio_reply3 == "DefaultReply3") {
+    replies.push("Bạn hãy xem danh sách vest để tìm màu phù hợp với mình nhé!");
+  } else {
+    replies.push(body.custom_reply3);
+  }
+  newChatbot.replies = replies;
+  newChatbot.created_at = new Date();
+  await newChatbot.save();
+  return newChatbot._id;
+}
+
+async function editChatbot(productId, chatbotId, body) {
+  if (chatbotId) {
+    let chatbot = new chatbotModel.findById(chatbotId);
+    if (chatbot) {
+      let {
+        radio_question1,
+        radio_question2,
+        radio_question3,
+        radio_reply1,
+        radio_reply2,
+        radio_reply3
+      } = body;
+      let questions = [];
+      if (radio_question1 == "DefaultQuestion1") {
+        questions.push("Bộ vest này còn hàng không shop?");
+      } else {
+        questions.push(body.custom_question1);
+      }
+      if (radio_question2 == "DefaultQuestion2") {
+        questions.push("Tôi muốn biết mình vừa với size bao nhiêu thì phải làm sao?");
+      } else {
+        questions.push(body.custom_question2);
+      }
+      if (radio_question3 == "DefaultQuestion3") {
+        questions.push("Bộ vest này còn màu khác không?");
+      } else {
+        questions.push(body.custom_question3);
+      }
+      chatbot.questions = questions;
+      let replies = [];
+      if (radio_reply1 == "DefaultReply1") {
+        replies.push("Sản phẩm này còn hàng bạn nhé!");
+      } else {
+        replies.push(body.custom_reply1);
+      }
+      if (radio_reply2 == "DefaultReply2") {
+        replies.push("Mời bạn xem ảnh bên dưới để biết được size phù hợp nhé? image:'https://theme.hstatic.net/1000333436/1001040510/14/vendor_value_4.jpg?v=141'");
+      } else {
+        replies.push(body.custom_reply2);
+      }
+      if (radio_reply3 == "DefaultReply3") {
+        replies.push("Bạn hãy xem danh sách vest để tìm màu phù hợp với mình nhé!");
+      } else {
+        replies.push(body.custom_reply3);
+      }
+      chatbot.replies = replies;
+      await chatbotModel.findByIdAndUpdate(chatbotId, chatbot);
+      return chatbotId;
+    } else {
+      let id = await addChatbot(productId, body);
+      return id;
+    }
+  } else {
+    let id = await addChatbot(productId, body);
+    return id;
+  }
+}

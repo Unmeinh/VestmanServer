@@ -4,6 +4,7 @@ let ProductSchema = new db.mongoose.Schema(
         name_product: { type: String, required: true },
         detail_product: { type: String, required: true },
         id_discount: { type: db.mongoose.Schema.Types.ObjectId, ref: 'DiscountModel' },
+        id_chatbot: { type: db.mongoose.Schema.Types.ObjectId, ref: 'ChatbotModel' },
         sizes: { type: Array, required: true },
         color: { type: String, required: true },
         quantity: { type: Number, required: true },
