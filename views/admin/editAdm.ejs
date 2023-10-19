@@ -1,65 +1,56 @@
-<div
-  class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
->
-  <h1 class="h2">Admin</h1>
-  <div class="btn-toolbar mb-2 mb-md 0">
-    <div class="btn-group me-2">
-      <button class="btn btn-sm btn-outline-secondary">?</button>
-    </div>
-  </div>
-</div>
 
-<div class="col py-3">
-  <div class="row">
-    <div class="col">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/admin">Admin</a></li>
-          <li class="breadcrumb-item active">Edit admin</li>
-        </ol>
-      </nav>
-    </div>
-    <div class="col text-end fw-lighter">
-      <b>User</b>
-    </div>
-  </div>
-</div>
 
-<form action="/admin/edit" method="POST" enctype="multipart/form-data">
  
-  
-  <div class="row form-group mb-4">
-    <div class="col">
-      <label for="lastName">Full name</label>
-      <div class="form-control"> <%= adm.full_name %> </div>
+<main class="col-md-9 ms-sm-auto col-lg-12 px-md-5">
+        
+        <div class="container-fluid justify-content-center mt-1">
+            <div class="row justify-content-center">
+                <div class="col-8">
+                  
+      <form method="post">
+        <h4 class="text-danger"><%= msg %></h4>
+        
+        <h3 class="pt-3">Edit infomation</h3 class="pt-3">
+        <div class="mb-3">
+          <label for="" class="form-label">Fullname  </label>
+          <input type="text" class="form-control" name="full_name" placeholder="" value="<%= user.full_name %>">
+        </div>
+        <div class="mb-3 ">
+              
+        
+          
+         
+        </div>
+       
+        <div class="mb-3">
+          <label for="" class="form-label">Email</label>
+          <input type="email" class="form-control" name="email" placeholder="" value="<%= user.email %>">
+        </div>
+        <div class="mb-3">
+          <label for="" class="form-label">Permision</label>
+          <input type="text" class="form-control" name="permision" value="<%= user.permission %>">
+        </div>
+        
+        <div class="mb-3">
+          <label for="" class="form-label">Avatar</label>
+          <input type="text" class="form-control"name="avatar" value="<%= user.avatar %>">
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">Adress</label>
+            <input type="text" class="form-control"name="adress" value="<%= user.adress %>">
+          </div>
+
+      
+      
+        <button type="submit" class="btn btn-primary mb-3">edit</button>
+      </form>
     </div>
-    <div class="col">
-      <label for="lastName">Permission</label>
-      <select id="permission" name="permission" class="form-select">
-        <option value="<%= adm.permission %>"><%= per %></option>
-        <option value="2">Participant</option>
-        <option value="1">Manager</option>  
-      </select>
-    </div>
-    
   </div>
-
-  <input
-    type="text"
-    hidden
-    id="created_at"
-    name="created_at"
-    value="<%= adm.created_at %>"
-  />
-  <input type="text" hidden id="_id" name="_id" value="<%= adm._id %>" />
-
-  <input type="text" hidden id="username" name="username" value="<%= adm.username %>" />
-  <input type="text" hidden id="password" name="password" value="<%= adm.password %>" />
-  <input type="text" hidden id="full_name" name="full_name" value="<%= adm.full_name %>" />
-  <input type="text" hidden id="avatar" name="avatar" value="<%= adm.avatar %>" />
+</div>
+</main>
 
 
-  <div class="form-group mb-4">
-    <button type="submit" class="btn btn-primary">Edit Admin</button>
-  </div>
-</form>
+      
+      
+
+
