@@ -2,7 +2,7 @@ let blogModel = require('../../models/blog.model').BlogModel;
 
 exports.list = async (req, res, next) => {
     try {
-        let arr_blog = await blogModel.find().populate('id_discount');
+        let arr_blog = await blogModel.find().populate('id_product').populate({path: 'id_product', populate: 'id_discount'});
         if (arr_blog) {
             return res.status(200).json({ success: true, data: arr_blog, message: "Lấy danh sách blog thành công." });
         } else {
