@@ -4,13 +4,16 @@ var multer = require('multer');
 var uploader = multer({dest:'/public/tmp'});
 var router = express.Router();
 
-var midleware=require('../../midleware/midleware')
+var {do_login, check_adm2} =require('../../midleware/midleware');
 
-router.use(midleware.do_login);
+
+router.use(do_login);
 
 router.get('/', controller.list);
 router.get('/sort', controller.listSort);
 router.get('/view/:id', controller.view);
+
+router.use(check_adm2);
 router.get('/insert', controller.insert);
 router.post('/insert', uploader.any(), controller.insert);
 router.post('/delete/:id', controller.delete);

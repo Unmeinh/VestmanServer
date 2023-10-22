@@ -4,10 +4,6 @@ let billModel = require("../../models/bill.model").BillModel;
 const { onUploadImages } = require("../../function/uploadImage");
 let clientModel = require("../../models/client.model").ClientModel;
 
-exports.home = async (req, res, next) => {
-  res.json("home");
-};
-
 exports.list = async (req, res, next) => {
   const messages = await req.consumeFlash("info");
   const locals = {
@@ -40,7 +36,6 @@ exports.list = async (req, res, next) => {
         per.push("Participant");
       }
     }
-    console.log("cus: ", clients);
 
     res.render("viewAdmin", {
       locals,
@@ -155,76 +150,28 @@ exports.edit = async (req, res, next) => {
   }
 };
 
-exports.login = async (req, res, next) => {
-  if (req.method == "POST") {
-    // lay thong tin dang nhap
-    try {
-      let objU = await adminModel.findOne({ username: req.body.username });
-      console.log(objU);
-
-      if (objU != null) {
-        // ton taij user
-        if (objU.password == req.body.password) {
-          req.session.userLogin = objU;
-          return res.redirect("/product");
-        } else {
-          msg = " Password Error";
-        }
-      } else {
-        msg = "Not found user   " + req.body.username;
-      }
-    } catch (error) {
-      msg = error.massage;
-    }
-  }
-};
-
-exports.register = async (req, res, next) => {
-  let msg = "";
-
-  if (req.method == "POST") {
-    if (req.body.password != req.body.password2) {
-      msg = "mật khẩu không khớp";
-      return res.redirect("/register");
-    }
-
-    try {
-      let objU = new adminModel();
-
-      objU.username = req.body.username;
-      objU.full_name = req.body.full_name;
-      objU.permission = 2;
-      objU.avatar =
-        "https://firebasestorage.googleapis.com/v0/b/shopping-6b085.appspot.com/o/user%2Fuser.png?alt=media&token=794ad4dc-302b-4708-b102-ccbaf80ea567&_gl=1*e1jpw6*_ga*NDE5OTAxOTY1LjE2OTUwMDQ5MjM.*_ga_CW55HF8NVT*MTY5NzExMzA0MS4yMS4xLjE2OTcxMTMzMjcuNTkuMC4w";
-      objU.password = req.body.password;
-      objU.email = req.body.email;
-      objU.adress = req.body.adress;
-
-      objU.created_at = new Date();
-      await objU.save();
-
-      msg = "đăng kí thành công ";
-    } catch (error) {
-      msg = "đăng kí thất bại" + error;
-    }
-
-    return res.redirect("/product");
-  }
-
-  res.render("auth/register", { msg: msg });
-};
-exports.Logout = (req, res, next) => {
+exports.logout = (req, res, next) => {
   if (req.session != null) {
-    req.session.destroy(function () {
-      console.log("Đăng xuất");
-      res.redirect("/login");
-    });
+    req.session.destroy(function (err) {
+      res.redirect('/login');
+     });
   }
 };
 exports.info = async (req, res, next) => {
   let user = req.session.userLogin;
 
-  res.render("auth/info", { user: user });
+  // let per;
+  //   if (user.permission == 0) {
+  //     per = "Owner";
+  //   }
+  //   if (user.permission == 1) {
+  //     per = "Manager";
+  //   }
+  //   if (user.permission == 2) {
+  //     per = "Participant";
+  //   }
+
+  res.render("auth/info", { user });
 };
 exports.editinfo = async (req, res, next) => {
   let user = req.session.userLogin;
@@ -254,7 +201,7 @@ exports.editinfo = async (req, res, next) => {
       req.session.userLogin = user;
 
       msg = "Edit success";
-      return res.redirect('/admin/info');
+      return res.redirect("/admin/info");
     } catch (error) {
       msg = "lỗi" + error.message;
       console.log(error);
@@ -286,7 +233,7 @@ exports.editPost = async (req, res, next) => {
 
 exports.delete = async (req, res, next) => {
   await adminModel.deleteOne({ _id: req.params.id });
-  res.redirect("/client");
+  res.redirect("/admin");
 };
 
 exports.dashboard = async (req, res, next) => {

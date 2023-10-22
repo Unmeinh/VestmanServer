@@ -17,7 +17,7 @@ var clientApiRoute = require('./routes/api/client.api.route');
 var discountApiRoute = require('./routes/api/discount.api.route');
 var productApiRoute = require('./routes/api/product.api.route');
 //
-var homeRoute = require('./routes/web/home.route');
+var authRoute = require('./routes/web/auth.web.route');
 var adminRoute = require('./routes/web/admin.web.route');
 var billRoute = require('./routes/web/bill.web.route');
 var blogRoute = require('./routes/web/blog.web.route');
@@ -54,12 +54,9 @@ app.use(
 // Flash Messages
 app.use(flash({ sessionKeyName: 'flashMessage' }));
 
-app.get('/login', (req, res)=>{
-  res.render('auth/login.ejs', {msg: ''});
-})
-app.get('/register', (req, res)=>{
-  res.render('auth/register.ejs', {msg: ''});
-})
+
+app.use('/', authRoute);
+
 // Templating Engine
 app.use(expressLayout);
 app.set('layout', './layouts/main');
@@ -75,7 +72,6 @@ app.use('/api/discount', discountApiRoute);
 app.use('/api/product', productApiRoute);
 //web
 app.use('/product', productRoute);
-app.use('/', homeRoute);
 app.use('/admin', adminRoute);
 app.use('/bill', billRoute);
 app.use('/blog', blogRoute);
