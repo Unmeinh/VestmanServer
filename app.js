@@ -25,8 +25,6 @@ var chatbotRoute = require('./routes/web/chatbot.web.route');
 var clientRoute = require('./routes/web/client.web.route');
 var discountRoute = require('./routes/web/discount.web.route');
 var productRoute = require('./routes/web/product.web.route');
-var navirouter=require('./routes/web/navi.web.route');
-const { navi } = require('./controllers/web/navi.web.controller');
 
 var app = express();
 
@@ -56,8 +54,11 @@ app.use(
 // Flash Messages
 app.use(flash({ sessionKeyName: 'flashMessage' }));
 
-app.get('/ok', (req, res)=>{
-  res.render('auth/login.ejs');
+app.get('/login', (req, res)=>{
+  res.render('auth/login.ejs', {msg: ''});
+})
+app.get('/register', (req, res)=>{
+  res.render('auth/register.ejs', {msg: ''});
 })
 // Templating Engine
 app.use(expressLayout);
@@ -81,10 +82,6 @@ app.use('/blog', blogRoute);
 app.use('/chatbot', chatbotRoute);
 app.use('/client', clientRoute);
 app.use('/discount', discountRoute);
-
-
-app.use('/',navi)
-
 
 
 // catch 404 and forward to error handler

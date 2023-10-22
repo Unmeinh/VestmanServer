@@ -3,7 +3,7 @@ exports.do_login = (req, res, next) => {
         //có tồn tại session login (đã đăng nhập)
         next();
     } else {
-        return res.redirect('/')
+        return res.redirect('/login')
     }
 }
 

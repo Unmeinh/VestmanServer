@@ -1,13 +1,12 @@
 var express = require('express');
 var controller = require('../../controllers/web/client.web.controller');
+var multer = require('multer');
+var uploader = multer({dest:'/public/tmp'});
 var router = express.Router();
 
 var midleware=require('../../midleware/midleware')
+
 router.use(midleware.do_login);
-
-var multer = require('multer');
-var uploader = multer({dest:'/public/tmp'});
-
 
 router.get('/', controller.list);
 router.get('/sort', controller.listSort);

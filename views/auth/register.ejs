@@ -6,9 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>login</title>
-  <link rel="stylesheet" href="/bootstrap-5.2.3-dist/css/bootstrap.min.css">
-  <script src="/bootstrap-5.2.3-dist/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <link rel="icon" type="image/x-icon"
+  href="https://res.cloudinary.com/ddzmeaxld/image/upload/v1696494701/images/upload/logoIco.ico">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 </head>
 
 <body>
@@ -24,7 +26,7 @@
         <div class="col-md-4 col-lg-5 col-xl-5 offset-xl-1">
          
           
-          <form method="post">
+          <form method="post" action="/admin/register">
             
             
               <h2 class="text-danger">
@@ -34,60 +36,36 @@
             
             <div class="form-outline mb-2">
               <label class="form-label" for="form1Example13">Username</label>
-              <input type="text" id="form1Example13" name="username" class="form-control form-control-lg" />
+              <input type="text" id="form1Example13" name="username" class="form-control form-control-lg" required/>
 
             </div>
             <div class="form-outline mb-2">
               <label class="form-label" for="form1Example13">Fulname</label>
-              <input type="text" id="form1Example13" name="full_name" class="form-control form-control-lg" />
+              <input type="text" id="form1Example13" name="full_name" class="form-control form-control-lg" required/>
 
             </div>
           
-            <div class="form-outline mb-2">
-              <label class="form-label" for="form1Example13">Permission</label>
-              <input type="text" id="form1Example13" name="permission" class="form-control form-control-lg" />
-
-            </div>
-            <div class="form-outline mb-2">
-              <label class="form-label" for="form1Example13">Avatar</label>
-              <input type="text" id="form1Example13" name="avatar" class="form-control form-control-lg" />
-
-            </div>
-            <!-- <div class="row form-group mb-4">
-              <div class="col">
-                <label for="file">File image</label>
-                <input
-                  type="file"
-                  class="form-control"
-                  id="avatar"
-                  name="avatar"
-                  multiple
-                  value=""
-                  placeholder=""
-                  required
-                />
-              </div> -->
-            <!-- </div> -->
+              
             <div class="form-outline mb-2">
               <label class="form-label" for="form1Example13">Email</label>
-              <input type="email" id="form1Example13" name="email" class="form-control form-control-lg" />
+              <input type="email" id="form1Example13" name="email" class="form-control form-control-lg" required/>
 
             </div>
             <div class="form-outline mb-2">
               <label class="form-label" for="form1Example13">Adress</label>
-              <input type="text" id="form1Example13" name="adress" class="form-control form-control-lg" />
+              <input type="text" id="form1Example13" name="adress" class="form-control form-control-lg" required/>
 
             </div>
 
             <!-- Password input -->
             <div class="form-outline mb-2">
               <label class="form-label" for="form1Example23">Password</label>
-              <input type="password" id="form1Example23" name="password" class="form-control form-control-lg" />
+              <input type="password" id="form1Example23" name="password" class="form-control form-control-lg" required/>
 
             </div>
             <div class="form-outline mb-2">
               <label class="form-label" for="form1Example23">Confirm password</label>
-              <input type="password" id="form1Example23" name="password2" class="form-control form-control-lg" />
+              <input type="password" id="form1Example23" name="password2" class="form-control form-control-lg" required/>
 
             </div>
             
@@ -96,7 +74,7 @@
               <!-- Checkbox -->
               
             <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
-            <a href="/admin/login" class="btn btn-primary btn-lg btn-block">back</a>
+            <a href="/login" class="btn btn-primary btn-lg btn-block">back</a>
               
               
             </div>
@@ -110,6 +88,17 @@
       </div>
     </div>
   </section>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+  integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+  crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+  integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
+  crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+  integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+  crossorigin="anonymous"></script>
 </body>
 
 </html>

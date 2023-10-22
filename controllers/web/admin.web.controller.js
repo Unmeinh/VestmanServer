@@ -1,23 +1,26 @@
-let adminModel = require('../../models/admin.model').AdminModel;
-let productModel = require('../../models/product.model').ProductModel;
-let billModel = require('../../models/bill.model').BillModel;
-const { onUploadImages } = require('../../function/uploadImage');
-let clientModel = require('../../models/client.model').ClientModel;
+let adminModel = require("../../models/admin.model").AdminModel;
+let productModel = require("../../models/product.model").ProductModel;
+let billModel = require("../../models/bill.model").BillModel;
+const { onUploadImages } = require("../../function/uploadImage");
+let clientModel = require("../../models/client.model").ClientModel;
 
-
+exports.home = async (req, res, next) => {
+  res.json("home");
+};
 
 exports.list = async (req, res, next) => {
-  const messages = await req.consumeFlash('info');
+  const messages = await req.consumeFlash("info");
   const locals = {
-    title: 'NodeJs',
-    description: 'Free NodeJs User Management System'
-  }
+    title: "NodeJs",
+    description: "Free NodeJs User Management System",
+  };
 
   let perPage = 5;
   let page = req.query.page || 1;
 
   try {
-    const clients = await adminModel.aggregate()
+    const clients = await adminModel
+      .aggregate()
       .skip(perPage * page - perPage)
       .limit(perPage)
       .exec();
@@ -25,34 +28,32 @@ exports.list = async (req, res, next) => {
 
     let per = [];
     for (let i = 0; i < clients.length; i++) {
-      if(clients[i].permission == 0){
-        per.push('Owner')
+      if (clients[i].permission == 0) {
+        per.push("Owner");
       }
 
-      if(clients[i].permission == 1){
-        per.push('Manager')
+      if (clients[i].permission == 1) {
+        per.push("Manager");
       }
 
-      if(clients[i].permission == 2){
-        per.push('Participant')
+      if (clients[i].permission == 2) {
+        per.push("Participant");
       }
-      
     }
     console.log("cus: ", clients);
 
-    res.render('viewAdmin', {
+    res.render("viewAdmin", {
       locals,
       clients,
       per,
       current: page,
       pages: Math.ceil(count / perPage),
-      messages
+      messages,
     });
-
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 exports.listSort = async (req, res, next) => {
   const messages = await req.consumeFlash("info");
@@ -62,7 +63,6 @@ exports.listSort = async (req, res, next) => {
 
   try {
     if (req.query.hasOwnProperty("_sort")) {
-    
       const clients = await adminModel
         .aggregate()
         .sort({ [req.query.column]: req.query.type })
@@ -81,22 +81,21 @@ exports.listSort = async (req, res, next) => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 exports.view = async (req, res) => {
-
   try {
-    const customer = await adminModel.findOne({ _id: req.params.id })
+    const customer = await adminModel.findOne({ _id: req.params.id });
 
     let per;
-    if(customer.permission == 0){
-      per = "Owner"
+    if (customer.permission == 0) {
+      per = "Owner";
     }
-    if(customer.permission == 1){
-      per = "Manager"
+    if (customer.permission == 1) {
+      per = "Manager";
     }
-    if(customer.permission == 2){
-      per = "Participant"
+    if (customer.permission == 2) {
+      per = "Participant";
     }
 
     const locals = {
@@ -104,22 +103,20 @@ exports.view = async (req, res) => {
       description: "Free NodeJs User Management System",
     };
 
-    res.render('admin/detailAdm', {
+    res.render("admin/detailAdm", {
       locals,
       customer,
-      per
-    })
-
+      per,
+    });
   } catch (error) {
     console.log(error);
   }
+};
 
-}
-
-exports.register = async (req, res, next) => {
+exports.insert = async (req, res, next) => {
   if (req.method == "POST") {
-    let imageUrl = await onUploadImages(req.files, 'admin');
-   
+    let imageUrl = await onUploadImages(req.files, "admin");
+
     let { username, password, permission, full_name } = req.body;
     let newAdmin = new adminModel();
     newAdmin.username = username;
@@ -129,187 +126,175 @@ exports.register = async (req, res, next) => {
     newAdmin.created_at = new Date();
     newAdmin.avatar = imageUrl[0];
     await newAdmin.save();
-    return res.redirect('/admin');
+    return res.redirect("/admin");
   }
 
-  res.render('admin/addAdm');
-  
-}
+  res.render("admin/addAdm");
+};
 
 exports.edit = async (req, res, next) => {
   try {
-    const adm = await adminModel.findById({_id : req.params.id});
-    
-    let per;
-    if(adm.permission == 0){
-      per = "Owner"
-    }
-    if(adm.permission == 1){
-      per = "Manager"
-    }
-    if(adm.permission == 2){
-      per = "Participant"
-    }
-    res.render("admin/editAdm",{
-      adm,
-      per
-    })
+    const adm = await adminModel.findById({ _id: req.params.id });
 
+    let per;
+    if (adm.permission == 0) {
+      per = "Owner";
+    }
+    if (adm.permission == 1) {
+      per = "Manager";
+    }
+    if (adm.permission == 2) {
+      per = "Participant";
+    }
+    res.render("admin/editAdm", {
+      adm,
+      per,
+    });
   } catch (error) {
     console.log(error);
   }
+};
 
-  res.render('admin/statisticalAdm', { title: 'Statistical', listProduct: JSON.stringify(listProduct) })
-}
 exports.login = async (req, res, next) => {
+  if (req.method == "POST") {
+    // lay thong tin dang nhap
+    try {
+      let objU = await adminModel.findOne({ username: req.body.username });
+      console.log(objU);
 
-  let msg = '';
-  
-  if (req.method == 'POST') {
-      // lay thong tin dang nhap
-      try {
-          let objU = await adminModel.findOne({ username: req.body.username });
-          console.log(objU);
-          
-          if (objU != null) {
-              // ton taij user
-              if (objU.password == req.body.password) {
-
-                  req.session.userLogin = objU;
-                  return res.redirect('/product')
-              } else {
-                  msg = ' Password Error'
-              }
-          }else{
-              msg='Not found user   '+  req.body.username;
-              
-          }
-      } catch (error) {
-          msg=error.massage
+      if (objU != null) {
+        // ton taij user
+        if (objU.password == req.body.password) {
+          req.session.userLogin = objU;
+          return res.redirect("/product");
+        } else {
+          msg = " Password Error";
+        }
+      } else {
+        msg = "Not found user   " + req.body.username;
       }
+    } catch (error) {
+      msg = error.massage;
+    }
   }
-  res.render('admin/login',{msg:msg})
-}
-
+};
 
 exports.register = async (req, res, next) => {
-  let msg = '';
-  if (req.body.password != req.body.password2) {
-      msg = 'mật khẩu không khớp';
-      return res.render('admin/register', { msg: msg })
+  let msg = "";
+
+  if (req.method == "POST") {
+    if (req.body.password != req.body.password2) {
+      msg = "mật khẩu không khớp";
+      return res.redirect("/register");
+    }
+
+    try {
+      let objU = new adminModel();
+
+      objU.username = req.body.username;
+      objU.full_name = req.body.full_name;
+      objU.permission = 2;
+      objU.avatar =
+        "https://firebasestorage.googleapis.com/v0/b/shopping-6b085.appspot.com/o/user%2Fuser.png?alt=media&token=794ad4dc-302b-4708-b102-ccbaf80ea567&_gl=1*e1jpw6*_ga*NDE5OTAxOTY1LjE2OTUwMDQ5MjM.*_ga_CW55HF8NVT*MTY5NzExMzA0MS4yMS4xLjE2OTcxMTMzMjcuNTkuMC4w";
+      objU.password = req.body.password;
+      objU.email = req.body.email;
+      objU.adress = req.body.adress;
+
+      objU.created_at = new Date();
+      await objU.save();
+
+      msg = "đăng kí thành công ";
+    } catch (error) {
+      msg = "đăng kí thất bại" + error;
+    }
+
+    return res.redirect("/product");
   }
-  if (req.body.password ==0|| req.body.username ==0|| req.body.full_name ==0|| req.body.permission ==0||req.body.avatar ==0 ) {
-      msg = 'không để trống';
-      return res.render('admin/register', { msg: msg })
-  }
 
-  if (req.method == 'POST') {
-      console.log(req.body);
-      
-      try {
-        let imageurl=await onUploadImages(req.file,'admin')
-      
-          let objU = new adminModel();
-
-          objU.username = req.body.username;
-          objU.full_name = req.body.full_name;
-          objU.permission=req.body.permission;
-          objU.avatar=req.body.avatar;
-          objU.password = req.body.password;
-          objU.email=req.body.email;
-          objU.adress=req.body.adress;
-          
-          objU.created_at=new Date();
-          await objU.save();
-          
-          msg = 'đăng kí thành công '
-
-      } catch (error) {
-        msg = 'đăng kí thất bại'+error
-           
-
-      }
-  }
-  
-  res.render('admin/register',{msg:msg})
-}
+  res.render("auth/register", { msg: msg });
+};
 exports.Logout = (req, res, next) => {
   if (req.session != null) {
-      req.session.destroy(function () {
-          console.log("Đăng xuất")
-          res.redirect('/');
-      });
+    req.session.destroy(function () {
+      console.log("Đăng xuất");
+      res.redirect("/login");
+    });
   }
-}
-exports.info=async(req,res,next)=>{
-  let user=req.session.userLogin
-  
-  
-  
-  res.render('admin/info',{user:user});
-}
-exports.editinfo=async(req,res,next)=>{
-let user=req.session.userLogin
-let msg=''
-if(req.method=='POST'){
-  // let objU= new adminModel();
- 
- let objU={
-          full_name : req.body.full_name,
-          permission:req.body.permission,
-          avatar:req.body.avatar,
-          email:req.body.email,
-          adress:req.body.adress
-        }
-          
+};
+exports.info = async (req, res, next) => {
+  let user = req.session.userLogin;
 
-          try {
-            await adminModel.findOneAndUpdate({_id:user._id},objU);
-            user =await adminModel.findById(user._id)
-            req.session.userLogin=user;
-           
-            msg='Edit success'
-            // return res.redirect('/admin/info/editinfo')
-        } catch (error) {
-            msg='lỗi'+error.message;
-            console.log(error);
-        }
+  res.render("auth/info", { user: user });
+};
+exports.editinfo = async (req, res, next) => {
+  let user = req.session.userLogin;
+  let msg = "";
 
+  if (req.method == "POST") {
+    // let objU= new adminModel();
+    let { full_name, permission, avatar, email, adress, _id } = req.body;
 
-}
-res.render('admin/editAdm',{user:user,msg:msg})
-}
+    let imageUrl = await onUploadImages(req.files, "admin");
 
-  
+    if (!imageUrl.length == 0) {
+      avatar = imageUrl[0];
+    }
+
+    let objU = {
+      full_name: full_name,
+      permission: permission,
+      avatar: avatar,
+      email: email,
+      adress: adress,
+    };
+
+    try {
+      await adminModel.findOneAndUpdate({ _id: _id }, objU);
+      user = await adminModel.findById(_id);
+      req.session.userLogin = user;
+
+      msg = "Edit success";
+      return res.redirect('/admin/info');
+    } catch (error) {
+      msg = "lỗi" + error.message;
+      console.log(error);
+    }
+  }
+  res.render("auth/editInfo", { user: user, msg: msg });
+};
+
 exports.editPost = async (req, res, next) => {
-  let { username, password, permission, full_name, avatar, _id, created_at } = req.body;
-  const imageUrl = await onUploadImages(req.files, 'admin');
+  let { username, password, permission, full_name, avatar, _id, created_at } =
+    req.body;
+  const imageUrl = await onUploadImages(req.files, "admin");
 
-  if(!imageUrl.length==0){
+  if (!imageUrl.length == 0) {
     avatar = imageUrl[0];
   }
 
-  await adminModel.findByIdAndUpdate(_id,{
-    username : username,
-    password : password,
-    permission : permission,
-    full_name : full_name,
-    avatar : avatar,
-    created_at : created_at,
+  await adminModel.findByIdAndUpdate(_id, {
+    username: username,
+    password: password,
+    permission: permission,
+    full_name: full_name,
+    avatar: avatar,
+    created_at: created_at,
   });
 
-  res.redirect('/admin');
-}
+  res.redirect("/admin");
+};
 
 exports.delete = async (req, res, next) => {
-  await adminModel.deleteOne({_id: req.params.id})
-  res.redirect('/client');
-}
-
+  await adminModel.deleteOne({ _id: req.params.id });
+  res.redirect("/client");
+};
 
 exports.dashboard = async (req, res, next) => {
   try {
-    let listProduct = await productModel.find().sort({ quantitySold: -1 }).limit(5);
+    let listProduct = await productModel
+      .find()
+      .sort({ quantitySold: -1 })
+      .limit(5);
     const months = [];
     const totalBills = [];
     const totalProducts = [];
@@ -317,13 +302,24 @@ exports.dashboard = async (req, res, next) => {
     const totalCustomers = [];
     const totalPrdCount = [];
     const endDate = new Date();
-    const last6Month = new Date(endDate.getFullYear(), endDate.getMonth() - 5, 1);
+    const last6Month = new Date(
+      endDate.getFullYear(),
+      endDate.getMonth() - 5,
+      1
+    );
     let currentDate = new Date(last6Month);
 
     while (currentDate <= endDate) {
       let previusDate = currentDate.toISOString();
-      let nowDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1).toISOString();
-      let date = currentDate.toLocaleString('en', { month: 'long', year: 'numeric' });
+      let nowDate = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+        1
+      ).toISOString();
+      let date = currentDate.toLocaleString("en", {
+        month: "long",
+        year: "numeric",
+      });
       months.push(date.substring(0, 1).toLocaleUpperCase() + date.substring(1));
       currentDate.setMonth(currentDate.getMonth() + 1);
 
@@ -337,8 +333,8 @@ exports.dashboard = async (req, res, next) => {
       totalCustomers.push(client);
       totalPrdCount.push(count);
     }
-    res.render('admin/dashboard', {
-      title: 'Dashboard',
+    res.render("admin/dashboard", {
+      title: "Dashboard",
       listProduct: JSON.stringify(listProduct),
       months: JSON.stringify(months),
       totalBills: JSON.stringify(totalBills),
@@ -347,33 +343,33 @@ exports.dashboard = async (req, res, next) => {
       totalCustomers: JSON.stringify(totalCustomers),
       totalPrdCount: JSON.stringify(totalPrdCount),
       toastify: {
-        type: 'success',
-        message: 'Statistical calculation successful.'
-      }
-    })
+        type: "success",
+        message: "Statistical calculation successful.",
+      },
+    });
   } catch (error) {
     console.log(error);
     res.send(error);
   }
-}
+};
 
 async function getTotalBill(previusDate, nowDate) {
   var match_stage = {
     $match: {
-      'created_at': {
-        '$gte': new Date(previusDate),
-        '$lte': new Date(nowDate)
-      }
-    }
-  }
+      created_at: {
+        $gte: new Date(previusDate),
+        $lte: new Date(nowDate),
+      },
+    },
+  };
   var group_stage = {
-    $group: { _id: null, sum: { $sum: "$total" } }
-  }
+    $group: { _id: null, sum: { $sum: "$total" } },
+  };
   var project_stage = {
-    $project: { _id: 0, total: '$sum' }
-  }
+    $project: { _id: 0, total: "$sum" },
+  };
 
-  var pipeline = [match_stage, group_stage, project_stage]
+  var pipeline = [match_stage, group_stage, project_stage];
   let sumTotal = await billModel.aggregate(pipeline);
   if (sumTotal[0] != undefined) {
     return sumTotal[0].total;
@@ -383,14 +379,12 @@ async function getTotalBill(previusDate, nowDate) {
 }
 
 async function getTotalProduct(previusDate, nowDate) {
-  let productPrice = await productModel.find(
-    {
-      created_at: {
-        $gte: previusDate,
-        $lte: nowDate
-      }
-    }
-  );
+  let productPrice = await productModel.find({
+    created_at: {
+      $gte: previusDate,
+      $lte: nowDate,
+    },
+  });
   if (productPrice[0] != undefined) {
     return productPrice[0].price * productPrice[0].quantity;
   } else {
@@ -399,14 +393,12 @@ async function getTotalProduct(previusDate, nowDate) {
 }
 
 async function getTotalCustomer(previusDate, nowDate) {
-  let listClient = await clientModel.find(
-    {
-      created_at: {
-        $gte: previusDate,
-        $lte: nowDate
-      }
-    }
-  );
+  let listClient = await clientModel.find({
+    created_at: {
+      $gte: previusDate,
+      $lte: nowDate,
+    },
+  });
   if (listClient) {
     return listClient.length;
   } else {
@@ -417,23 +409,23 @@ async function getTotalCustomer(previusDate, nowDate) {
 async function getProductCount(previusDate, nowDate) {
   var match_stage = {
     $match: {
-      'created_at': {
-        '$gte': new Date(previusDate),
-        '$lte': new Date(nowDate)
-      }
-    }
-  }
+      created_at: {
+        $gte: new Date(previusDate),
+        $lte: new Date(nowDate),
+      },
+    },
+  };
   var unwind_stage = {
     $unwind: "$arr_product",
-  }
+  };
   var group_stage = {
-    $group: { _id: null, sum: { $sum: "$arr_product.quantity" } }
-  }
+    $group: { _id: null, sum: { $sum: "$arr_product.quantity" } },
+  };
   var project_stage = {
-    $project: { _id: 0, count: '$sum' }
-  }
+    $project: { _id: 0, count: "$sum" },
+  };
 
-  var pipeline = [match_stage, unwind_stage, group_stage, project_stage]
+  var pipeline = [match_stage, unwind_stage, group_stage, project_stage];
   let sumCount = await billModel.aggregate(pipeline);
   if (sumCount[0] != undefined) {
     return sumCount[0].count;
@@ -441,5 +433,3 @@ async function getProductCount(previusDate, nowDate) {
     return 0;
   }
 }
-
-
