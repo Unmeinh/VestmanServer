@@ -1,103 +1,205 @@
 <div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Detail</h1>
-    <div class="btn-toolbar mb-2 mb-md 0">
-      <div class="btn-group me-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-      </div>
+  <h1 class="h2">Detail</h1>
+  <div class="btn-toolbar mb-2 mb-md 0">
+    <div class="btn-group me-2">
+      <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+      <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
     </div>
   </div>
-  
-  <div class="col py-3">
-  
-    <div class="row">
-      <div class="col">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Product</a></li>
-            <li class="breadcrumb-item active"><%= customer.name_product  %></li>
-          </ol>
-        </nav>
-      </div>
-      <div class="col text-end fw-lighter">
-        <!-- <b>Last Updated <%= new Date(customer.updatedAt).toUTCString() %> </b> -->
-        <b>Product</b>
-      </div>
-    </div>
-  
-  </div>
-  
-  <ul class="list-group">
-  
-    <li class="list-group-item"> 
-      <div class="row">
-        <div class="col" style="max-width: 140px" > <b>Images: </b></div>
-        <% for (let i = 0; i < customer.images.length; i++) {%>
-          <tr>
-            <td>
-              <img class="col" style="max-width: 150px" src="<%= customer.images[i] %>" alt="">
-            </td>
-          </tr>
-       <% } %>
-      </div>
-    </li>
-  
-    <li class="list-group-item"> 
-      <div class="row">
-        <div class="col" style="max-width: 140px"> <b>Product's name:</b></div>
-        <div class="col"><%= customer.name_product %></div>
-      </div>
-    </li>
-  
-    <li class="list-group-item"> 
-      <div class="row">
-        <div class="col" style="max-width: 140px"> <b>Price:</b></div>
-        <div class="col"><%= customer.price.toLocaleString() %> VND</div>
-      </div>
-    </li>
-  
-    <li class="list-group-item"> 
-      <div class="row">
-        <div class="col" style="max-width: 140px"> <b>Quantity:</b></div>
-        <div class="col"><%= customer.quantity %></div>
-      </div>
-    </li>
-  
-    <li class="list-group-item"> 
-      <div class="row">
-        <div class="col" style="max-width: 140px"> <b>Sizes:</b></div>
-        <div class="col"><%= customer.sizes %></div>
-      </div>
-    </li>
-  
-    <li class="list-group-item"> 
-      <div class="row">
-        <div class="col" style="max-width: 140px"> <b>Color:</b></div>
-        <div class="col"><%= customer.color %></div>
-      </div>
-    </li>
-  
-    <li class="list-group-item"> 
-      <div class="row">
-        <div class="col" style="max-width: 140px"> <b>Detail Product:</b></div>
-        <div class="col"><%= customer.detail_product %></div>
-      </div>
-    </li>
+</div>
 
-    <li class="list-group-item"> 
-      <div class="row">
-        <div class="col" style="max-width: 140px"> <b>Discount:</b></div>
-        <div class="col"><%= discount.value %>%</div>
+<div class="col py-3">
+
+  <div class="row">
+    <div class="col">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Product</a></li>
+          <li class="breadcrumb-item active">
+            <%= customer.name_product %>
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col text-end fw-lighter">
+      <!-- <b>Last Updated <%= new Date(customer.updatedAt).toUTCString() %> </b> -->
+      <b>Product</b>
+    </div>
+  </div>
+
+</div>
+
+<ul class="list-group">
+
+  <h5>Product:</h5>
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col" style="max-width: 140px"> <b>Images: </b></div>
+      <% for (let i=0; i < customer.images.length; i++) {%>
+        <tr>
+          <td>
+            <img class="col" style="max-width: 150px" src="<%= customer.images[i] %>" alt="">
+          </td>
+        </tr>
+        <% } %>
+    </div>
+  </li>
+
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col" style="max-width: 140px"> <b>Product's name:</b></div>
+      <div class="col">
+        <%= customer.name_product %>
       </div>
-    </li>
-   
-    <li class="list-group-item"> 
-      <div class="row">
-        <div class="col" style="max-width: 140px"> <b>Date Created:</b></div>
-        <div class="col"><%= customer.created_at.toLocaleString('en') %></div>
+    </div>
+  </li>
+
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col" style="max-width: 140px"> <b>Price:</b></div>
+      <div class="col">
+        <%= customer.price.toLocaleString() %> VND
       </div>
-    </li>
-  
-    
-  
-  </ul>
+    </div>
+  </li>
+
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col" style="max-width: 140px"> <b>Quantity:</b></div>
+      <div class="col">
+        <%= customer.quantity %>
+      </div>
+    </div>
+  </li>
+
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col" style="max-width: 140px"> <b>Sizes:</b></div>
+      <div class="col">
+        <%= customer.sizes %>
+      </div>
+    </div>
+  </li>
+
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col" style="max-width: 140px"> <b>Color:</b></div>
+      <div class="col">
+        <%= customer.color %>
+      </div>
+    </div>
+  </li>
+
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col" style="max-width: 140px"> <b>Detail Product:</b></div>
+      <div class="col">
+        <%= customer.detail_product %>
+      </div>
+    </div>
+  </li>
+
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col" style="max-width: 140px"> <b>Discount:</b></div>
+      <div class="col">
+        <%= discount.value %>%
+      </div>
+    </div>
+  </li>
+
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col" style="max-width: 140px"> <b>Date Created:</b></div>
+      <div class="col">
+        <%= customer.created_at.toLocaleString('en') %>
+      </div>
+    </div>
+  </li>
+
+  <hr />
+  <h5>Chatbot:</h5>
+
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col" style="max-width: 140px"> <b>Question 1:</b></div>
+      <div class="col">
+        <%= (chatbot?.questions[0]) ? chatbot?.questions[0] : "No data" %>
+      </div>
+    </div>
+  </li>
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col" style="max-width: 140px"> <b>Reply 1:</b></div>
+      <div class="col">
+        <% if (chatbot?.replies[0] && chatbot?.replies[0].includes('image')) { %>
+        <%= (chatbot?.replies[0] && chatbot?.replies[0].includes('image')) ? chatbot?.replies[0].substring(0,
+          chatbot?.replies[0].indexOf('image:')) : "No data" %>
+      <% } else { %>
+        <%= (chatbot?.replies[0]) ? chatbot?.replies[0] : "No data" %>
+        <% }  %>
+      </div>
+    </div>
+    <% if (chatbot?.replies[0] && chatbot?.replies[0].includes('image')) { %>
+      <div class="row">
+        <div class="col" style="max-width: 140px"></div>
+        <img class="col" style="max-width: 150px" src="<%= customer.images[0] %>" alt="">
+      </div>
+      <% } %>
+  </li>
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col" style="max-width: 140px"> <b>Question 2:</b></div>
+      <div class="col">
+        <%= (chatbot?.questions[1]) ? chatbot?.questions[1] : "No data" %>
+      </div>
+    </div>
+  </li>
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col" style="max-width: 140px"> <b>Reply 2:</b></div>
+      <div class="col">
+        <% if (chatbot?.replies[1] && chatbot?.replies[1].includes('image')) { %>
+        <%= (chatbot?.replies[1] && chatbot?.replies[1].includes('image')) ? chatbot?.replies[1].substring(0,
+          chatbot?.replies[1].indexOf('image:')) : "No data" %>
+      <% } else { %>
+        <%= (chatbot?.replies[1]) ? chatbot?.replies[1] : "No data" %>
+        <% }  %>
+      </div>
+    </div>
+    <% if (chatbot?.replies[1] && chatbot?.replies[1].includes('image')) { %>
+      <div class="row">
+        <div class="col" style="max-width: 140px"></div>
+        <img class="col" style="max-width: 35%" src="<%= chatbot?.replies[1].substring(chatbot?.replies[1].indexOf('image:') + 7, chatbot?.replies[1].length-1) %>" alt="">
+      </div>
+      <% } %>
+  </li>
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col" style="max-width: 140px"> <b>Question 3:</b></div>
+      <div class="col">
+        <%= (chatbot?.questions[2]) ? chatbot?.questions[2] : "No data" %>
+      </div>
+    </div>
+  </li>
+  <li class="list-group-item" style="margin-bottom: 30px;">
+    <div class="row">
+      <div class="col" style="max-width: 140px"> <b>Reply 3:</b></div>
+      <div class="col">
+        <% if (chatbot?.replies[2] && chatbot?.replies[2].includes('image')) { %>
+          <%= (chatbot?.replies[2] && chatbot?.replies[2].includes('image')) ? chatbot?.replies[2].substring(0,
+            chatbot?.replies[2].indexOf('image:')) : "No data" %>
+        <% } else { %>
+          <%= (chatbot?.replies[2]) ? chatbot?.replies[2] : "No data" %>
+          <% }  %>
+      </div>
+    </div>
+    <% if (chatbot?.replies[1] && chatbot?.replies[2].includes('image')) { %>
+      <div class="row">
+        <div class="col" style="max-width: 140px"></div>
+        <img class="col" style="max-width: 35%" src="<%= chatbot?.replies[2].substring(chatbot?.replies[2].indexOf('image:') + 7, chatbot?.replies[2].length-1) %>" alt="">
+      </div>
+      <% } %>
+  </li>
+
+</ul>
