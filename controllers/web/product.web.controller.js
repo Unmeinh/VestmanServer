@@ -69,6 +69,8 @@ exports.view = async (req, res) => {
   try {
     const customer = await productModel.findOne({ _id: req.params.id });
     const discount = await discountModel.findOne({ _id: customer.id_discount });
+    const chatbot = await chatbotModel.findOne({ _id: customer.id_chatbot });
+    
 
     const locals = {
       title: "View Customer Data",
@@ -79,6 +81,7 @@ exports.view = async (req, res) => {
       locals,
       customer,
       discount,
+      chatbot
     });
   } catch (error) {
     console.log(error);
@@ -182,6 +185,7 @@ exports.editPost = async (req, res) => {
 
 exports.delete = async (req, res) => {
   await productModel.deleteOne({ _id: req.params.id });
+  await chatbotModel.deleteOne({id_product: req.params.id});
   res.redirect("/product");
 };
 
