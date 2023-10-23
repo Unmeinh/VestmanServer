@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>login</title>
+  <link rel="icon" type="image/x-icon"
+  href="https://res.cloudinary.com/ddzmeaxld/image/upload/v1696494701/images/upload/logoIco.ico">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+</head>
+
+<body>
+  <section class="vh-100">
+    <div class="container py-5 h-100">
+      <div class="row d-flex align-items-center justify-content-center h-100">
+        <div class="col-md-7 col-lg-6 col-xl-5">
+          <p class="fs-2 fw-bold text-primary">Wellcome to register Vestman</p>
+          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+            class="img-fluid" alt="Phone image">
+           
+        </div>
+        <div class="col-md-4 col-lg-5 col-xl-5 offset-xl-1">
+         
+          
+          <form method="post" action="/register">
+            
+            
+              <h2 class="text-danger">
+                  <%= msg %>
+              </h2>
+         
+            
+            <div class="form-outline mb-2">
+              <label class="form-label" for="form1Example13">Username</label>
+              <input type="text" id="form1Example13" name="username" class="form-control form-control-lg" required/>
+
+            </div>
+            <div class="form-outline mb-2">
+              <label class="form-label" for="form1Example13">Fulname</label>
+              <input type="text" id="form1Example13" name="full_name" class="form-control form-control-lg" required/>
+
+            </div>
+          
+              
+            <div class="form-outline mb-2">
+              <label class="form-label" for="form1Example13">Email</label>
+              <input type="email" id="form1Example13" name="email" class="form-control form-control-lg" required/>
+
+            </div>
+            <div class="form-outline mb-2">
+              <label class="form-label" for="form1Example13">Adress</label>
+              <input type="text" id="form1Example13" name="adress" class="form-control form-control-lg" required/>
+
+            </div>
+
+            <!-- Password input -->
+            <div class="form-outline mb-2">
+              <label class="form-label" for="form1Example23">Password</label>
+              <input type="password" id="form1Example23" name="password" class="form-control form-control-lg" required/>
+
+            </div>
+            <div class="form-outline mb-2">
+              <label class="form-label" for="form1Example23">Confirm password</label>
+              <input type="password" id="form1Example23" name="password2" class="form-control form-control-lg" required/>
+
+            </div>
+            
+
+            <div class="d-flex justify-content-around align-items-center mb-4">
+              <!-- Checkbox -->
+              
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
+            <a href="/login" class="btn btn-primary btn-lg btn-block">back</a>
+              
+              
+            </div>
+
+            <!-- Submit button -->
+           
+           
+            
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+  integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+  crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+  integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
+  crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+  integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+  crossorigin="anonymous"></script>
+</body>
+
+</html>

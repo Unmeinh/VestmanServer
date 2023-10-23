@@ -10,6 +10,9 @@ exports.list = async (req, res, next) => {
     description: "Free NodeJs User Management System",
   };
 
+  // let user = req.session.userLogin
+  // res.json(user.username);
+
   let perPage = 5;
   let page = req.query.page || 1;
 
@@ -119,9 +122,6 @@ exports.insert = async (req, res, next) => {
     arr_dis,
   });
 
-  // res.render('product/addPro',{
-  //   arr_dis
-  // })
 };
 
 exports.edit = async (req, res) => {

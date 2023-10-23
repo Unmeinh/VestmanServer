@@ -1,0 +1,79 @@
+
+
+ 
+<main class="col-md-9 ms-sm-auto col-lg-12 px-md-5">
+        
+    <div class="container-fluid justify-content-center mt-1">
+        <div class="row justify-content-center">
+            <div class="col-8">
+              
+  <form method="post" action="/admin/info/editinfo" enctype="multipart/form-data">
+    <h4 class="text-danger"><%= msg %></h4>
+    
+    <h3 class="pt-3">Edit infomation</h3 class="pt-3">
+    <div class="mb-3">
+      <label for="" class="form-label">Fullname  </label>
+      <input type="text" class="form-control" name="full_name" placeholder="" value="<%= user.full_name %>">
+    </div>
+    <div class="mb-3 ">
+          
+    
+      
+     
+    </div>
+   
+    <div class="mb-3">
+      <label for="" class="form-label">Email</label>
+      <input type="email" class="form-control" name="email" placeholder="" value="<%= user.email %>">
+    </div>
+    
+  
+      <input hidden type="text" class="form-control" name="permision" value="<%= user.permission %>">
+      <input hidden type="text" class="form-control" name="_id" value="<%= user._id %>">
+  
+    
+    
+    <div class="mb-3">
+        <label for="" class="form-label">Adress</label>
+        <input type="text" class="form-control"name="adress" value="<%= user.adress %>">
+      </div>
+    
+      <div class="row">
+        <label for="lastName">Image</label>
+        <tr>
+          <td>
+            <img
+              class="col"
+              style="max-width: 150px"
+              src="<%= user.avatar %>"
+              alt=""
+            />
+          </td>
+        </tr>
+      </div>
+    
+      <div class="row form-group mb-4">
+        <div class="col">
+          <input
+            type="file"
+            class="form-control"
+            id="avatar"
+            name="avatar"
+            value="<%= user.avatar %>"
+            placeholder=""
+          />
+        </div>
+      </div>
+  
+    <button type="submit" class="btn btn-primary mb-3">edit</button>
+  </form>
+</div>
+</div>
+</div>
+</main>
+
+
+  
+  
+
+
