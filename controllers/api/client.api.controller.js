@@ -63,10 +63,11 @@ exports.login = async (req, res, next) => {
             if (!objU) {
                 return res.status(201).json({ success: false, message: "Không tìm thấy tài khoản với email trên!" });
             }
-            if (!String(objU.password) == String(password)) {
+            if (String(objU.password) == String(password)) {
+                return res.status(201).json({ success: true, data: objU, message: "Đăng nhập thành công." });
+            } else {
                 return res.status(201).json({ success: false, message: "Sai mật khẩu!" });
             }
-            return res.status(201).json({ success: true, data: objU, message: "Đăng nhập thành công." });
         } catch (error) {
             console.error("Lỗi: " + error.message);
             return res.status(500).json({ success: false, data: {}, message: "Lỗi: " + error.message });
