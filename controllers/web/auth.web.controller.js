@@ -1,7 +1,7 @@
 let adminModel = require("../../models/admin.model").AdminModel;
 
-exports.ren = async (req, res, next) => {
-  res.redirect("/login");
+exports.home = async (req, res, next) => {
+  res.render("home", {title: "Home"});
 };
 
 exports.check = async (req, res, next) => {

@@ -6,14 +6,36 @@ function closeToast() {
 }
 
 function showToast() {
-    const url = new URL(location.href);
-    url.searchParams.set("toastify", {type: 'error', message: "Hiện toast thất bại!"});
-    toast.classList.add("d-block");
-    setTimeout(
-        () => {
-            toast.classList.remove("d-block");
+    // const urlParams = new URLSearchParams(window.location.search);
+    // console.log(urlParams);
+    // urlParams.set("toastify", { type: 'error', message: "Hiện toast thất bại!" });
+    // toast.classList.add("d-block");
+    // setTimeout(
+    //     () => {
+    //         toast.classList.remove("d-block");
+    //     }
+    //     , 3000);
+    $.ajax({
+        url: "/bill",
+        data: {
+            toastify: {
+                type: "success",
+                message: "Statistical calculation successful.",
+            },
+        },
+        type: 'POST',
+        success: function (response) {
+            if (response.success) {
+                window.location.href = window.location.href;
+            }
+        },
+        error: function (e) {
+            console.log('Error: ' + JSON.stringify(e));
+            if (!e.responseText.success) {
+                window.location.href = window.location.href;
+            }
         }
-        , 3000);
+    });
 }
 
 document.addEventListener('readystatechange', async event => {

@@ -30,6 +30,25 @@ exports.list = async (req, res, next) => {
       const cli = await clientModel.findOne({ _id: idCli });
 
       arrCli.push(cli);
+      if (clients[i].status != undefined) {
+        switch (clients[i].status) {
+          case -1:
+            clients[i].statusText = "Unconfimred"
+            break;
+          case 0:
+            clients[i].statusText = "Delivering"
+            break;
+          case 1:
+            clients[i].statusText = "Delivered"
+            break;
+          case 2:
+            clients[i].statusText = "Received"
+            break;
+
+          default:
+            break;
+        }
+      }
       // console.log("client: "+clients[i].id_client);
     }
 
@@ -144,3 +163,34 @@ exports.insert = async (req, res, next) => {
   }
   res.send("List");
 };
+
+exports.confirmBill = async (req, res, next) => {
+  if (req.method == "GET") {
+    let { id } = req.params;
+    if (id) {
+      let bill = await billModel.findById(id);
+      if (bill && bill.status == -1) {
+        bill.status = 0;
+        console.log("Delivering");
+        await billModel.findByIdAndUpdate(id, bill);
+        res.redirect('/bill');
+      }
+    }
+  }
+};
+
+exports.confirmDelivery = async (req, res, next) => {
+  if (req.method == "GET") {
+    let { id } = req.params;
+    if (id) {
+      let bill = await billModel.findById(id);
+      if (bill && bill.status == 0) {
+        bill.status = 1;
+        console.log("Delivered");
+        await billModel.findByIdAndUpdate(id, bill);
+        res.redirect('/bill');
+      }
+    }
+  }
+};
+

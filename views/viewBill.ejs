@@ -1,11 +1,11 @@
 
 <div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Bill</h1>
-    <div class="btn-toolbar mb-2 mb-md 0">
+    <!-- <div class="btn-toolbar mb-2 mb-md 0">
       <div class="btn-group me-2">
         <a href="/add" class="btn btn-sm btn-outline-secondary">+ New </a>
       </div>
-    </div>
+    </div> -->
   </div>
   
   <% messages.forEach(element => { %>
@@ -22,9 +22,10 @@
     <table class="table table-striped table-sm">
       <thead>
         <tr>
-          <th scope="col">Full name  <a href="/bill/sort/?_sort&column=full_name&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/bill/sort/?_sort&column=full_name&type=asc"><i class="bi bi-arrow-up"></i></a></th>
-          <th scope="col">Product number <a href="/bill/sort/?_sort&column=arr_product&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/bill/sort/?_sort&column=arr_product&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+          <th scope="col">Customer's name  <a href="/bill/sort/?_sort&column=full_name&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/bill/sort/?_sort&column=full_name&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+          <th scope="col">Amount product <a href="/bill/sort/?_sort&column=arr_product&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/bill/sort/?_sort&column=arr_product&type=asc"><i class="bi bi-arrow-up"></i></a></th>
           <th scope="col">Total <a href="/bill/sort/?_sort&column=total&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/bill/sort/?_sort&column=total&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+          <th scope="col">Status <a href="/bill/sort/?_sort&column=status&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/bill/sort/?_sort&column=status&type=asc"><i class="bi bi-arrow-up"></i></a></th>
           <th scope="col">Create at <a href="/bill/sort/?_sort&column=created_at&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/bill/sort/?_sort&column=created_at&type=asc"><i class="bi bi-arrow-up"></i></a></th>
           <th scope="col" class="text-end">Action</th>
         </tr>
@@ -36,6 +37,7 @@
             <td><%= arrCli[i].full_name %></td>
             <td><%= clients[i].arr_product.length %></td>
             <td><%= clients[i].total.toLocaleString() %> VND</td>
+            <td><%= (clients[i]?.statusText) ? clients[i]?.statusText : "No data" %></td>
             <td><%= clients[i].created_at.toLocaleString('en') %></td>
 
             <td class="text-end">
@@ -46,22 +48,25 @@
                   <i class="bi bi-eye"></i>
                 </a>
   
-                <a href="/bill/edit/<%= clients[i]._id %>" type="button" class="btn btn-warning btn-small">
-                  <i class="bi bi-pencil"></i>
-                </a>
-  
-                <form action="/bill/edit/<%= clients[i]._id %>?_method=DELETE" method="POST" class="position-relative">
-                  <button type="submit" class="btn btn-danger btn-small">
-                    <i class="bi bi-person-x"></i>
-                  </button>
-                </form>
+                <% if (clients[i]?.status != undefined && clients[i]?.status > -1) { %> 
+                  <form action="/bill/edit/<%= clients[i]._id %>?_method=DELETE" method="POST" class="position-relative">
+                    <button type="submit" class="btn btn-danger btn-small">
+                      <i class="bi bi-person-x"></i>
+                    </button>
+                  </form>
+                <% } %>
 
-                <form action="/bill/edit/<%= clients[i]._id %>?_method=DELETE" method="POST" class="position-relative">
-                  <button type="submit" class="btn btn-success btn-small">
-                    <i class="bi bi-person-x">Xác nhận</i>
-                  </button>
-                </form>
-  
+                <% if (clients[i]?.status != undefined) { %> 
+                  <% if (clients[i]?.status == -1) { %>
+                    <a href="/bill/confirmBill/<%= clients[i]._id %>" class="btn btn-success btn-small" style="border-radius: 5px; padding-right: 12px;">
+                      <i class="bi">Confirm bill</i>
+                    </a>
+                  <% } else if (clients[i]?.status == 0) { %>
+                    <a href="/bill/confirmDelivery/<%= clients[i]._id %>" class="btn btn-success btn-small" style="border-radius: 5px; padding-right: 12px;">
+                      <i class="bi">Confirm delivery</i>
+                    </a>
+                <% }} %>
+
               </div>
   
             </td>

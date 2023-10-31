@@ -37,6 +37,7 @@ exports.insert = async (req, res, next) => {
             }
             newBill.arr_product = arr;
             newBill.total = total;
+            newBill.status = -1;
             newBill.created_at = new Date();
             await newBill.save();
             return res.status(201).json({ success: true, data: {}, message: "Thêm đơn hàng thành công." });
@@ -45,3 +46,20 @@ exports.insert = async (req, res, next) => {
         return res.status(500).json({ success: false, data: {}, message: "Lỗi: " + error.message });
     }
 }
+
+exports.confirmReceive = async (req, res, next) => {
+    if (req.method == "PUT") {
+      let { id } = req.params;
+      if (id) {
+        let bill = await billModel.findById(id);
+        if (bill && bill.status == 1) {
+          bill.status = 2;
+          await billModel.findByIdAndUpdate(id, bill);
+          return res.status(201).json({ success: true, data: {}, message: "Xác nhận thành công." });
+        } else {
+            return res.status(201).json({ success: false, data: {}, message: "Đơn hàng này chưa thể xác nhận!" });
+        }
+      }
+    }
+  };
+  
