@@ -70,7 +70,7 @@ exports.view = async (req, res) => {
     const customer = await productModel.findOne({ _id: req.params.id });
     const discount = await discountModel.findOne({ _id: customer.id_discount });
     const chatbot = await chatbotModel.findOne({ _id: customer.id_chatbot });
-    
+
 
     const locals = {
       title: "View Customer Data",
@@ -90,7 +90,10 @@ exports.view = async (req, res) => {
 
 exports.insert = async (req, res, next) => {
   if (req.method == "POST") {
-    let imageUrl = await onUploadImages(req.files, "admin");
+    let imageUrl = [];
+    if (req.files) {
+      imageUrl = await onUploadImages(req.files.filter((file) => file.fieldname == 'image'), "product");
+    }
 
     let sizeStr = req.body.sizes;
     let sizes = [];
@@ -111,7 +114,7 @@ exports.insert = async (req, res, next) => {
     newProduct.price = price;
     newProduct.created_at = new Date();
     newProduct.images = imageUrl;
-    let idChatbot = await addChatbot(newProduct._id, req.body);
+    let idChatbot = await addChatbot(newProduct._id, req.body, req.files);
     newProduct.id_chatbot = idChatbot;
     await newProduct.save();
     return res.redirect("/product");
@@ -132,7 +135,7 @@ exports.edit = async (req, res) => {
     let chatbot = {};
     if (Pro.id_chatbot) {
       chatbot = await chatbotModel.findById(Pro.id_chatbot);
-    } 
+    }
 
     res.render("product/editPro", {
       Pro,
@@ -158,7 +161,10 @@ exports.editPost = async (req, res) => {
     _id,
   } = req.body;
 
-  const imageUrl = await onUploadImages(req.files, "admin");
+  let imageUrl = [];
+  if (req.files) {
+    imageUrl = await onUploadImages(req.files.filter((file) => file.fieldname == 'image'), "product");
+  }
 
   if (!imageUrl.length == 0) {
     images = imageUrl;
@@ -177,7 +183,7 @@ exports.editPost = async (req, res) => {
   product.quantity = price;
   product.images = images;
 
-  let idChatbot = await editChatbot(_id, product.id_chatbot, req.body);
+  let idChatbot = await editChatbot(_id, product.id_chatbot, req.body, req.files);
   product.id_chatbot = idChatbot;
   await productModel.findByIdAndUpdate(_id, product);
   res.redirect("/product");
@@ -185,11 +191,11 @@ exports.editPost = async (req, res) => {
 
 exports.delete = async (req, res) => {
   await productModel.deleteOne({ _id: req.params.id });
-  await chatbotModel.deleteOne({id_product: req.params.id});
+  await chatbotModel.deleteOne({ id_product: req.params.id });
   res.redirect("/product");
 };
 
-async function addChatbot(productId, body) {
+async function addChatbot(productId, body, files) {
   let newChatbot = new chatbotModel();
   let {
     radio_question1,
@@ -221,17 +227,47 @@ async function addChatbot(productId, body) {
   if (radio_reply1 == "DefaultReply1") {
     replies.push("Sản phẩm này còn hàng bạn nhé!");
   } else {
-    replies.push(body.custom_reply1);
+    if (files) {
+      let images = files.filter((file) => file.fieldname == 'image_reply1');
+      let upload = await onUploadImages(images, "chatbot");
+      if (upload.length > 0) {
+        replies.push(body.custom_reply1 + "\nimage:'" + upload[0] + "'");
+      } else {
+        replies.push(body.custom_reply1);
+      }
+    } else {
+      replies.push(body.custom_reply1);
+    }
   }
   if (radio_reply2 == "DefaultReply2") {
     replies.push("Mời bạn xem ảnh bên dưới để biết được size phù hợp nhé? image:'https://theme.hstatic.net/1000333436/1001040510/14/vendor_value_4.jpg?v=141'");
   } else {
-    replies.push(body.custom_reply2);
+    if (files) {
+      let images = files.filter((file) => file.fieldname == 'image_reply2');
+      let upload = await onUploadImages(images, "chatbot");
+      if (upload.length > 0) {
+        replies.push(body.image_reply2 + "\nimage:'" + upload[0] + "'");
+      } else {
+        replies.push(body.image_reply2);
+      }
+    } else {
+      replies.push(body.image_reply2);
+    }
   }
   if (radio_reply3 == "DefaultReply3") {
     replies.push("Bạn hãy xem danh sách vest để tìm màu phù hợp với mình nhé!");
   } else {
-    replies.push(body.custom_reply3);
+    if (files) {
+      let images = files.filter((file) => file.fieldname == 'image_reply3');
+      let upload = await onUploadImages(images, "chatbot");
+      if (upload.length > 0) {
+        replies.push(body.image_reply3 + "\nimage:'" + upload[0] + "'");
+      } else {
+        replies.push(body.image_reply3);
+      }
+    } else {
+      replies.push(body.image_reply3);
+    }
   }
   newChatbot.replies = replies;
   newChatbot.created_at = new Date();
@@ -239,9 +275,9 @@ async function addChatbot(productId, body) {
   return newChatbot._id;
 }
 
-async function editChatbot(productId, chatbotId, body) {
+async function editChatbot(productId, chatbotId, body, files) {
   if (chatbotId) {
-    let chatbot = new chatbotModel.findById(chatbotId);
+    let chatbot = await chatbotModel.findById(chatbotId);
     if (chatbot) {
       let {
         radio_question1,
@@ -249,7 +285,7 @@ async function editChatbot(productId, chatbotId, body) {
         radio_question3,
         radio_reply1,
         radio_reply2,
-        radio_reply3
+        radio_reply3,
       } = body;
       let questions = [];
       if (radio_question1 == "DefaultQuestion1") {
@@ -272,17 +308,47 @@ async function editChatbot(productId, chatbotId, body) {
       if (radio_reply1 == "DefaultReply1") {
         replies.push("Sản phẩm này còn hàng bạn nhé!");
       } else {
-        replies.push(body.custom_reply1);
+        if (files) {
+          let images = files.filter((file) => file.fieldname == 'image_reply1');
+          let upload = await onUploadImages(images, "chatbot");
+          if (upload.length > 0) {
+            replies.push(body.custom_reply1 + "\nimage:'" + upload[0] + "'");
+          } else {
+            replies.push(body.custom_reply1);
+          }
+        } else {
+          replies.push(body.custom_reply1);
+        }
       }
       if (radio_reply2 == "DefaultReply2") {
         replies.push("Mời bạn xem ảnh bên dưới để biết được size phù hợp nhé? image:'https://theme.hstatic.net/1000333436/1001040510/14/vendor_value_4.jpg?v=141'");
       } else {
-        replies.push(body.custom_reply2);
+        if (files) {
+          let images = files.filter((file) => file.fieldname == 'image_reply2');
+          let upload = await onUploadImages(images, "chatbot");
+          if (upload.length > 0) {
+            replies.push(body.custom_reply2 + "\nimage:'" + upload[0] + "'");
+          } else {
+            replies.push(body.custom_reply2);
+          }
+        } else {
+          replies.push(body.custom_reply2);
+        }
       }
       if (radio_reply3 == "DefaultReply3") {
         replies.push("Bạn hãy xem danh sách vest để tìm màu phù hợp với mình nhé!");
       } else {
-        replies.push(body.custom_reply3);
+        if (files) {
+          let images = files.filter((file) => file.fieldname == 'image_reply3');
+          let upload = await onUploadImages(images, "chatbot");
+          if (upload.length > 0) {
+            replies.push(body.custom_reply3 + "\nimage:'" + upload[0] + "'");
+          } else {
+            replies.push(body.custom_reply3);
+          }
+        } else {
+          replies.push(body.custom_reply3);
+        }
       }
       chatbot.replies = replies;
       await chatbotModel.findByIdAndUpdate(chatbotId, chatbot);

@@ -192,7 +192,14 @@
         <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
           <input type="radio" class="col-1" name="radio_reply1" value="CustomReply1"
             style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_reply1.disabled=false">
-          <input type="text" class="form-control col-11" id="custom_reply1" name="custom_reply1" value="<%= (chatbot.replies) ? chatbot.replies[0] : "" %>"
+          <input type="text" class="form-control col-11" id="custom_reply1" name="custom_reply1" 
+          value="<%= (chatbot?.replies[0]?.indexOf('image:') > -1) ? chatbot.replies[0].substring(0, chatbot?.replies[0]?.indexOf('image:')) : chatbot.replies[0] %>"
+            placeholder="Custom reply?" />
+        </div>
+        <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
+          <div class="col-1" style="height: 20px; width: 20px;">
+          </div>
+          <input type="file" class="form-control col-11" id="image_reply1" name="image_reply1" value=""
             placeholder="Custom reply?" />
         </div>
       </div>
@@ -225,8 +232,15 @@
         <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
           <input type="radio" class="col-1" name="radio_reply2" value="CustomReply2"
             style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_reply2.disabled=false">
-          <input type="text" class="form-control col-11" id="custom_reply2" name="custom_reply2" value="<%= (chatbot.replies) ? chatbot.replies[1] : "" %>"
+          <input type="text" class="form-control col-11" id="custom_reply2" name="custom_reply2" 
+          value="<%= (chatbot?.replies[1]?.indexOf('image:') > -1) ? chatbot.replies[1].substring(0, chatbot?.replies[1]?.indexOf('image:')) : chatbot.replies[1] %>"
             placeholder="Custom reply?" required/>
+        </div>
+        <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
+          <div class="col-1" style="height: 20px; width: 20px;">
+          </div>
+          <input type="file" class="form-control col-11" id="image_reply2" name="image_reply2" value=""
+            placeholder="Custom reply?" />
         </div>
       </div>
     </div>
@@ -257,8 +271,15 @@
         <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
           <input type="radio" class="col-1" name="radio_reply3" value="CustomReply1"
             style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_reply3.disabled=false">
-          <input type="text" class="form-control col-11" id="custom_reply3" name="custom_reply3" value="<%= (chatbot.replies) ? chatbot.replies[2] : "" %>"
+          <input type="text" class="form-control col-11" id="custom_reply3" name="custom_reply3" 
+          value="<%= (chatbot?.replies[2]?.indexOf('image:') > -1) ? chatbot.replies[2].substring(0, chatbot?.replies[2]?.indexOf('image:')) : chatbot.replies[2] %>"
             placeholder="Custom reply?" required/>
+        </div>
+        <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
+          <div class="col-1" style="height: 20px; width: 20px;">
+          </div>
+          <input type="file" class="form-control col-11" id="image_reply3" name="image_reply3" value=""
+            placeholder="Custom reply?" />
         </div>
       </div>
     </div>
