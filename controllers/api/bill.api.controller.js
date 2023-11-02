@@ -17,6 +17,40 @@ exports.list = async (req, res, next) => {
     }
 }
 
+exports.listIncomplete = async (req, res, next) => {
+    try {
+        let idClient = req.params.idClient;
+        if (!idClient) {
+            return res.status(200).json({ success: false, data: {}, message: "Không đọc được dữ liệu khách hàng!" });
+        }
+        let arr_bill = await billModel.find({ id_client: idClient, status: {$lt: 2} }).populate('arr_product.id_product');
+        if (arr_bill) {
+            return res.status(200).json({ success: true, data: arr_bill, message: "Lấy danh sách đơn hàng thành công." });
+        } else {
+            return res.status(200).json({ success: false, data: {}, message: "Không có đơn hàng nào!" });
+        }
+    } catch (error) {
+        return res.status(500).json({ success: false, data: {}, message: "Lỗi: " + error.message });
+    }
+}
+
+exports.listComplete = async (req, res, next) => {
+    try {
+        let idClient = req.params.idClient;
+        if (!idClient) {
+            return res.status(200).json({ success: false, data: {}, message: "Không đọc được dữ liệu khách hàng!" });
+        }
+        let arr_bill = await billModel.find({ id_client: idClient, status: 2 }).populate('arr_product.id_product');
+        if (arr_bill) {
+            return res.status(200).json({ success: true, data: arr_bill, message: "Lấy danh sách đơn hàng thành công." });
+        } else {
+            return res.status(200).json({ success: false, data: {}, message: "Không có đơn hàng nào!" });
+        }
+    } catch (error) {
+        return res.status(500).json({ success: false, data: {}, message: "Lỗi: " + error.message });
+    }
+}
+
 exports.insert = async (req, res, next) => {
     try {
         if (req.method == "POST") {

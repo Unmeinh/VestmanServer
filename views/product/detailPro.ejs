@@ -143,7 +143,7 @@
     <% if (chatbot?.replies[0] && chatbot?.replies[0].includes('image')) { %>
       <div class="row">
         <div class="col" style="max-width: 140px"></div>
-        <img class="col" style="max-width: 150px" src="<%= customer.images[0] %>" alt="">
+        <img class="col" style="max-width: 35%" src="<%= chatbot?.replies[0].substring(chatbot?.replies[0].indexOf('image:') + 7, chatbot?.replies[0].length-1) %>" alt="">
       </div>
       <% } %>
   </li>
