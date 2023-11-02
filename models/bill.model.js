@@ -11,6 +11,9 @@ let BillSchema = new db.mongoose.Schema(
         ],
         total: { type: Number, required: true },
         created_at: { type: Date, required: true },
+
+        
+        status:{type:Number,default:-1},
     },
     {
         collection: 'Bills'
