@@ -63,10 +63,11 @@ exports.login = async (req, res, next) => {
             if (!objU) {
                 return res.status(201).json({ success: false, message: "Không tìm thấy tài khoản với email trên!" });
             }
-            if (!String(objU.password) == String(password)) {
+            if (String(objU.password) == String(password)) {
+                return res.status(201).json({ success: true, data: objU, message: "Đăng nhập thành công." });
+            } else {
                 return res.status(201).json({ success: false, message: "Sai mật khẩu!" });
             }
-            return res.status(201).json({ success: true, data: objU, message: "Đăng nhập thành công." });
         } catch (error) {
             console.error("Lỗi: " + error.message);
             return res.status(500).json({ success: false, data: {}, message: "Lỗi: " + error.message });
@@ -103,14 +104,14 @@ exports.updateAvatar = async (req, res, next) => {
     if (req.method == "PUT") {
         try {
             let idClient = req.params.idClient;
-            let { imageUrl } = req.body;
+            // let { imageUrl } = req.body;
             if (idClient) {
                 let objU = await clientModel.findById(idClient);
                 if (!objU) {
                     return res.status(201).json({ success: false, message: "Không tìm thấy tài khoản!" });
                 }
                 let imageUrl = await onUploadImages(req.files, 'admin');
-                if (imageUrl == []) {
+                if (imageUrl.length == 0) {
                     objU.avatar = "";
                 } else {
                     objU.avatar = imageUrl[0];
