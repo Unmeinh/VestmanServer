@@ -175,10 +175,10 @@
             placeholder="" disabled />
         </div>
         <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
-          <input type="radio" class="col-1" name="radio_question1" value="CustomQuestion1"
+          <input type="radio" class="col-1" name="radio_question1" value="CustomQuestion1" checked="<%= (chatbot.questions && chatbot.questions[0]) ? "checked" : "" %>"
             style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_question1.disabled=false">
           <input type="text" class="form-control col-11" id="custom_question1" name="custom_question1" value="<%= (chatbot.questions) ? chatbot.questions[0] : "" %>"
-            placeholder="Custom question?" />
+            placeholder="Custom question?"/>
         </div>
       </div>
       <div style="width: 48%;">
@@ -190,7 +190,7 @@
             value="(Auto) Sản phẩm này còn hàng bạn nhé!" placeholder="" disabled />
         </div>
         <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
-          <input type="radio" class="col-1" name="radio_reply1" value="CustomReply1"
+          <input type="radio" class="col-1" name="radio_reply1" value="CustomReply1" checked="<%= (chatbot.replies && chatbot.replies[0]) ? "checked" : "" %>"
             style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_reply1.disabled=false">
           <input type="text" class="form-control col-11" id="custom_reply1" name="custom_reply1" 
           value="<%= (chatbot?.replies[0]?.indexOf('image:') > -1) ? chatbot.replies[0].substring(0, chatbot?.replies[0]?.indexOf('image:')) : chatbot.replies[0] %>"
@@ -214,7 +214,7 @@
             value="Tôi muốn biết mình vừa với size bao nhiêu thì phải làm sao?" placeholder="" disabled  />
         </div>
         <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
-          <input type="radio" class="col-1" name="radio_question2" value="CustomQuestion2"
+          <input type="radio" class="col-1" name="radio_question2" value="CustomQuestion2" checked="<%= (chatbot.questions && chatbot.questions[1]) ? "checked" : "" %>" 
             style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_question2.disabled=false">
           <input type="text" class="form-control col-11" id="custom_question2" name="custom_question2" value="<%= (chatbot.questions) ? chatbot.questions[1] : "" %>"
             placeholder="Custom question?"  />
@@ -230,7 +230,7 @@
              />
         </div>
         <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
-          <input type="radio" class="col-1" name="radio_reply2" value="CustomReply2"
+          <input type="radio" class="col-1" name="radio_reply2" value="CustomReply2" checked="<%= (chatbot.replies && chatbot.replies[1]) ? "checked" : "" %>"
             style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_reply2.disabled=false">
           <input type="text" class="form-control col-11" id="custom_reply2" name="custom_reply2" 
           value="<%= (chatbot?.replies[1]?.indexOf('image:') > -1) ? chatbot.replies[1].substring(0, chatbot?.replies[1]?.indexOf('image:')) : chatbot.replies[1] %>"
@@ -254,7 +254,7 @@
             placeholder="" disabled />
         </div>
         <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
-          <input type="radio" class="col-1" name="radio_question3" value="CustomQuestion3"
+          <input type="radio" class="col-1" name="radio_question3" value="CustomQuestion3" checked="<%= (chatbot.questions && chatbot.questions[2]) ? "checked" : "" %>"
             style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_question3.disabled=false">
           <input type="text" class="form-control col-11" id="custom_question3" name="custom_question3" value="<%= (chatbot.questions) ? chatbot.questions[2] : "" %>"
             placeholder="Custom question?" required/>
@@ -269,7 +269,7 @@
             value="Bạn hãy xem danh sách vest để tìm màu phù hợp với mình nhé!" placeholder="" disabled />
         </div>
         <div class="row form-group mb-4 flex-nowrap col-12 align-items-center">
-          <input type="radio" class="col-1" name="radio_reply3" value="CustomReply1"
+          <input type="radio" class="col-1" name="radio_reply3" value="CustomReply1" checked="<%= (chatbot.replies && chatbot.replies[2]) ? "checked" : "" %>"
             style="height: 20px; width: 20px; margin-right: 5px;" onclick="this.form.custom_reply3.disabled=false">
           <input type="text" class="form-control col-11" id="custom_reply3" name="custom_reply3" 
           value="<%= (chatbot?.replies[2]?.indexOf('image:') > -1) ? chatbot.replies[2].substring(0, chatbot?.replies[2]?.indexOf('image:')) : chatbot.replies[2] %>"

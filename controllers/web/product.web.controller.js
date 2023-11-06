@@ -58,6 +58,7 @@ exports.listSort = async (req, res, next) => {
         current: page,
         pages: Math.ceil(count / perPage),
         messages,
+        req
       });
     }
   } catch (error) {

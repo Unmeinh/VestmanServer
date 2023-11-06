@@ -104,18 +104,19 @@ exports.updateAvatar = async (req, res, next) => {
     if (req.method == "PUT") {
         try {
             let idClient = req.params.idClient;
-            // let { imageUrl } = req.body;
+            let { imageUrl } = req.body;
             if (idClient) {
                 let objU = await clientModel.findById(idClient);
                 if (!objU) {
                     return res.status(201).json({ success: false, message: "Không tìm thấy tài khoản!" });
                 }
-                let imageUrl = await onUploadImages(req.files, 'admin');
-                if (imageUrl.length == 0) {
-                    objU.avatar = "";
-                } else {
-                    objU.avatar = imageUrl[0];
-                }
+                // let imageUrl = await onUploadImages(req.files, 'admin');
+                // if (imageUrl.length == 0) {
+                //     objU.avatar = "";
+                // } else {
+                //     objU.avatar = imageUrl[0];
+                // }
+                objU.avatar = imageUrl;
                 await clientModel.findByIdAndUpdate(objU._id, objU)
                 return res.status(201).json({ success: true, data: objU, message: "Cập nhật ảnh đại diện thành công." });
             } else {
