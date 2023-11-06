@@ -87,6 +87,7 @@ exports.insert = async (req, res, next) => {
                     newBill.status = -1;
                     newBill.created_at = new Date();
                     await newBill.save();
+                    await cartModel.deleteMany({id_client: idClient});
                     return res.status(201).json({ success: true, data: {}, message: "Thêm đơn hàng thành công." });
                 } else {
                     return res.status(201).json({ success: false, data: {}, message: "Giỏ hàng đang trống!" });
