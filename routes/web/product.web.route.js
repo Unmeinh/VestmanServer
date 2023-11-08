@@ -18,7 +18,7 @@ router.get('/insert', controller.insert);
 router.post('/insert', uploader.any(), controller.insert);
 router.get('/edit/:id', controller.edit);
 router.post('/edit', uploader.any(), controller.editPost);
-router.post('/delete/:id', controller.delete);
+router.delete('/delete/:id', controller.delete);
 
 
 

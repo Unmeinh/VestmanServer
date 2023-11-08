@@ -1,103 +1,142 @@
 
 <div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Blog</h1>
-    <div class="btn-toolbar mb-2 mb-md 0">
-      <div class="btn-group me-2">
-        <a href="/blog/insert" class="btn btn-sm btn-outline-secondary">+ New blog</a>
-      </div>
+  <h1 class="h2">Blog</h1>
+  <div class="btn-toolbar mb-2 mb-md 0">
+    <div class="btn-group me-2">
+      <a href="/blog/insert" class="btn btn-sm btn-outline-secondary">+ New blog</a>
     </div>
   </div>
-  
-  <% messages.forEach(element => { %>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <%= element %>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  <% }) %>
-  
-  
-  
-  <div class="table-responsive">
-  
-    <table class="table table-striped table-sm">
-      <thead>
-        <tr>
-          <th scope="col">Product <a href="/blog/sort/?_sort&column=name_product&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/blog/sort/?_sort&column=name_product&type=asc"><i class="bi bi-arrow-up"></i></a> </th>
-          <th scope="col">Description <a href="/blog/sort/?_sort&column=description&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/blog/sort/?_sort&column=description&type=asc"><i class="bi bi-arrow-up"></i></a></th>
-          <th scope="col">Created at <a href="/blog/sort/?_sort&column=created_at&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/blog/sort/?_sort&column=created_at&type=asc"><i class="bi bi-arrow-up"></i></a></th>
-          <th scope="col" class="text-end">Action</th>
+</div>
+
+<% messages.forEach(element => { %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= element %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% }) %>
+
+
+
+<div class="table-responsive">
+
+  <table class="table table-striped table-sm">
+    <thead>
+      <tr>
+        <th scope="col">Product <a href="/blog/sort/?_sort&column=name_product&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/blog/sort/?_sort&column=name_product&type=asc"><i class="bi bi-arrow-up"></i></a> </th>
+        <th scope="col">Created at <a href="/blog/sort/?_sort&column=created_at&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/blog/sort/?_sort&column=created_at&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+        <th scope="col">Expires at <a href="/blog/sort/?_sort&column=expires_at&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/blog/sort/?_sort&column=expires_at&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+        <th scope="col" class="text-end">Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% for(let i = 0; i<clients.length; i++) { %>
+        <tr class="align-middle">
+          <td><%= arrPro[i].name_product %></td>
+          <td><%= clients[i].created_at.toLocaleString('en') %></td>
+          <td><%= clients[i].expires_at.toLocaleString('en') %></td>
+          <td class="text-end">
+
+            <div class="d-flex flex-row justify-content-end gap-2">
+
+              <a href="/blog/view/<%= clients[i]._id %>" type="button" class="btn btn-primary btn-small">
+                <i class="bi bi-eye"></i>
+              </a>
+
+              <a href="/blog/edit/<%= clients[i]._id %>" type="button" class="btn btn-warning btn-small">
+                <i class="bi bi-pencil"></i>
+              </a>
+
+              <div>
+                <button type="button" class="btn btn-danger btn-small" data-bs-toggle="modal"
+                data-bs-target="#deleteModal" data-bs-id="<%=clients[i]._id%>"> <i class="bi bi-trash"></i></button>
+            </div>
+
+            </div>
+
+          </td>
         </tr>
-      </thead>
-  
-      <tbody>
-        <% for(let i = 0; i<clients.length; i++) { %>
-          <tr class="align-middle">
-            <td><%= arrPro[i].name_product %></td>
-            <td><%= clients[i].description %></td>
-            <td><%= clients[i].created_at.toLocaleString('en') %></td>
-            <td class="text-end">
-  
-              <div class="d-flex flex-row justify-content-end gap-2">
-  
-                <a href="/blog/view/<%= clients[i]._id %>" type="button" class="btn btn-primary btn-small">
-                  <i class="bi bi-eye"></i>
-                </a>
-  
-                <a href="/blog/edit/<%= clients[i]._id %>" type="button" class="btn btn-warning btn-small">
-                  <i class="bi bi-pencil"></i>
-                </a>
-  
-                <form action="/blog/delete/<%= clients[i]._id %>" method="POST" class="position-relative">
-                  <button type="submit" class="btn btn-danger btn-small">
-                    <i class="bi bi-person-x"></i>
-                  </button>
-                </form>
-  
-              </div>
-  
-            </td>
-          </tr>
-        <% } %>
-      </tbody>
-    </table>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+
+<form method="post" name="delete-form"></form>
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5" id="modalLabel">Delete Product</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              Confirm product deletion?
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+              <button type="button" class="btn btn-primary" id="btn-delete">Continue</button>
+          </div>
+      </div>
   </div>
-  
-  
-  
-  <% if (clients.length > 0) { %>
-    <nav aria-label="Dashboard Pagination">
-      <ul class="pagination justify-content-center mt-5">
-  
-        <% if (current == 1) { %>
-          <li class="page-item disabled"><a href="#" class="page-link">First</a></li>
+</div>
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      var id
+      var deleteForm = document.forms['delete-form']
+
+      const deleteModal = document.getElementById('deleteModal')
+      deleteModal.addEventListener('show.bs.modal', event => {
+          const button = event.relatedTarget;
+          id = button.getAttribute('data-bs-id')
+      })
+
+      var btn_del = document.getElementById('btn-delete')
+      btn_del.onclick = function () {
+          deleteForm.action = 'blog/delete/' + id + "?_method=DELETE"
+          deleteForm.submit()
+      }
+  });
+</script>
+
+
+<% if (clients.length > 0) { %>
+  <nav aria-label="Dashboard Pagination">
+    <ul class="pagination justify-content-center mt-5">
+
+      <% if (current == 1) { %>
+        <li class="page-item disabled"><a href="#" class="page-link">First</a></li>
+      <% } else { %>
+        <li class="page-item"><a href="/?page=1" class="page-link">First</a></li>
+      <% } %>
+
+      <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+      <% if(i !== 1) { %>
+        <li class="page-item disabled"><a href="#" class="page-link">...</a></li>
+      <% } %>
+
+      <% for(; i <= (Number(current) + 4) && i <= pages; i++ ) { %>
+        <% if (i == current) { %>
+          <li class="page-item disabled"><a href="#" class="page-link"><%= i %></a></li>
         <% } else { %>
-          <li class="page-item"><a href="/?page=1" class="page-link">First</a></li>
+          <li class="page-item"><a href="/?page=<%= i %>" class="page-link"><%= i %></a></li>
         <% } %>
-  
-        <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
-        <% if(i !== 1) { %>
+        <% if (i == Number(current) + 4 && i < pages) { %>
           <li class="page-item disabled"><a href="#" class="page-link">...</a></li>
         <% } %>
-  
-        <% for(; i <= (Number(current) + 4) && i <= pages; i++ ) { %>
-          <% if (i == current) { %>
-            <li class="page-item disabled"><a href="#" class="page-link"><%= i %></a></li>
-          <% } else { %>
-            <li class="page-item"><a href="/?page=<%= i %>" class="page-link"><%= i %></a></li>
-          <% } %>
-          <% if (i == Number(current) + 4 && i < pages) { %>
-            <li class="page-item disabled"><a href="#" class="page-link">...</a></li>
-          <% } %>
-        <% } %>
-  
-        <% if (current == pages) { %>
-          <li class="page-item disabled"><a href="#" class="page-link">Last</a></li>
-        <% } else { %>
-          <li class="page-item"><a href="/?page=<%= pages %>" class="page-link">Last</a></li>
-        <% } %>
-  
-      </ul>
-    </nav>
-  <% } %>
-  
-  
+      <% } %>
+
+      <% if (current == pages) { %>
+        <li class="page-item disabled"><a href="#" class="page-link">Last</a></li>
+      <% } else { %>
+        <li class="page-item"><a href="/?page=<%= pages %>" class="page-link">Last</a></li>
+      <% } %>
+
+    </ul>
+  </nav>
+<% } %>
+

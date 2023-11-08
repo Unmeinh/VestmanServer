@@ -16,6 +16,6 @@ router.get('/view/:id', controller.view);
 router.use(check_adm2);
 router.get('/insert', controller.insert);
 router.post('/insert', uploader.any(), controller.insert);
-router.post('/delete/:id', controller.delete);
+router.delete('/delete/:id', controller.delete);
 
 module.exports = router;

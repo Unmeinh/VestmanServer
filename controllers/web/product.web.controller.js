@@ -1,6 +1,7 @@
 let productModel = require("../../models/product.model").ProductModel;
 let discountModel = require("../../models/discount.model").DiscountModel;
 let chatbotModel = require("../../models/chatbot.model").ChatbotModel;
+let billProduct = require("../../models/billProduct.model").BillProduct;
 const { onUploadImages } = require("../../function/uploadImage");
 
 exports.list = async (req, res, next) => {
@@ -117,7 +118,17 @@ exports.insert = async (req, res, next) => {
     newProduct.images = imageUrl;
     let idChatbot = await addChatbot(newProduct._id, req.body, req.files);
     newProduct.id_chatbot = idChatbot;
-    await newProduct.save();
+    await newProduct.save().then((rs) => {
+      let newBillPro = new billProduct();
+      newBillPro.id_product = rs._id;
+      newBillPro.amount = quantity;
+      newBillPro.total = quantity * price;
+
+      newBillPro.save();
+    })
+    .catch((err) => {
+      console.log(err);
+    });;
     return res.redirect("/product");
   }
 
@@ -174,14 +185,26 @@ exports.editPost = async (req, res) => {
   let sizes = [];
   let str = req.body.size;
   sizes = str.split(",");
+
   let product = await productModel.findById(_id);
+
+  if(product.quantity < quantity){ 
+    let amount =  quantity - product.quantity;
+    let newBillPro = new billProduct();
+    newBillPro.id_product = _id;
+    newBillPro.amount = amount;
+    newBillPro.total = amount * price;
+
+    await newBillPro.save();
+  }
+
   product.name_product = name_product;
   product.detail_product = detail_product;
   product.id_discount = id_discount;
   product.sizes = sizes;
   product.color = color;
   product.quantity = quantity;
-  product.quantity = price;
+  product.price = price;
   product.images = images;
 
   let idChatbot = await editChatbot(_id, product.id_chatbot, req.body, req.files);
