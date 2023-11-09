@@ -66,9 +66,24 @@ exports.listSort = async (req, res, next) => {
         .exec();
       const count = await adminModel.count();
 
+      let per = [];
+    for (let i = 0; i < clients.length; i++) {
+      if (clients[i].permission == 0) {
+        per.push("Owner");
+      }
+
+      if (clients[i].permission == 1) {
+        per.push("Manager");
+      }
+
+      if (clients[i].permission == 2) {
+        per.push("Participant");
+      }
+    }
       res.render("viewAdmin", {
         clients,
         current: page,
+        per,
         pages: Math.ceil(count / perPage),
         messages,
       });
@@ -112,11 +127,13 @@ exports.insert = async (req, res, next) => {
   if (req.method == "POST") {
     let imageUrl = await onUploadImages(req.files, "admin");
 
-    let { username, password, permission, full_name } = req.body;
+    let { username, password, email, adress, permission, full_name } = req.body;
     let newAdmin = new adminModel();
     newAdmin.username = username;
     newAdmin.password = password;
     newAdmin.full_name = full_name;
+    newAdmin.email = email;
+    newAdmin.adress = adress;
     newAdmin.permission = permission;
     newAdmin.created_at = new Date();
     newAdmin.avatar = imageUrl[0];

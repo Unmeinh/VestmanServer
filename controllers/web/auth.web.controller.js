@@ -1,12 +1,13 @@
 let adminModel = require("../../models/admin.model").AdminModel;
 
-exports.home = async (req, res, next) => {
-  res.render("home", {title: "Home"});
+exports.ren = async (req, res, next) => {
+  res.redirect("/login");
 };
 
 exports.check = async (req, res, next) => {
   res.render("auth/check.ejs");
 };
+
 exports.login = async (req, res, next) => {
   let msg = "";
   if (req.method == "POST") {
@@ -34,13 +35,27 @@ exports.login = async (req, res, next) => {
 
 exports.register = async (req, res, next) => {
   let msg = "";
+  let data = {};
 
   if (req.method == "POST") {
     try {
+      let pw = req.body.password
+      if (pw.length < 8) {
+        msg = "mật khẩu không đủ 8 kí tự";
+        data = await req.body;
+        data.password2 = "";
+        data.password = "";
+        return res.render("auth/register.ejs", { msg: msg, data });
+      }
+
       if (req.body.password != req.body.password2) {
         msg = "mật khẩu không khớp";
-        return res.render("auth/register.ejs", { msg: msg });
+        data = await req.body;
+        data.password2 = "";
+        return res.render("auth/register.ejs", { msg: msg, data });
       }
+
+      
 
       let objU = new adminModel();
 
@@ -61,8 +76,8 @@ exports.register = async (req, res, next) => {
       msg = "đăng kí thất bại" + error;
     }
 
-    return res.render("auth/login.ejs", { msg: msg });
+    return res.render("auth/login.ejs", { msg: msg});
   }
 
-  res.render("auth/register.ejs", { msg: msg });
+  res.render("auth/register.ejs", { msg: msg, data });
 };

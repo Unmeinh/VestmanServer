@@ -31,7 +31,6 @@ exports.list = async (req, res, next) => {
 
       arrPro.push(product);
 
-      // console.log("client: "+clients[i].id_client);
     }
 
     res.render("viewBlog", {
@@ -62,13 +61,25 @@ exports.listSort = async (req, res, next) => {
         .skip(perPage * page - perPage)
         .limit(perPage)
         .exec();
-      const count = await adminModel.count();
+      const count = await blogModel.count();
+
+      let arrPro = [];
+      let idPro;
+      for (let i = 0; i < clients.length; i++) {
+        idPro = clients[i].id_product;
+  
+        const product = await productModel.findOne({ _id: idPro });
+  
+        arrPro.push(product);
+  
+      }
 
       res.render("viewBlog", {
         clients,
         current: page,
         pages: Math.ceil(count / perPage),
         messages,
+        arrPro
       });
     }
   } catch (error) {

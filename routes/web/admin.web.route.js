@@ -21,7 +21,7 @@ router.get('/insert', check_adm, controller.insert);
 router.post('/insert', check_adm, uploader.any(), controller.insert);
 router.get('/edit/:id', check_adm, controller.edit);
 router.post('/edit', check_adm, uploader.any(), controller.editPost);
-router.post('/delete/:id',check_adm, controller.delete);
+router.delete('/delete/:id',check_adm, controller.delete);
 router.get('/dashboard', check_adm2, controller.dashboard);
 
 module.exports = router;
