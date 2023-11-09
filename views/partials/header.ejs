@@ -27,33 +27,23 @@
         <ul class="navbar-nav ms-auto">
           <li class="nav-item active">
             <a class="nav-link" href="/"
-              >
-              <i class="fas fa-home me-1"></i>
-              
-              
-              
-              
-              Home</a
-            >
+            ><i class="fas fa-home me-1"></i>Home</a>
           </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="/order"
-              >
-              <i class="fas fa-globe me-1"></i>About
-             
-              
-              </a
-            >
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="#"
-              ><i class="fas fa-envelope me-1"></i>Contact</a
-            >
-          </li>
+          <section class="navbar-nav">
+            <% if (locals.userLogin) { %>
+            <li class="nav-item active">
+              <a class="nav-link" href="#"
+                ><i class="fas fa-sign-in me-1"></i>Login</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#"
+                ><i class="fas fa-key me-1"></i>Register</a>
+            </li>
+            <% } %>
+          </section>
           <li class="nav-item active">
             <a class="nav-link" href="/admin/info"
-              ><i class="fa-regular fa-circle-user"></i>Me</a
-            >
+              ><i class="fas fa-regular fa-vcard me-1"></i>Me</a>
           </li>
         </ul>
       </div>
