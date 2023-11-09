@@ -244,7 +244,7 @@ exports.dashboard = async (req, res, next) => {
       .limit(5);
     const months = [];
     const totalBills = [];
-    const totalProducts = [];
+    const totalBillsProduct = [];
     const totalInterests = [];
     const totalCustomers = [];
     const totalPrdCount = [];
@@ -275,7 +275,7 @@ exports.dashboard = async (req, res, next) => {
       let client = await getTotalCustomer(previusDate, nowDate);
       let count = await getProductCount(previusDate, nowDate);
       totalBills.push(total);
-      totalProducts.push(product);
+      totalBillsProduct.push(product);
       totalInterests.push(total - product);
       totalCustomers.push(client);
       totalPrdCount.push(count);
@@ -285,14 +285,10 @@ exports.dashboard = async (req, res, next) => {
       listProduct: JSON.stringify(listProduct),
       months: JSON.stringify(months),
       totalBills: JSON.stringify(totalBills),
-      totalProducts: JSON.stringify(totalProducts),
+      totalBillsProduct: JSON.stringify(totalBillsProduct),
       totalInterests: JSON.stringify(totalInterests),
       totalCustomers: JSON.stringify(totalCustomers),
       totalPrdCount: JSON.stringify(totalPrdCount),
-      // toastify: {
-      //   type: "success",
-      //   message: "Statistical calculation successful.",
-      // },
     });
   } catch (error) {
     console.log(error);

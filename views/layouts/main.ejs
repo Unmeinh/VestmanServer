@@ -31,25 +31,6 @@
           </main>
 
       </div>
-        <div class="toast-container position-fixed bottom-0 end-0 p-3">
-          <div class="toast d-block" role="alert" aria-atomic="true" id="toastify">
-            <% if (typeof(locals.toastify) != 'undefined' ) { 
-              let srcIcon = (locals.toastify.type == "success") ? "/images/icons/successIcon.png" : "/images/icons/errorIcon.png";
-              let titleColor = (locals.toastify.type == "success") ? "text-success" : "text-danger";
-              let titleToast = (locals.toastify.type == "success") ? "Successfully!" : "Failure!";%>
-              <div class="toast-header">
-                <img src="<%= srcIcon %>" class="rounded me-2" alt="..." style="width: 20px; height: 20px;">
-                <strong class="me-auto <%= titleColor %>">
-                  <%= titleToast %>
-                </strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" onclick="closeToast();"></button>
-              </div>
-              <div class="toast-body">
-            <%= locals.toastify.message %>
-            </div>
-            <% } %>
-          </div>
-        </div>
     </div>
 
 
@@ -63,8 +44,6 @@
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
         crossorigin="anonymous"></script>
-      <script src="/socket.io/socket.io.js"></script>  
-      <script src="/javascripts/toastify.js" toastObject="<%= (typeof(locals.toastify) != 'undefined') ? JSON.stringify(locals.toastify) : '' %>"></script>
 </body>
 
 </html>
