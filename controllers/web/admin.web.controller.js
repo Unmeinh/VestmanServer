@@ -1,6 +1,7 @@
 let adminModel = require("../../models/admin.model").AdminModel;
 let productModel = require("../../models/product.model").ProductModel;
 let billModel = require("../../models/bill.model").BillModel;
+let billProductModel = require("../../models/billProduct.model").BillProduct;
 const { onUploadImages } = require("../../function/uploadImage");
 let clientModel = require("../../models/client.model").ClientModel;
 
@@ -67,19 +68,19 @@ exports.listSort = async (req, res, next) => {
       const count = await adminModel.count();
 
       let per = [];
-    for (let i = 0; i < clients.length; i++) {
-      if (clients[i].permission == 0) {
-        per.push("Owner");
-      }
+      for (let i = 0; i < clients.length; i++) {
+        if (clients[i].permission == 0) {
+          per.push("Owner");
+        }
 
-      if (clients[i].permission == 1) {
-        per.push("Manager");
-      }
+        if (clients[i].permission == 1) {
+          per.push("Manager");
+        }
 
-      if (clients[i].permission == 2) {
-        per.push("Participant");
+        if (clients[i].permission == 2) {
+          per.push("Participant");
+        }
       }
-    }
       res.render("viewAdmin", {
         clients,
         current: page,
@@ -171,7 +172,7 @@ exports.logout = (req, res, next) => {
   if (req.session != null) {
     req.session.destroy(function (err) {
       res.redirect('/login');
-     });
+    });
   }
 };
 exports.info = async (req, res, next) => {
@@ -339,17 +340,39 @@ async function getTotalBill(previusDate, nowDate) {
 }
 
 async function getTotalProduct(previusDate, nowDate) {
-  let productPrice = await productModel.find({
-    created_at: {
-      $gte: previusDate,
-      $lte: nowDate,
+  var match_stage = {
+    $match: {
+      created_at: {
+        $gte: new Date(previusDate),
+        $lte: new Date(nowDate),
+      },
     },
-  });
-  if (productPrice[0] != undefined) {
-    return productPrice[0].price * productPrice[0].quantity;
+  };
+  var group_stage = {
+    $group: { _id: null, sum: { $sum: "$total" } },
+  };
+  var project_stage = {
+    $project: { _id: 0, total: "$sum" },
+  };
+
+  var pipeline = [match_stage, group_stage, project_stage];
+  let sumTotal = await billProductModel.aggregate(pipeline);
+  if (sumTotal[0] != undefined) {
+    return sumTotal[0].total;
   } else {
     return 0;
   }
+  // let productPrice = await billProductModel.find({
+  //   created_at: {
+  //     $gte: previusDate,
+  //     $lte: nowDate,
+  //   },
+  // });
+  // if (productPrice[0] != undefined) {
+  //   return productPrice[0].price * productPrice[0].quantity;
+  // } else {
+  //   return 0;
+  // }
 }
 
 async function getTotalCustomer(previusDate, nowDate) {

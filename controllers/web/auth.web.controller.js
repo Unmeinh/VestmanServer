@@ -4,6 +4,10 @@ exports.ren = async (req, res, next) => {
   res.redirect("/login");
 };
 
+exports.redirect = async (req, res, next) => {
+  res.redirect("/admin/dashboard");
+};
+
 exports.check = async (req, res, next) => {
   res.render("auth/check.ejs");
 };

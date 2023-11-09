@@ -1,5 +1,6 @@
 let billModel = require('../../models/bill.model').BillModel;
 let cartModel = require('../../models/cart.model').CartModel;
+let productModel = require('../../models/product.model').ProductModel;
 
 exports.list = async (req, res, next) => {
     try {
@@ -73,12 +74,15 @@ exports.insert = async (req, res, next) => {
                         const cart = listCart[i];
                         arr.push(
                             {
-                                id_product: cart?.id_product,
+                                id_product: cart?.id_product?._id,
                                 price: cart?.id_product?.price,
                                 size: cart?.size,
                                 quantity: cart?.quantity
                             }
                         );
+                        let newProduct = {...cart?.id_product};
+                        newProduct.quantitySold = Number(newProduct?.quantity) - Number(cart?.quantity);
+                        await productModel.findByIdAndUpdate(cart?.id_product?._id, newProduct);
                     }
                     newBill.arr_product = arr;
                     newBill.customerInfo = customerInfo;
