@@ -70,7 +70,7 @@ exports.register = async (req, res, next) => {
         "https://firebasestorage.googleapis.com/v0/b/shopping-6b085.appspot.com/o/user%2Fuser.png?alt=media&token=794ad4dc-302b-4708-b102-ccbaf80ea567&_gl=1*e1jpw6*_ga*NDE5OTAxOTY1LjE2OTUwMDQ5MjM.*_ga_CW55HF8NVT*MTY5NzExMzA0MS4yMS4xLjE2OTcxMTMzMjcuNTkuMC4w";
       objU.password = req.body.password;
       objU.email = req.body.email;
-      objU.adress = req.body.adress;
+      objU.address = req.body.address;
 
       objU.created_at = new Date();
       await objU.save();

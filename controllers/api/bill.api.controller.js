@@ -107,12 +107,12 @@ exports.insert = async (req, res, next) => {
 
 exports.confirmReceive = async (req, res, next) => {
     if (req.method == "PUT") {
-        let { id } = req.params;
-        if (id) {
-            let bill = await billModel.findById(id);
+        let { idBill } = req.params;
+        if (idBill) {
+            let bill = await billModel.findById(idBill);
             if (bill && bill.status == 1) {
                 bill.status = 2;
-                await billModel.findByIdAndUpdate(id, bill);
+                await billModel.findByIdAndUpdate(idBill, bill);
                 return res.status(201).json({ success: true, data: {}, message: "Xác nhận thành công." });
             } else {
                 return res.status(201).json({ success: false, data: {}, message: "Đơn hàng này chưa thể xác nhận!" });
