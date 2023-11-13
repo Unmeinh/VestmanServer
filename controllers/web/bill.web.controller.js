@@ -1,6 +1,7 @@
 let billModel = require("../../models/bill.model").BillModel;
 let productModel = require("../../models/product.model").ProductModel;
 let clientModel = require("../../models/client.model").ClientModel;
+let billProduct = require("../../models/billProduct.model").BillProduct;
 
 exports.list = async (req, res, next) => {
   const messages = await req.consumeFlash("info");
@@ -192,5 +193,99 @@ exports.confirmDelivery = async (req, res, next) => {
       }
     }
   }
+};
+
+
+
+
+exports.listPro = async (req, res, next) => {
+  const messages = await req.consumeFlash("info");
+
+  const locals = {
+    title: "NodeJs",
+    description: "Free NodeJs User Management System",
+  };
+
+  let perPage = 5;
+  let page = req.query.page || 1;
+
+  try {
+    const clients = await billProduct
+      .aggregate([{ $sort: { createdAt: -1 } }])
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec();
+    const count = await billProduct.count();
+    // console.log("cus: ", clients);
+
+    let arrPro = [];
+    let idPro;
+    for (let i = 0; i < clients.length; i++) {
+      idPro = clients[i].id_product;
+
+      const product = await productModel.findOne({ _id: idPro });
+
+      arrPro.push(product);
+
+    }
+
+    res.render("billpro/viewBillPro", {
+      locals,
+      clients,
+      current: page,
+      pages: Math.ceil(count / perPage),
+      messages,
+      arrPro,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.listSortPro = async (req, res, next) => {
+  const messages = await req.consumeFlash("info");
+
+  let perPage = 5;
+  let page = req.query.page || 1;
+
+  try {
+    if (req.query.hasOwnProperty("_sort")) {
+    
+      const clients = await billProduct
+        .aggregate()
+        .sort({ [req.query.column]: req.query.type })
+        .skip(perPage * page - perPage)
+        .limit(perPage)
+        .exec();
+      const count = await billProduct.count();
+
+      let arrPro = [];
+      let idPro;
+      for (let i = 0; i < clients.length; i++) {
+        idPro = clients[i].id_product;
+  
+        const product = await productModel.findOne({ _id: idPro });
+  
+        arrPro.push(product);
+  
+      }
+
+      res.render("viewBlog", {
+        clients,
+        current: page,
+        pages: Math.ceil(count / perPage),
+        messages,
+        arrPro
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+exports.deletePro = async (req, res) => {
+  await billProduct.deleteOne({_id: req.params.id})
+  res.redirect('/bill/pro');
 };
 
