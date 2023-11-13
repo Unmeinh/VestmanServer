@@ -1,3 +1,47 @@
+<%
+  let productNameSort = "";
+  let priceSort = "";
+  let quantitySort = "";
+  let statusSort = "";
+  let createdAtSort = "";
+  if (typeof(req) != 'undefined' && typeof(req.query.column) != 'undefined' && typeof(req.query.type) != 'undefined') {
+    if (req.query.column == "id_client") {
+      if (req.query.type && req.query.type == "desc") {
+        productNameSort = "desc";
+      } else {
+        productNameSort = "asc";
+      }
+    }
+    if (req.query.column == "arr_product") {
+      if (req.query.type && req.query.type == "desc") {
+        priceSort = "desc";
+      } else {
+        priceSort = "asc";
+      }
+    }
+    if (req.query.column == "total") {
+      if (req.query.type && req.query.type == "desc") {
+        quantitySort = "desc";
+      } else {
+        quantitySort = "asc";
+      }
+    }
+    if (req.query.column == "status") {
+      if (req.query.type && req.query.type == "desc") {
+        statusSort = "desc";
+      } else {
+        statusSort = "asc";
+      }
+    }
+    if (req.query.column == "created_at") {
+      if (req.query.type && req.query.type == "desc") {
+        createdAtSort = "desc";
+      } else {
+        createdAtSort = "asc";
+      }
+    }
+  }
+%>
 
 <div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Bill</h1>
@@ -22,11 +66,11 @@
     <table class="table table-striped table-sm">
       <thead>
         <tr>
-          <th scope="col">Customer's name  <a href="/bill/sort/?_sort&column=full_name&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/bill/sort/?_sort&column=full_name&type=asc"><i class="bi bi-arrow-up"></i></a></th>
-          <th scope="col">Amount product <a href="/bill/sort/?_sort&column=arr_product&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/bill/sort/?_sort&column=arr_product&type=asc"><i class="bi bi-arrow-up"></i></a></th>
-          <th scope="col">Total <a href="/bill/sort/?_sort&column=total&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/bill/sort/?_sort&column=total&type=asc"><i class="bi bi-arrow-up"></i></a></th>
-          <th scope="col">Status <a href="/bill/sort/?_sort&column=status&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/bill/sort/?_sort&column=status&type=asc"><i class="bi bi-arrow-up"></i></a></th>
-          <th scope="col">Create at <a href="/bill/sort/?_sort&column=created_at&type=desc"><i class="bi bi-arrow-down"></i></a> <a href="/bill/sort/?_sort&column=created_at&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+          <th scope="col">Customer's name  <a class="<%= (productNameSort == "desc") ? "text-body-tertiary" : "" %>" href="/bill/sort/?_sort&column=id_client&type=desc"><i class="bi bi-arrow-down"></i></a> <a class="<%= (productNameSort == "asc") ? "text-body-tertiary" : "" %>" href="/bill/sort/?_sort&column=id_client&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+          <th scope="col">Amount product <a class="<%= (priceSort == "desc") ? "text-body-tertiary" : "" %>" href="/bill/sort/?_sort&column=arr_product&type=desc"><i class="bi bi-arrow-down"></i></a> <a class="<%= (priceSort == "asc") ? "text-body-tertiary" : "" %>" href="/bill/sort/?_sort&column=arr_product&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+          <th scope="col">Total <a class="<%= (quantitySort == "desc") ? "text-body-tertiary" : "" %>" href="/bill/sort/?_sort&column=total&type=desc"><i class="bi bi-arrow-down"></i></a> <a class="<%= (quantitySort == "asc") ? "text-body-tertiary" : "" %>" href="/bill/sort/?_sort&column=total&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+          <th scope="col">Status <a class="<%= (statusSort == "desc") ? "text-body-tertiary" : "" %>" href="/bill/sort/?_sort&column=status&type=desc"><i class="bi bi-arrow-down"></i></a> <a class="<%= (statusSort == "asc") ? "text-body-tertiary" : "" %>" href="/bill/sort/?_sort&column=status&type=asc"><i class="bi bi-arrow-up"></i></a></th>
+          <th scope="col">Create at <a class="<%= (createdAtSort == "desc") ? "text-body-tertiary" : "" %>" href="/bill/sort/?_sort&column=created_at&type=desc"><i class="bi bi-arrow-down"></i></a> <a class="<%= (createdAtSort == "asc") ? "text-body-tertiary" : "" %>" href="/bill/sort/?_sort&column=created_at&type=asc"><i class="bi bi-arrow-up"></i></a></th>
           <th scope="col" class="text-end">Action</th>
         </tr>
       </thead>

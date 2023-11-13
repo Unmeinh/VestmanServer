@@ -31,8 +31,29 @@
   
     <li class="list-group-item"> 
       <div class="row">
-        <div class="col" style="max-width: 140px"> <b>Customer accoun:</b></div>
+        <div class="col" style="max-width: 140px"> <b>Account:</b></div>
         <div class="col"><%= kh.username %></div>
+      </div>
+    </li>
+
+    <li class="list-group-item"> 
+      <div class="row">
+        <div class="col" style="max-width: 140px"> <b>Full name:</b></div>
+        <div class="col"><%= customer.customerInfo.nameCustomer %></div>
+      </div>
+    </li>
+
+    <li class="list-group-item"> 
+      <div class="row">
+        <div class="col" style="max-width: 140px"> <b>Phone:</b></div>
+        <div class="col"><%= customer.customerInfo.phoneNumber %></div>
+      </div>
+    </li>
+
+    <li class="list-group-item"> 
+      <div class="row">
+        <div class="col" style="max-width: 140px"> <b>Address:</b></div>
+        <div class="col"><%= customer.customerInfo.address %></div>
       </div>
     </li>
   
@@ -44,7 +65,7 @@
           <div class="col">
             <tr>
               <td>
-                  <img class="col" style="max-width: 150px" src="<%= arrPro[i].images[0] %>" alt="">
+                  <img class="col" style="max-width: 150px; max-height: 300px;" src="<%= arrPro[i].images[0] %>" alt="">
               </td>
               <td class="text-bottom">
                 <div>Name: <%= arrPro[i].name_product %></div>
@@ -59,11 +80,18 @@
     </li>
 
     <li class="list-group-item"> 
+      <div class="row">
+        <div class="col" style="max-width: 140px"> <b>Total:</b></div>
+        <div class="col"><%= customer.total.toLocaleString() %> VND</div>
+      </div>
+    </li>
+
+    <li class="list-group-item"> 
         <div class="row">
-          <div class="col" style="max-width: 140px"> <b>Total:</b></div>
-          <div class="col"><%= customer.total.toLocaleString() %> VND</div>
+          <div class="col" style="max-width: 140px"> <b>Payment Method:</b></div>
+          <div class="col"><%= customer.paymentMethodText %></div>
         </div>
-      </li>
+    </li>
   
    
     <li class="list-group-item"> 
