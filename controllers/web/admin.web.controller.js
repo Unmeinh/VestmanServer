@@ -128,13 +128,13 @@ exports.insert = async (req, res, next) => {
   if (req.method == "POST") {
     let imageUrl = await onUploadImages(req.files, "admin");
 
-    let { username, password, email, adress, permission, full_name } = req.body;
+    let { username, password, email, address, permission, full_name } = req.body;
     let newAdmin = new adminModel();
     newAdmin.username = username;
     newAdmin.password = password;
     newAdmin.full_name = full_name;
     newAdmin.email = email;
-    newAdmin.adress = adress;
+    newAdmin.address = address;
     newAdmin.permission = permission;
     newAdmin.created_at = new Date();
     newAdmin.avatar = imageUrl[0];
@@ -197,7 +197,7 @@ exports.editinfo = async (req, res, next) => {
 
   if (req.method == "POST") {
     // let objU= new adminModel();
-    let { full_name, permission, avatar, email, adress, _id } = req.body;
+    let { full_name, permission, avatar, email, address, _id } = req.body;
 
     let imageUrl = await onUploadImages(req.files, "admin");
 
@@ -210,7 +210,7 @@ exports.editinfo = async (req, res, next) => {
       permission: permission,
       avatar: avatar,
       email: email,
-      adress: adress,
+      address: address,
     };
 
     try {
