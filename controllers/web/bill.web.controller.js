@@ -104,6 +104,7 @@ exports.listSort = async (req, res, next) => {
         pages: Math.ceil(count / perPage),
         messages,
         arrCli,
+        req
       });
     }
   } catch (error) {
@@ -118,13 +119,28 @@ exports.view = async (req, res) => {
     let arrPro = [];
     let idPro;
 
-    for (i = 0; i < customer.arr_product.length; i++) {
+    for (let i = 0; i < customer.arr_product.length; i++) {
       idPro = customer.arr_product[i].id_product;
 
       const product = await productModel.findOne({ _id: idPro });
 
       arrPro.push(product);
     }
+
+
+  
+      if (customer.paymentMethod != undefined) {
+        switch (customer.paymentMethod) {
+          case 0:
+            customer.paymentMethodText = "COD"
+            break;
+          case 1:
+            customer.paymentMethodText = "Credit Card"
+            break;        
+          default:
+            break;
+        }
+      }
 
     const kh = await clientModel.findOne({ _id: customer.id_client });
 
@@ -270,7 +286,7 @@ exports.listSortPro = async (req, res, next) => {
   
       }
 
-      res.render("viewBlog", {
+      res.render("billpro/viewBillPro", {
         clients,
         current: page,
         pages: Math.ceil(count / perPage),

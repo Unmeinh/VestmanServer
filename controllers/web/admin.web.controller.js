@@ -81,12 +81,14 @@ exports.listSort = async (req, res, next) => {
           per.push("Participant");
         }
       }
+
       res.render("viewAdmin", {
         clients,
         current: page,
         per,
         pages: Math.ceil(count / perPage),
         messages,
+        req
       });
     }
   } catch (error) {
