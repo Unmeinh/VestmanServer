@@ -9,7 +9,7 @@ let DiscountSchema = new db.mongoose.Schema(
         collection: 'Discounts'
     }
 )
-
+DiscountSchema.index( { "expires_at": 1 }, { expireAfterSeconds: 0 } );
 let DiscountModel = db.mongoose.model('DiscountModel', DiscountSchema);
 
 module.exports = { DiscountModel };

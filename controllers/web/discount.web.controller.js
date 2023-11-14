@@ -18,6 +18,7 @@ exports.list = async (req, res, next) => {
       const count = await discountModel.count();
       console.log("cus: ",clients);
 
+      clients.shift();
       res.render('viewDiscount', {
         locals,
         clients,
@@ -48,6 +49,7 @@ exports.listSort = async (req, res, next) => {
         .exec();
       const count = await discountModel.count();
 
+      clients.shift();
       res.render("viewDiscount", {
         clients,
         current: page,
