@@ -39,17 +39,18 @@
         required
       />
     </div>
+    <input type="text" hidden value="<%= dis.expires_at.toLocaleString('en')  %>" name="expres_at">
     <div class="col">
       <label for="email">Expiration date</label>
       <input
-        type="text"
+        type="date"
         class="form-control"
-        id="expires_at"
-        name="expires_at"
+        id="expires_at2"
+        name="expires_at2"
         value="<%= dis.expires_at.toLocaleString('en')  %>"
         placeholder="Date"
-        required
       />
+      <div><%= dis.expires_at.toLocaleString('en')  %></div>
     </div>
   </div>
   <input type="text" id="started_at" name="started_at" value="<%= dis.started_at  %>" hidden>

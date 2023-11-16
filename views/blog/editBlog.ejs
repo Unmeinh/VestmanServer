@@ -32,14 +32,14 @@
     <div class="col">
       <label for="email">Expiration date</label>
       <input
-        type="text"
+        type="date"
         class="form-control"
-        id="expires_at"
-        name="expires_at"
+        id="expires_at2"
+        name="expires_at2"
         value="<%= blog.expires_at.toLocaleString('en')  %>"
         placeholder="Date"
-        required
       />
+      <div><%= blog.expires_at.toLocaleString('en')  %></div>
     </div>
     <div class="col">
       <label for="lastName">Product</label>

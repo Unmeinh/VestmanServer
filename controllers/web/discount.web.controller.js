@@ -16,7 +16,7 @@ exports.list = async (req, res, next) => {
         .limit(perPage)
         .exec(); 
       const count = await discountModel.count();
-      console.log("cus: ",clients);
+
 
       clients.shift();
       res.render('viewDiscount', {
@@ -49,7 +49,12 @@ exports.listSort = async (req, res, next) => {
         .exec();
       const count = await discountModel.count();
 
-      clients.shift();
+      if(req.query.type == "desc"){
+        clients.pop();
+      }else{
+        clients.shift();
+      }
+      
       res.render("viewDiscount", {
         clients,
         current: page,
@@ -93,7 +98,13 @@ exports.edit = async (req, res, next) => {
 }
 
 exports.editPost = async (req, res, next) => {
-  let { value, started_at, expires_at, _id } = req.body;
+  let { value, started_at, expires_at, expires_at2, _id } = req.body;
+
+
+  if(expires_at2 != ''){
+    expires_at = expires_at2;
+  }
+
   await discountModel.findByIdAndUpdate(_id,{
     value : value,
     started_at : started_at,

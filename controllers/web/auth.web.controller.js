@@ -44,8 +44,8 @@ exports.register = async (req, res, next) => {
   if (req.method == "POST") {
     try {
       let pw = req.body.password
-      if (pw.length < 8) {
-        msg = "mật khẩu không đủ 8 kí tự";
+      if (pw.length < 6) {
+        msg = "mật khẩu không đủ 6 kí tự";
         data = await req.body;
         data.password2 = "";
         data.password = "";
