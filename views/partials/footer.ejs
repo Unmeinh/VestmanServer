@@ -2,8 +2,8 @@
     <div class="container-fluid row" style="justify-content: space-around; flex-wrap: nowrap;">
         <div class="col-4" style="margin-right: 55px; margin-left: 25px; padding-top: 30px;">
             <a href="/">
-                <img src="https://res.cloudinary.com/ddzmeaxld/image/upload/v1696493858/images/upload/logo.png" alt="Logo.png" width="65" height="65"
-                    class="d-inline-block align-text-top">
+                <img src="https://res.cloudinary.com/ddzmeaxld/image/upload/v1696493858/images/upload/logo.png"
+                    alt="Logo.png" width="65" height="65" class="d-inline-block align-text-top">
             </a>
             <div style="margin-top: 10px;">
                 <p class="text-light">Vestman project data governance website.</p>
@@ -12,13 +12,13 @@
         </div>
         <div class="row col-8">
             <div class="col-3 divLinkFooter">
-                <section class="navbar-nav">
-                  <% if (locals.userLogin) { %>
-                    <ul class="ulLinkFooter" style="margin-top: 45px;">
-                        <li><a class="nav-link textLinkNavbar" href="/login">Login</a></li>
-                        <li><a class="nav-link textLinkNavbar" href="/register">Register</a></li>
-                    </ul>
-                  <% } %>
+                <section>
+                    <% if (locals.userLogin) { %>
+                        <ul class="ulLinkFooter" style="margin-top: 45px;">
+                            <li><a class="nav-link textLinkNavbar" href="/login">Login</a></li>
+                            <li><a class="nav-link textLinkNavbar" href="/register">Register</a></li>
+                        </ul>
+                        <% } %>
                 </section>
             </div>
             <div class="col-3 divLinkFooter">
@@ -31,16 +31,23 @@
                     <li><a class="nav-link textLinkNavbar" href="/admin">Management</a></li>
                 </ul>
             </div>
-            <div class="col-3 divLinkFooter">
+            <div class="col-5 divLinkFooter">
                 <ul class="ulLinkFooter">
                     <li>
                         <p class="titleLinkFooter">Project</p>
                     </li>
-                    <li><a class="nav-link textLinkNavbar" href="/client">Clients</a></li>
-                    <li><a class="nav-link textLinkNavbar" href="/product">Products</a></li>
-                    <li><a class="nav-link textLinkNavbar" href="/bill">Bills</a></li>
-                    <li><a class="nav-link textLinkNavbar" href="/discount">Discounts</a></li>
-                    <li><a class="nav-link textLinkNavbar" href="/blog">Blogs</a></li>
+                    <div class="d-flex flex-row col-12" style="margin-top: -7px;">
+                        <div class="col-6">
+                            <li><a class="nav-link textLinkNavbar" href="/client">Clients</a></li>
+                            <li><a class="nav-link textLinkNavbar" href="/bill">Bills</a></li>
+                            <li><a class="nav-link textLinkNavbar" href="/bill/pro">Bills Product</a></li>
+                        </div>
+                        <div class="col-6">
+                            <li><a class="nav-link textLinkNavbar" href="/product">Products</a></li>
+                            <li><a class="nav-link textLinkNavbar" href="/discount">Discounts</a></li>
+                            <li><a class="nav-link textLinkNavbar" href="/blog">Blogs</a></li>
+                        </div>
+                    </div>
                 </ul>
             </div>
         </div>
