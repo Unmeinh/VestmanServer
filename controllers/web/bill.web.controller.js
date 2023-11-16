@@ -11,7 +11,7 @@ exports.list = async (req, res, next) => {
     description: "Free NodeJs User Management System",
   };
 
-  let perPage = 10;
+  let perPage = 5;
   let page = req.query.page || 1;
 
   try {
@@ -74,7 +74,7 @@ exports.listSort = async (req, res, next) => {
     description: "Free NodeJs User Management System",
   };
 
-  let perPage = 10;
+  let perPage = 5;
   let page = req.query.page || 1;
 
   try {
@@ -223,7 +223,7 @@ exports.listPro = async (req, res, next) => {
     description: "Free NodeJs User Management System",
   };
 
-  let perPage = 5;
+  let perPage = 10;
   let page = req.query.page || 1;
 
   try {
@@ -262,7 +262,7 @@ exports.listPro = async (req, res, next) => {
 exports.listSortPro = async (req, res, next) => {
   const messages = await req.consumeFlash("info");
 
-  let perPage = 5;
+  let perPage = 10;
   let page = req.query.page || 1;
 
   try {
