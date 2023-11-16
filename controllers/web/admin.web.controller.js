@@ -12,7 +12,7 @@ exports.list = async (req, res, next) => {
     description: "Free NodeJs User Management System",
   };
 
-  let perPage = 5;
+  let perPage = 10;
   let page = req.query.page || 1;
 
   try {
@@ -54,7 +54,7 @@ exports.list = async (req, res, next) => {
 exports.listSort = async (req, res, next) => {
   const messages = await req.consumeFlash("info");
 
-  let perPage = 5;
+  let perPage = 10;
   let page = req.query.page || 1;
 
   try {
@@ -180,18 +180,19 @@ exports.logout = (req, res, next) => {
 exports.info = async (req, res, next) => {
   let user = req.session.userLogin;
 
-  // let per;
-  //   if (user.permission == 0) {
-  //     per = "Owner";
-  //   }
-  //   if (user.permission == 1) {
-  //     per = "Manager";
-  //   }
-  //   if (user.permission == 2) {
-  //     per = "Participant";
-  //   }
+  let per;
+    if (user.permission == 0) {
+      per = "Owner";
+    }
+    if (user.permission == 1) {
+      per = "Manager";
+    }
+    if (user.permission == 2) {
+      per = "Participant";
+    }
 
-  res.render("auth/info", { user });
+    console.log(per);
+  res.render("auth/info", { user, per });
 };
 exports.editinfo = async (req, res, next) => {
   let user = req.session.userLogin;

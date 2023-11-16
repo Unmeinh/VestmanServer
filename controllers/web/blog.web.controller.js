@@ -10,7 +10,7 @@ exports.list = async (req, res, next) => {
     description: "Free NodeJs User Management System",
   };
 
-  let perPage = 5;
+  let perPage = 10;
   let page = req.query.page || 1;
 
   try {
@@ -49,7 +49,7 @@ exports.list = async (req, res, next) => {
 exports.listSort = async (req, res, next) => {
   const messages = await req.consumeFlash("info");
 
-  let perPage = 5;
+  let perPage = 10;
   let page = req.query.page || 1;
 
   try {
@@ -149,12 +149,16 @@ exports.edit = async (req, res) => {
 }
 
 exports.editPost = async (req, res) => {
-  let { id_product, description, expires_at, thumbnailImage, created_at, _id } = req.body;
+  let { id_product, description, expires_at, expires_at2, thumbnailImage, created_at, _id } = req.body;
 
   let imageUrl = await onUploadImages(req.files, 'admin');
 
   if(!imageUrl.length==0){
     thumbnailImage = imageUrl[0];
+  }
+
+  if(expires_at2 != ''){
+    expires_at = expires_at2;
   }
 
   await blogModel.findByIdAndUpdate(_id,{
