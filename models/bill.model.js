@@ -15,6 +15,9 @@ let BillSchema = new db.mongoose.Schema(
         paymentMethod: { type: Number, required: true },
         status: { type: Number, required: true },
         created_at: { type: Date, required: true },
+
+        
+        status:{type:Number,default:-1},
     },
     {
         collection: 'Bills'

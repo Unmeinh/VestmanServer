@@ -181,6 +181,7 @@ exports.insert = async (req, res, next) => {
   res.send("List");
 };
 
+
 exports.confirmBill = async (req, res, next) => {
   if (req.method == "GET") {
     let { id } = req.params;
