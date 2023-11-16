@@ -124,7 +124,7 @@
 
         var btn_del = document.getElementById('btn-delete')
         btn_del.onclick = function () {
-            deleteForm.action = 'client/delete/' + id + "?_method=DELETE"
+            deleteForm.action = '/client/delete/' + id + "?_method=DELETE"
             deleteForm.submit()
         }
     });

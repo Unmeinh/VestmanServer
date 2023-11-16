@@ -180,18 +180,19 @@ exports.logout = (req, res, next) => {
 exports.info = async (req, res, next) => {
   let user = req.session.userLogin;
 
-  // let per;
-  //   if (user.permission == 0) {
-  //     per = "Owner";
-  //   }
-  //   if (user.permission == 1) {
-  //     per = "Manager";
-  //   }
-  //   if (user.permission == 2) {
-  //     per = "Participant";
-  //   }
+  let per;
+    if (user.permission == 0) {
+      per = "Owner";
+    }
+    if (user.permission == 1) {
+      per = "Manager";
+    }
+    if (user.permission == 2) {
+      per = "Participant";
+    }
 
-  res.render("auth/info", { user });
+    console.log(per);
+  res.render("auth/info", { user, per });
 };
 exports.editinfo = async (req, res, next) => {
   let user = req.session.userLogin;

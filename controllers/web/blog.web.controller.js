@@ -149,12 +149,16 @@ exports.edit = async (req, res) => {
 }
 
 exports.editPost = async (req, res) => {
-  let { id_product, description, expires_at, thumbnailImage, created_at, _id } = req.body;
+  let { id_product, description, expires_at, expires_at2, thumbnailImage, created_at, _id } = req.body;
 
   let imageUrl = await onUploadImages(req.files, 'admin');
 
   if(!imageUrl.length==0){
     thumbnailImage = imageUrl[0];
+  }
+
+  if(expires_at2 != ''){
+    expires_at = expires_at2;
   }
 
   await blogModel.findByIdAndUpdate(_id,{
