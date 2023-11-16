@@ -3,9 +3,7 @@ var controller = require('../../controllers/web/admin.web.controller');
 var router = express.Router();
 var multer = require('multer');
 var uploader = multer({dest:'/public/tmp'});
-
 var {do_login, check_adm, check_adm2} =require('../../midleware/midleware')
-
 
 router.use(do_login);
 

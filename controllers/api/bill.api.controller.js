@@ -80,9 +80,14 @@ exports.insert = async (req, res, next) => {
                                 quantity: cart?.quantity
                             }
                         );
-                        let newProduct = {...cart?.id_product};
-                        newProduct.quantitySold = Number(newProduct?.quantity) - Number(cart?.quantity);
-                        await productModel.findByIdAndUpdate(cart?.id_product?._id, newProduct);
+                        let product = await productModel.findById(cart?.id_product?._id);
+                        let newProduct = product.toObject();
+                        if (Number(newProduct.quantity) < Number(cart.quantity)) {
+                            return res.status(201).json({ success: false, data: {}, message: "Sản phẩm " + newProduct.name_product + " không còn đủ hàng!" });
+                        } 
+                        newProduct.quantity = Number(newProduct.quantity) - Number(cart.quantity);
+                        newProduct.quantitySold = Number(newProduct.quantitySold) + Number(cart.quantity);
+                        await productModel.findByIdAndUpdate(newProduct?._id, newProduct);
                     }
                     newBill.arr_product = arr;
                     newBill.customerInfo = customerInfo;

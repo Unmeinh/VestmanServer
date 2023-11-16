@@ -1,18 +1,10 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <title>
-    <%= title %>
-  </title>
-  <link rel='stylesheet' href='/stylesheets/style.css' />
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-</head>
 
-<body>
-  <h1>
-    <%= 'Dashboard' %>
-  </h1>
+  <div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">DashBoard</h1>
+  </div>  
   <div id="chartColumn" style="margin-bottom: 35px; margin-top: 35px;"></div>
   <div style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: space-between; width: 100%;">
     <div id="chartBar" style="width: 45%;"></div>
@@ -23,8 +15,6 @@
     totalPrdCount="<%= totalPrdCount %>"></script>
   <script src="/javascripts/barChart.js" products="<%= listProduct %>"></script>
   <script src="/javascripts/lineChart.js" months="<%= months %>" totalCustomers="<%= totalCustomers %>"></script>
-</body>
 
-</html>
 
 

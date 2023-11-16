@@ -88,18 +88,6 @@
   
               <div class="d-flex flex-row justify-content-end gap-2">
   
-                <a href="/bill/view/<%= clients[i]._id %>" type="button" class="btn btn-primary btn-small">
-                  <i class="bi bi-eye"></i>
-                </a>
-  
-                <% if (clients[i]?.status != undefined && clients[i]?.status > -1) { %> 
-                  <form action="/bill/edit/<%= clients[i]._id %>?_method=DELETE" method="POST" class="position-relative">
-                    <button type="submit" class="btn btn-danger btn-small">
-                      <i class="bi bi-person-x"></i>
-                    </button>
-                  </form>
-                <% } %>
-
                 <% if (clients[i]?.status != undefined) { %> 
                   <% if (clients[i]?.status == -1) { %>
                     <a href="/bill/confirmBill/<%= clients[i]._id %>" class="btn btn-success btn-small" style="border-radius: 5px; padding-right: 12px;">
@@ -110,6 +98,18 @@
                       <i class="bi">Confirm delivery</i>
                     </a>
                 <% }} %>
+
+                <a href="/bill/view/<%= clients[i]._id %>" type="button" class="btn btn-primary btn-small">
+                  <i class="bi bi-eye"></i>
+                </a>
+  
+                <% if (clients[i]?.status != undefined && clients[i]?.status > -1) { %> 
+                  <form action="/bill/edit/<%= clients[i]._id %>?_method=DELETE" method="POST" class="position-relative">
+                    <button type="submit" class="btn btn-danger btn-small">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </form>
+                <% } %>
 
               </div>
   

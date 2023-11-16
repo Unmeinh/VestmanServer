@@ -95,10 +95,7 @@ async function updateProduct(id_product, cartQuantity, res) {
     let product = await productModel.findById(id_product);
     if (product) {
         if (product.quantity > 0) {
-            if (product.quantity >= cartQuantity) {
-                product.quantity -= cartQuantity;
-                await productModel.findByIdAndUpdate(id_product, product);
-            } else {
+            if (product.quantity < cartQuantity) {
                 return res.status(201).json({ success: false, data: {}, message: "Số lượng hàng còn không đủ!" });
             }
         } else {
