@@ -26,32 +26,11 @@
       <div class="row">
         <%- include('../partials/sidebar.ejs') %>
 
-          <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="min-height: 350px;">
             <%- body %>
           </main>
 
       </div>
-      <% console.log(typeof(locals.toastify)); %>
-      <% console.log(locals.toastify); %>
-      <% if (typeof(locals.toastify) != 'undefined' ) { 
-        let srcIcon = (toastify.type == "success") ? "/images/icons/successIcon.png" : "/images/icons/errorIcon.png";
-        let titleColor = (toastify.type == "success") ? "text-success" : "text-danger";
-        let titleToast = (toastify.type == "success") ? "Successfully!" : "Failure!";%>
-        <div class="toast-container position-fixed bottom-0 end-0 p-3">
-          <div class="toast d-block" role="alert" aria-atomic="true" id="toastify">
-            <div class="toast-header">
-              <img src="<%= srcIcon %>" class="rounded me-2" alt="..." style="width: 20px; height: 20px;">
-              <strong class="me-auto <%= titleColor %>">
-                <%= titleToast %>
-              </strong>
-              <button type="button" class="btn-close" data-bs-dismiss="toast" onclick="closeToast();"></button>
-            </div>
-            <div class="toast-body">
-              <%= locals.toastify.message %>
-            </div>
-          </div>
-        </div>
-        <% } %>
     </div>
 
 
@@ -65,7 +44,6 @@
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
         crossorigin="anonymous"></script>
-      <script src="/javascripts/toastify.js" toastObject="<%= (typeof(locals.toastify) != 'undefined') ? JSON.stringify(locals.toastify) : '' %>"></script>
 </body>
 
 </html>

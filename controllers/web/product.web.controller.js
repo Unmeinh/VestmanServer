@@ -1,6 +1,7 @@
 let productModel = require("../../models/product.model").ProductModel;
 let discountModel = require("../../models/discount.model").DiscountModel;
 let chatbotModel = require("../../models/chatbot.model").ChatbotModel;
+let billProduct = require("../../models/billProduct.model").BillProduct;
 const { onUploadImages } = require("../../function/uploadImage");
 
 exports.list = async (req, res, next) => {
@@ -24,6 +25,18 @@ exports.list = async (req, res, next) => {
       .exec();
     const count = await productModel.count();
 
+    let productMo = {};
+    productMo.id_discount = "650c2af9cba06c726388496a";
+
+    for (let i = 0; i < clients.length; i++) {
+      const discount = await discountModel.findOne({
+        _id: clients[i].id_discount,
+      });
+      if (!discount) {
+        await productModel.findByIdAndUpdate(clients[i]._id,productMo);
+      }
+    }
+
     res.render("viewProduct", {
       locals,
       clients,
@@ -44,7 +57,6 @@ exports.listSort = async (req, res, next) => {
 
   try {
     if (req.query.hasOwnProperty("_sort")) {
-
       const clients = await productModel
         .aggregate()
         .sort({ [req.query.column]: req.query.type })
@@ -58,6 +70,7 @@ exports.listSort = async (req, res, next) => {
         current: page,
         pages: Math.ceil(count / perPage),
         messages,
+        req,
       });
     }
   } catch (error) {
@@ -69,6 +82,7 @@ exports.view = async (req, res) => {
   try {
     const customer = await productModel.findOne({ _id: req.params.id });
     const discount = await discountModel.findOne({ _id: customer.id_discount });
+    const chatbot = await chatbotModel.findOne({ _id: customer.id_chatbot });
 
     const locals = {
       title: "View Customer Data",
@@ -79,6 +93,7 @@ exports.view = async (req, res) => {
       locals,
       customer,
       discount,
+      chatbot,
     });
   } catch (error) {
     console.log(error);
@@ -87,16 +102,20 @@ exports.view = async (req, res) => {
 
 exports.insert = async (req, res, next) => {
   if (req.method == "POST") {
-    let imageUrl = await onUploadImages(req.files, "admin");
+    let imageUrl = [];
+    if (req.files) {
+      imageUrl = await onUploadImages(
+        req.files.filter((file) => file.fieldname == "image"),
+        "product"
+      );
+    }
 
     let sizeStr = req.body.sizes;
     let sizes = [];
     sizes = sizeStr.split(",");
 
-    let {
-      name_product, detail_product,
-      id_discount, color,
-      quantity, price } = req.body;
+    let { name_product, detail_product, id_discount, color, quantity, price } =
+      req.body;
     let newProduct = new productModel();
     newProduct.name_product = name_product;
     newProduct.detail_product = detail_product;
@@ -108,9 +127,21 @@ exports.insert = async (req, res, next) => {
     newProduct.price = price;
     newProduct.created_at = new Date();
     newProduct.images = imageUrl;
-    let idChatbot = await addChatbot(newProduct._id, req.body);
+    let idChatbot = await addChatbot(newProduct._id, req.body, req.files);
     newProduct.id_chatbot = idChatbot;
-    await newProduct.save();
+    await newProduct
+      .save()
+      .then((rs) => {
+        let newBillPro = new billProduct();
+        newBillPro.id_product = rs._id;
+        newBillPro.amount = quantity;
+        newBillPro.total = quantity * price;
+
+        newBillPro.save();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     return res.redirect("/product");
   }
 
@@ -118,7 +149,6 @@ exports.insert = async (req, res, next) => {
   res.render("product/addPro", {
     arr_dis,
   });
-
 };
 
 exports.edit = async (req, res) => {
@@ -129,13 +159,13 @@ exports.edit = async (req, res) => {
     let chatbot = {};
     if (Pro.id_chatbot) {
       chatbot = await chatbotModel.findById(Pro.id_chatbot);
-    } 
+    }
 
     res.render("product/editPro", {
       Pro,
       arr_dis,
       dis,
-      chatbot
+      chatbot,
     });
   } catch (error) {
     console.log(error);
@@ -155,7 +185,13 @@ exports.editPost = async (req, res) => {
     _id,
   } = req.body;
 
-  const imageUrl = await onUploadImages(req.files, "admin");
+  let imageUrl = [];
+  if (req.files) {
+    imageUrl = await onUploadImages(
+      req.files.filter((file) => file.fieldname == "image"),
+      "product"
+    );
+  }
 
   if (!imageUrl.length == 0) {
     images = imageUrl;
@@ -164,17 +200,34 @@ exports.editPost = async (req, res) => {
   let sizes = [];
   let str = req.body.size;
   sizes = str.split(",");
+
   let product = await productModel.findById(_id);
+
+  if (product.quantity < quantity) {
+    let amount = quantity - product.quantity;
+    let newBillPro = new billProduct();
+    newBillPro.id_product = _id;
+    newBillPro.amount = amount;
+    newBillPro.total = amount * price;
+
+    await newBillPro.save();
+  }
+
   product.name_product = name_product;
   product.detail_product = detail_product;
   product.id_discount = id_discount;
   product.sizes = sizes;
   product.color = color;
   product.quantity = quantity;
-  product.quantity = price;
+  product.price = price;
   product.images = images;
 
-  let idChatbot = await editChatbot(_id, product.id_chatbot, req.body);
+  let idChatbot = await editChatbot(
+    _id,
+    product.id_chatbot,
+    req.body,
+    req.files
+  );
   product.id_chatbot = idChatbot;
   await productModel.findByIdAndUpdate(_id, product);
   res.redirect("/product");
@@ -182,10 +235,11 @@ exports.editPost = async (req, res) => {
 
 exports.delete = async (req, res) => {
   await productModel.deleteOne({ _id: req.params.id });
+  await chatbotModel.deleteOne({ id_product: req.params.id });
   res.redirect("/product");
 };
 
-async function addChatbot(productId, body) {
+async function addChatbot(productId, body, files) {
   let newChatbot = new chatbotModel();
   let {
     radio_question1,
@@ -193,7 +247,7 @@ async function addChatbot(productId, body) {
     radio_question3,
     radio_reply1,
     radio_reply2,
-    radio_reply3
+    radio_reply3,
   } = body;
   newChatbot.id_product = productId;
   let questions = [];
@@ -203,7 +257,9 @@ async function addChatbot(productId, body) {
     questions.push(body.custom_question1);
   }
   if (radio_question2 == "DefaultQuestion2") {
-    questions.push("Tôi muốn biết mình vừa với size bao nhiêu thì phải làm sao?");
+    questions.push(
+      "Tôi muốn biết mình vừa với size bao nhiêu thì phải làm sao?"
+    );
   } else {
     questions.push(body.custom_question2);
   }
@@ -217,17 +273,49 @@ async function addChatbot(productId, body) {
   if (radio_reply1 == "DefaultReply1") {
     replies.push("Sản phẩm này còn hàng bạn nhé!");
   } else {
-    replies.push(body.custom_reply1);
+    if (files) {
+      let images = files.filter((file) => file.fieldname == "image_reply1");
+      let upload = await onUploadImages(images, "chatbot");
+      if (upload.length > 0) {
+        replies.push(body.custom_reply1 + "\nimage:'" + upload[0] + "'");
+      } else {
+        replies.push(body.custom_reply1);
+      }
+    } else {
+      replies.push(body.custom_reply1);
+    }
   }
   if (radio_reply2 == "DefaultReply2") {
-    replies.push("Mời bạn xem ảnh bên dưới để biết được size phù hợp nhé? image:'https://theme.hstatic.net/1000333436/1001040510/14/vendor_value_4.jpg?v=141'");
+    replies.push(
+      "Mời bạn xem ảnh bên dưới để biết được size phù hợp nhé? image:'https://theme.hstatic.net/1000333436/1001040510/14/vendor_value_4.jpg?v=141'"
+    );
   } else {
-    replies.push(body.custom_reply2);
+    if (files) {
+      let images = files.filter((file) => file.fieldname == "image_reply2");
+      let upload = await onUploadImages(images, "chatbot");
+      if (upload.length > 0) {
+        replies.push(body.image_reply2 + "\nimage:'" + upload[0] + "'");
+      } else {
+        replies.push(body.image_reply2);
+      }
+    } else {
+      replies.push(body.image_reply2);
+    }
   }
   if (radio_reply3 == "DefaultReply3") {
     replies.push("Bạn hãy xem danh sách vest để tìm màu phù hợp với mình nhé!");
   } else {
-    replies.push(body.custom_reply3);
+    if (files) {
+      let images = files.filter((file) => file.fieldname == "image_reply3");
+      let upload = await onUploadImages(images, "chatbot");
+      if (upload.length > 0) {
+        replies.push(body.image_reply3 + "\nimage:'" + upload[0] + "'");
+      } else {
+        replies.push(body.image_reply3);
+      }
+    } else {
+      replies.push(body.image_reply3);
+    }
   }
   newChatbot.replies = replies;
   newChatbot.created_at = new Date();
@@ -235,9 +323,9 @@ async function addChatbot(productId, body) {
   return newChatbot._id;
 }
 
-async function editChatbot(productId, chatbotId, body) {
+async function editChatbot(productId, chatbotId, body, files) {
   if (chatbotId) {
-    let chatbot = new chatbotModel.findById(chatbotId);
+    let chatbot = await chatbotModel.findById(chatbotId);
     if (chatbot) {
       let {
         radio_question1,
@@ -245,7 +333,7 @@ async function editChatbot(productId, chatbotId, body) {
         radio_question3,
         radio_reply1,
         radio_reply2,
-        radio_reply3
+        radio_reply3,
       } = body;
       let questions = [];
       if (radio_question1 == "DefaultQuestion1") {
@@ -254,7 +342,9 @@ async function editChatbot(productId, chatbotId, body) {
         questions.push(body.custom_question1);
       }
       if (radio_question2 == "DefaultQuestion2") {
-        questions.push("Tôi muốn biết mình vừa với size bao nhiêu thì phải làm sao?");
+        questions.push(
+          "Tôi muốn biết mình vừa với size bao nhiêu thì phải làm sao?"
+        );
       } else {
         questions.push(body.custom_question2);
       }
@@ -268,17 +358,51 @@ async function editChatbot(productId, chatbotId, body) {
       if (radio_reply1 == "DefaultReply1") {
         replies.push("Sản phẩm này còn hàng bạn nhé!");
       } else {
-        replies.push(body.custom_reply1);
+        if (files) {
+          let images = files.filter((file) => file.fieldname == "image_reply1");
+          let upload = await onUploadImages(images, "chatbot");
+          if (upload.length > 0) {
+            replies.push(body.custom_reply1 + "\nimage:'" + upload[0] + "'");
+          } else {
+            replies.push(body.custom_reply1);
+          }
+        } else {
+          replies.push(body.custom_reply1);
+        }
       }
       if (radio_reply2 == "DefaultReply2") {
-        replies.push("Mời bạn xem ảnh bên dưới để biết được size phù hợp nhé? image:'https://theme.hstatic.net/1000333436/1001040510/14/vendor_value_4.jpg?v=141'");
+        replies.push(
+          "Mời bạn xem ảnh bên dưới để biết được size phù hợp nhé? image:'https://theme.hstatic.net/1000333436/1001040510/14/vendor_value_4.jpg?v=141'"
+        );
       } else {
-        replies.push(body.custom_reply2);
+        if (files) {
+          let images = files.filter((file) => file.fieldname == "image_reply2");
+          let upload = await onUploadImages(images, "chatbot");
+          if (upload.length > 0) {
+            replies.push(body.custom_reply2 + "\nimage:'" + upload[0] + "'");
+          } else {
+            replies.push(body.custom_reply2);
+          }
+        } else {
+          replies.push(body.custom_reply2);
+        }
       }
       if (radio_reply3 == "DefaultReply3") {
-        replies.push("Bạn hãy xem danh sách vest để tìm màu phù hợp với mình nhé!");
+        replies.push(
+          "Bạn hãy xem danh sách vest để tìm màu phù hợp với mình nhé!"
+        );
       } else {
-        replies.push(body.custom_reply3);
+        if (files) {
+          let images = files.filter((file) => file.fieldname == "image_reply3");
+          let upload = await onUploadImages(images, "chatbot");
+          if (upload.length > 0) {
+            replies.push(body.custom_reply3 + "\nimage:'" + upload[0] + "'");
+          } else {
+            replies.push(body.custom_reply3);
+          }
+        } else {
+          replies.push(body.custom_reply3);
+        }
       }
       chatbot.replies = replies;
       await chatbotModel.findByIdAndUpdate(chatbotId, chatbot);

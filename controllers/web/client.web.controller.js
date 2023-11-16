@@ -9,7 +9,7 @@ exports.list = async (req, res, next) => {
       description: 'Free NodeJs User Management System'
     }
 
-    let perPage = 5;
+    let perPage = 4;
     let page = req.query.page || 1;
 
     try {
@@ -55,6 +55,7 @@ exports.listSort = async (req, res, next) => {
         current: page,
         pages: Math.ceil(count / perPage),
         messages,
+        req
       });
     }
   } catch (error) {

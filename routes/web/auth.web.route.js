@@ -3,7 +3,8 @@ var controller = require('../../controllers/web/auth.web.controller');
 var router = express.Router();
 var midleware=require('../../midleware/midleware')
 
-router.get('/',controller.ren);
+router.get('/',controller.redirect);
+// router.get('/home',controller.home);
 router.get('/check',controller.check);
 router.get('/login',controller.login);
 router.post('/login',midleware.not_login, controller.login)

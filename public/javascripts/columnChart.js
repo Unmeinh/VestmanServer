@@ -2,8 +2,8 @@ var months = document.currentScript.getAttribute('months');
 months = JSON.parse(months)
 var totalBills = document.currentScript.getAttribute('totalBills');
 totalBills = JSON.parse(totalBills)
-var totalProducts = document.currentScript.getAttribute('totalProducts');
-totalProducts = JSON.parse(totalProducts)
+var totalBillsProduct = document.currentScript.getAttribute('totalBillsProduct');
+totalBillsProduct = JSON.parse(totalBillsProduct)
 var totalInterests = document.currentScript.getAttribute('totalInterests');
 totalInterests = JSON.parse(totalInterests)
 
@@ -20,7 +20,7 @@ var options = {
     },
     series: [{
         name: 'Product costs',
-        data: totalProducts
+        data: totalBillsProduct
     }, {
         name: 'Revenue',
         data: totalInterests

@@ -1,6 +1,7 @@
 let adminModel = require("../../models/admin.model").AdminModel;
 let productModel = require("../../models/product.model").ProductModel;
 let billModel = require("../../models/bill.model").BillModel;
+let billProductModel = require("../../models/billProduct.model").BillProduct;
 const { onUploadImages } = require("../../function/uploadImage");
 let clientModel = require("../../models/client.model").ClientModel;
 
@@ -66,11 +67,28 @@ exports.listSort = async (req, res, next) => {
         .exec();
       const count = await adminModel.count();
 
+      let per = [];
+      for (let i = 0; i < clients.length; i++) {
+        if (clients[i].permission == 0) {
+          per.push("Owner");
+        }
+
+        if (clients[i].permission == 1) {
+          per.push("Manager");
+        }
+
+        if (clients[i].permission == 2) {
+          per.push("Participant");
+        }
+      }
+
       res.render("viewAdmin", {
         clients,
         current: page,
+        per,
         pages: Math.ceil(count / perPage),
         messages,
+        req
       });
     }
   } catch (error) {
@@ -112,11 +130,13 @@ exports.insert = async (req, res, next) => {
   if (req.method == "POST") {
     let imageUrl = await onUploadImages(req.files, "admin");
 
-    let { username, password, permission, full_name } = req.body;
+    let { username, password, email, address, permission, full_name } = req.body;
     let newAdmin = new adminModel();
     newAdmin.username = username;
     newAdmin.password = password;
     newAdmin.full_name = full_name;
+    newAdmin.email = email;
+    newAdmin.address = address;
     newAdmin.permission = permission;
     newAdmin.created_at = new Date();
     newAdmin.avatar = imageUrl[0];
@@ -154,7 +174,7 @@ exports.logout = (req, res, next) => {
   if (req.session != null) {
     req.session.destroy(function (err) {
       res.redirect('/login');
-     });
+    });
   }
 };
 exports.info = async (req, res, next) => {
@@ -179,7 +199,7 @@ exports.editinfo = async (req, res, next) => {
 
   if (req.method == "POST") {
     // let objU= new adminModel();
-    let { full_name, permission, avatar, email, adress, _id } = req.body;
+    let { full_name, permission, avatar, email, address, _id } = req.body;
 
     let imageUrl = await onUploadImages(req.files, "admin");
 
@@ -189,10 +209,9 @@ exports.editinfo = async (req, res, next) => {
 
     let objU = {
       full_name: full_name,
-      permission: permission,
       avatar: avatar,
       email: email,
-      adress: adress,
+      address: address,
     };
 
     try {
@@ -244,7 +263,7 @@ exports.dashboard = async (req, res, next) => {
       .limit(5);
     const months = [];
     const totalBills = [];
-    const totalProducts = [];
+    const totalBillsProduct = [];
     const totalInterests = [];
     const totalCustomers = [];
     const totalPrdCount = [];
@@ -275,7 +294,7 @@ exports.dashboard = async (req, res, next) => {
       let client = await getTotalCustomer(previusDate, nowDate);
       let count = await getProductCount(previusDate, nowDate);
       totalBills.push(total);
-      totalProducts.push(product);
+      totalBillsProduct.push(product);
       totalInterests.push(total - product);
       totalCustomers.push(client);
       totalPrdCount.push(count);
@@ -285,14 +304,10 @@ exports.dashboard = async (req, res, next) => {
       listProduct: JSON.stringify(listProduct),
       months: JSON.stringify(months),
       totalBills: JSON.stringify(totalBills),
-      totalProducts: JSON.stringify(totalProducts),
+      totalBillsProduct: JSON.stringify(totalBillsProduct),
       totalInterests: JSON.stringify(totalInterests),
       totalCustomers: JSON.stringify(totalCustomers),
       totalPrdCount: JSON.stringify(totalPrdCount),
-      toastify: {
-        type: "success",
-        message: "Statistical calculation successful.",
-      },
     });
   } catch (error) {
     console.log(error);
@@ -326,17 +341,39 @@ async function getTotalBill(previusDate, nowDate) {
 }
 
 async function getTotalProduct(previusDate, nowDate) {
-  let productPrice = await productModel.find({
-    created_at: {
-      $gte: previusDate,
-      $lte: nowDate,
+  var match_stage = {
+    $match: {
+      created_at: {
+        $gte: new Date(previusDate),
+        $lte: new Date(nowDate),
+      },
     },
-  });
-  if (productPrice[0] != undefined) {
-    return productPrice[0].price * productPrice[0].quantity;
+  };
+  var group_stage = {
+    $group: { _id: null, sum: { $sum: "$total" } },
+  };
+  var project_stage = {
+    $project: { _id: 0, total: "$sum" },
+  };
+
+  var pipeline = [match_stage, group_stage, project_stage];
+  let sumTotal = await billProductModel.aggregate(pipeline);
+  if (sumTotal[0] != undefined) {
+    return sumTotal[0].total;
   } else {
     return 0;
   }
+  // let productPrice = await billProductModel.find({
+  //   created_at: {
+  //     $gte: previusDate,
+  //     $lte: nowDate,
+  //   },
+  // });
+  // if (productPrice[0] != undefined) {
+  //   return productPrice[0].price * productPrice[0].quantity;
+  // } else {
+  //   return 0;
+  // }
 }
 
 async function getTotalCustomer(previusDate, nowDate) {

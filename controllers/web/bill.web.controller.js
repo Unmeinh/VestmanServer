@@ -1,6 +1,7 @@
 let billModel = require("../../models/bill.model").BillModel;
 let productModel = require("../../models/product.model").ProductModel;
 let clientModel = require("../../models/client.model").ClientModel;
+let billProduct = require("../../models/billProduct.model").BillProduct;
 
 exports.list = async (req, res, next) => {
   const messages = await req.consumeFlash("info");
@@ -30,6 +31,25 @@ exports.list = async (req, res, next) => {
       const cli = await clientModel.findOne({ _id: idCli });
 
       arrCli.push(cli);
+      if (clients[i].status != undefined) {
+        switch (clients[i].status) {
+          case -1:
+            clients[i].statusText = "Unconfimred"
+            break;
+          case 0:
+            clients[i].statusText = "Delivering"
+            break;
+          case 1:
+            clients[i].statusText = "Delivered"
+            break;
+          case 2:
+            clients[i].statusText = "Received"
+            break;
+
+          default:
+            break;
+        }
+      }
       // console.log("client: "+clients[i].id_client);
     }
 
@@ -84,6 +104,7 @@ exports.listSort = async (req, res, next) => {
         pages: Math.ceil(count / perPage),
         messages,
         arrCli,
+        req
       });
     }
   } catch (error) {
@@ -98,13 +119,28 @@ exports.view = async (req, res) => {
     let arrPro = [];
     let idPro;
 
-    for (i = 0; i < customer.arr_product.length; i++) {
+    for (let i = 0; i < customer.arr_product.length; i++) {
       idPro = customer.arr_product[i].id_product;
 
       const product = await productModel.findOne({ _id: idPro });
 
       arrPro.push(product);
     }
+
+
+  
+      if (customer.paymentMethod != undefined) {
+        switch (customer.paymentMethod) {
+          case 0:
+            customer.paymentMethodText = "COD"
+            break;
+          case 1:
+            customer.paymentMethodText = "Credit Card"
+            break;        
+          default:
+            break;
+        }
+      }
 
     const kh = await clientModel.findOne({ _id: customer.id_client });
 
@@ -143,5 +179,131 @@ exports.insert = async (req, res, next) => {
     return res.send(newBill);
   }
   res.send("List");
+};
+
+
+exports.confirmBill = async (req, res, next) => {
+  if (req.method == "GET") {
+    let { id } = req.params;
+    if (id) {
+      let bill = await billModel.findById(id);
+      if (bill && bill.status == -1) {
+        bill.status = 0;
+        console.log("Delivering");
+        await billModel.findByIdAndUpdate(id, bill);
+        res.redirect('/bill');
+      }
+    }
+  }
+};
+
+exports.confirmDelivery = async (req, res, next) => {
+  if (req.method == "GET") {
+    let { id } = req.params;
+    if (id) {
+      let bill = await billModel.findById(id);
+      if (bill && bill.status == 0) {
+        bill.status = 1;
+        console.log("Delivered");
+        await billModel.findByIdAndUpdate(id, bill);
+        res.redirect('/bill');
+      }
+    }
+  }
+};
+
+
+
+
+exports.listPro = async (req, res, next) => {
+  const messages = await req.consumeFlash("info");
+
+  const locals = {
+    title: "NodeJs",
+    description: "Free NodeJs User Management System",
+  };
+
+  let perPage = 5;
+  let page = req.query.page || 1;
+
+  try {
+    const clients = await billProduct
+      .aggregate([{ $sort: { createdAt: -1 } }])
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec();
+    const count = await billProduct.count();
+    // console.log("cus: ", clients);
+
+    let arrPro = [];
+    let idPro;
+    for (let i = 0; i < clients.length; i++) {
+      idPro = clients[i].id_product;
+
+      const product = await productModel.findOne({ _id: idPro });
+
+      arrPro.push(product);
+
+    }
+
+    res.render("billpro/viewBillPro", {
+      locals,
+      clients,
+      current: page,
+      pages: Math.ceil(count / perPage),
+      messages,
+      arrPro,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.listSortPro = async (req, res, next) => {
+  const messages = await req.consumeFlash("info");
+
+  let perPage = 5;
+  let page = req.query.page || 1;
+
+  try {
+    if (req.query.hasOwnProperty("_sort")) {
+    
+      const clients = await billProduct
+        .aggregate()
+        .sort({ [req.query.column]: req.query.type })
+        .skip(perPage * page - perPage)
+        .limit(perPage)
+        .exec();
+      const count = await billProduct.count();
+
+      let arrPro = [];
+      let idPro;
+      for (let i = 0; i < clients.length; i++) {
+        idPro = clients[i].id_product;
+  
+        const product = await productModel.findOne({ _id: idPro });
+  
+        arrPro.push(product);
+  
+      }
+
+      res.render("billpro/viewBillPro", {
+        clients,
+        current: page,
+        pages: Math.ceil(count / perPage),
+        messages,
+        arrPro,
+        req
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+exports.deletePro = async (req, res) => {
+  await billProduct.deleteOne({_id: req.params.id})
+  res.redirect('/bill/pro');
 };
 

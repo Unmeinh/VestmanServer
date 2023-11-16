@@ -10,7 +10,15 @@ router.use(do_login);
 router.get('/', controller.list);
 router.get('/sort', controller.listSort);
 router.get('/view/:id', controller.view);
+
+router.get('/pro', controller.listPro);
+router.get('/pro/sort', controller.listSortPro);
+router.delete('/pro/delete/:id', controller.deletePro);
+
+
 router.get('/insert', controller.insert);
 router.post('/insert', controller.insert);
+router.get('/confirmBill/:id', controller.confirmBill);
+router.get('/confirmDelivery/:id', controller.confirmDelivery);
 
 module.exports = router;

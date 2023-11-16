@@ -4,9 +4,14 @@ exports.ren = async (req, res, next) => {
   res.redirect("/login");
 };
 
+exports.redirect = async (req, res, next) => {
+  res.redirect("/admin/dashboard");
+};
+
 exports.check = async (req, res, next) => {
   res.render("auth/check.ejs");
 };
+
 exports.login = async (req, res, next) => {
   let msg = "";
   if (req.method == "POST") {
@@ -34,13 +39,27 @@ exports.login = async (req, res, next) => {
 
 exports.register = async (req, res, next) => {
   let msg = "";
+  let data = {};
 
   if (req.method == "POST") {
     try {
+      let pw = req.body.password
+      if (pw.length < 8) {
+        msg = "mật khẩu không đủ 8 kí tự";
+        data = await req.body;
+        data.password2 = "";
+        data.password = "";
+        return res.render("auth/register.ejs", { msg: msg, data });
+      }
+
       if (req.body.password != req.body.password2) {
         msg = "mật khẩu không khớp";
-        return res.render("auth/register.ejs", { msg: msg });
+        data = await req.body;
+        data.password2 = "";
+        return res.render("auth/register.ejs", { msg: msg, data });
       }
+
+      
 
       let objU = new adminModel();
 
@@ -51,7 +70,7 @@ exports.register = async (req, res, next) => {
         "https://firebasestorage.googleapis.com/v0/b/shopping-6b085.appspot.com/o/user%2Fuser.png?alt=media&token=794ad4dc-302b-4708-b102-ccbaf80ea567&_gl=1*e1jpw6*_ga*NDE5OTAxOTY1LjE2OTUwMDQ5MjM.*_ga_CW55HF8NVT*MTY5NzExMzA0MS4yMS4xLjE2OTcxMTMzMjcuNTkuMC4w";
       objU.password = req.body.password;
       objU.email = req.body.email;
-      objU.adress = req.body.adress;
+      objU.address = req.body.address;
 
       objU.created_at = new Date();
       await objU.save();
@@ -61,8 +80,8 @@ exports.register = async (req, res, next) => {
       msg = "đăng kí thất bại" + error;
     }
 
-    return res.render("auth/login.ejs", { msg: msg });
+    return res.render("auth/login.ejs", { msg: msg});
   }
 
-  res.render("auth/register.ejs", { msg: msg });
+  res.render("auth/register.ejs", { msg: msg, data });
 };
