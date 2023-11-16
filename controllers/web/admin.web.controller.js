@@ -209,7 +209,6 @@ exports.editinfo = async (req, res, next) => {
 
     let objU = {
       full_name: full_name,
-      permission: permission,
       avatar: avatar,
       email: email,
       address: address,
