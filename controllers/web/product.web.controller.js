@@ -14,7 +14,7 @@ exports.list = async (req, res, next) => {
   // let user = req.session.userLogin
   // res.json(user.username);
 
-  let perPage = 5;
+  let perPage = 10;
   let page = req.query.page || 1;
 
   try {
@@ -52,7 +52,7 @@ exports.list = async (req, res, next) => {
 exports.listSort = async (req, res, next) => {
   const messages = await req.consumeFlash("info");
 
-  let perPage = 5;
+  let perPage = 10;
   let page = req.query.page || 1;
 
   try {
