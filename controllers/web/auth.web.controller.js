@@ -23,7 +23,7 @@ exports.login = async (req, res, next) => {
         // ton taij user
         if (objU.password == req.body.password) {
           req.session.userLogin = objU;
-          return res.redirect("/product");
+          return res.redirect("/bill");
         } else {
           msg = " Password Error";
         }

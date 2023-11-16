@@ -13,7 +13,7 @@ exports.not_login = (req, res, next) => {
         next();
     } else {
         //đã login rồi thì về trang chủ hay gì đó
-        return res.render('/product')
+        return res.redirect('/bill')
     }
 }
 
