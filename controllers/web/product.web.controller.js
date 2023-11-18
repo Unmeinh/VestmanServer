@@ -294,12 +294,12 @@ async function addChatbot(productId, body, files) {
       let images = files.filter((file) => file.fieldname == "image_reply2");
       let upload = await onUploadImages(images, "chatbot");
       if (upload.length > 0) {
-        replies.push(body.image_reply2 + "\nimage:'" + upload[0] + "'");
+        replies.push(body.custom_reply2 + "\nimage:'" + upload[0] + "'");
       } else {
-        replies.push(body.image_reply2);
+        replies.push(body.custom_reply2);
       }
     } else {
-      replies.push(body.image_reply2);
+      replies.push(body.custom_reply2);
     }
   }
   if (radio_reply3 == "DefaultReply3") {
@@ -309,12 +309,12 @@ async function addChatbot(productId, body, files) {
       let images = files.filter((file) => file.fieldname == "image_reply3");
       let upload = await onUploadImages(images, "chatbot");
       if (upload.length > 0) {
-        replies.push(body.image_reply3 + "\nimage:'" + upload[0] + "'");
+        replies.push(body.custom_reply3 + "\nimage:'" + upload[0] + "'");
       } else {
-        replies.push(body.image_reply3);
+        replies.push(body.custom_reply3);
       }
     } else {
-      replies.push(body.image_reply3);
+      replies.push(body.custom_reply3);
     }
   }
   newChatbot.replies = replies;
