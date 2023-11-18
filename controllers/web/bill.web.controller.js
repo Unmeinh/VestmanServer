@@ -95,6 +95,26 @@ exports.listSort = async (req, res, next) => {
         const cli = await clientModel.findOne({ _id: idCli });
 
         arrCli.push(cli);
+
+        if (clients[i].status != undefined) {
+          switch (clients[i].status) {
+            case -1:
+              clients[i].statusText = "Unconfimred"
+              break;
+            case 0:
+              clients[i].statusText = "Delivering"
+              break;
+            case 1:
+              clients[i].statusText = "Delivered"
+              break;
+            case 2:
+              clients[i].statusText = "Received"
+              break;
+  
+            default:
+              break;
+          }
+        }
       }
 
       res.render("viewBill", {
@@ -223,7 +243,7 @@ exports.listPro = async (req, res, next) => {
     description: "Free NodeJs User Management System",
   };
 
-  let perPage = 5;
+  let perPage = 10;
   let page = req.query.page || 1;
 
   try {
@@ -262,7 +282,7 @@ exports.listPro = async (req, res, next) => {
 exports.listSortPro = async (req, res, next) => {
   const messages = await req.consumeFlash("info");
 
-  let perPage = 5;
+  let perPage = 10;
   let page = req.query.page || 1;
 
   try {
