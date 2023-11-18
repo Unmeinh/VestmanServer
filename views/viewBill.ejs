@@ -78,11 +78,11 @@
       <tbody>
         <% for(let i = 0; i<clients.length; i++) { %>
           <tr class="align-middle">
-            <td><%= arrCli[i].full_name %></td>
-            <td><%= clients[i].arr_product.length %></td>
-            <td><%= clients[i].total.toLocaleString() %> VND</td>
+            <td><%= arrCli[i]?.full_name %></td>
+            <td><%= clients[i]?.arr_product.length %></td>
+            <td><%= clients[i]?.total.toLocaleString() %> VND</td>
             <td><%= (clients[i]?.statusText) ? clients[i]?.statusText : "No data" %></td>
-            <td><%= clients[i].created_at.toLocaleString('en') %></td>
+            <td><%= clients[i]?.created_at.toLocaleString('en') %></td>
 
             <td class="text-end">
   

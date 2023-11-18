@@ -31,27 +31,27 @@
     <li class="list-group-item"> 
       <div class="row">
         <div class="col" style="max-width: 140px" > <b>Avatar: </b></div>
-        <img class="col" style="max-width: 150px" src="<%= customer.avatar %>" alt="">
+        <img class="col" style="max-width: 150px" src="<%= customer?.avatar %>" alt="">
       </div>
     </li>
   
     <li class="list-group-item"> 
       <div class="row">
         <div class="col" style="max-width: 140px"> <b>Full name:</b></div>
-        <div class="col"><%= customer.full_name %></div>
+        <div class="col"><%= customer?.full_name %></div>
       </div>
     </li>
   
     <li class="list-group-item"> 
       <div class="row">
         <div class="col" style="max-width: 140px"> <b>Address:</b></div>
-        <div class="col"><%= customer.address %></div>
+        <div class="col"><%= customer?.address %></div>
       </div>
     </li>
     <li class="list-group-item"> 
       <div class="row">
         <div class="col" style="max-width: 140px"> <b>Email:</b></div>
-        <div class="col"><%= customer.email %></div>
+        <div class="col"><%= customer?.email %></div>
       </div>
     </li>
     <li class="list-group-item"> 
@@ -64,7 +64,7 @@
     <li class="list-group-item"> 
       <div class="row">
         <div class="col" style="max-width: 140px"> <b>Date Created:</b></div>
-        <div class="col"><%= customer.created_at.toLocaleString('en') %></div>
+        <div class="col"><%= customer?.created_at.toLocaleString('en') %></div>
       </div>
     </li>
   

@@ -62,9 +62,9 @@
     <tbody>
       <% clients.forEach(element => { %>
         <tr class="align-middle">
-          <td><%= element.full_name %></td>
-          <td><%= element.address %></td>
-          <td><%= element.created_at.toLocaleString('en') %></td>
+          <td><%= element?.full_name %></td>
+          <td><%= element?.address %></td>
+          <td><%= element?.created_at.toLocaleString('en') %></td>
           <td class="text-end">
 
             <div class="d-flex flex-row justify-content-end gap-2">

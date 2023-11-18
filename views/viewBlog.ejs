@@ -61,9 +61,9 @@
     <tbody>
       <% for(let i = 0; i<clients.length; i++) { %>
         <tr class="align-middle">
-          <td><%= arrPro[i].name_product %></td>
-          <td><%= clients[i].created_at.toLocaleString('en') %></td>
-          <td><%= clients[i].expires_at.toLocaleString('en') %></td>
+          <td><%= arrPro[i]?.name_product %></td>
+          <td><%= clients[i]?.created_at.toLocaleString('en') %></td>
+          <td><%= clients[i]?.expires_at.toLocaleString('en') %></td>
           <td class="text-end">
 
             <div class="d-flex flex-row justify-content-end gap-2">
