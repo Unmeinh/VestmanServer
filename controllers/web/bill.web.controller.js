@@ -95,6 +95,26 @@ exports.listSort = async (req, res, next) => {
         const cli = await clientModel.findOne({ _id: idCli });
 
         arrCli.push(cli);
+
+        if (clients[i].status != undefined) {
+          switch (clients[i].status) {
+            case -1:
+              clients[i].statusText = "Unconfimred"
+              break;
+            case 0:
+              clients[i].statusText = "Delivering"
+              break;
+            case 1:
+              clients[i].statusText = "Delivered"
+              break;
+            case 2:
+              clients[i].statusText = "Received"
+              break;
+  
+            default:
+              break;
+          }
+        }
       }
 
       res.render("viewBill", {
