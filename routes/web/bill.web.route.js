@@ -8,6 +8,8 @@ router.use(do_login);
 router.get('/', controller.list);
 router.get('/sort', controller.listSort);
 router.get('/view/:id', controller.view);
+router.delete('/delete/:id', controller.delete);
+
 
 router.get('/pro', controller.listPro);
 router.get('/pro/sort', controller.listSortPro);
