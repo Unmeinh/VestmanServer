@@ -75,10 +75,10 @@
     <tbody>
       <% clients.forEach(element => { %>
         <tr class="align-middle">
-          <td><%= element.name_product %></td>
-          <td><%= element.price.toLocaleString() %> VND</td>
-          <td><%= element.quantity %></td>
-          <td><%= element.created_at.toLocaleString('en') %></td>
+          <td><%= element?.name_product %></td>
+          <td><%= element?.price.toLocaleString() %> VND</td>
+          <td><%= element?.quantity %></td>
+          <td><%= element?.created_at.toLocaleString('en') %></td>
           <td class="text-end">
 
             <div class="d-flex flex-row justify-content-end gap-2">

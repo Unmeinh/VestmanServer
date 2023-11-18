@@ -31,7 +31,7 @@
     <li class="list-group-item"> 
       <div class="row">
         <div class="col" style="max-width: 140px" > <b>Image: </b></div>
-        <img class="col" style="max-width: 150px" src="<%= customer.thumbnailImage %>" alt="">
+        <img class="col" style="max-width: 150px" src="<%= customer?.thumbnailImage %>" alt="">
       </div>
     </li>
   
@@ -39,7 +39,7 @@
     <li class="list-group-item"> 
       <div class="row">
         <div class="col" style="max-width: 140px"> <b>Product:</b></div>
-        <div class="col"><%= pro.name_product %></div>
+        <div class="col"><%= pro?.name_product %></div>
       </div>
     </li>
   
@@ -47,21 +47,21 @@
     <li class="list-group-item"> 
       <div class="row">
         <div class="col" style="max-width: 140px"> <b>Description:</b></div>
-        <div class="col"><%= customer.description %></div>
+        <div class="col"><%= customer?.description %></div>
       </div>
     </li>
    
     <li class="list-group-item"> 
       <div class="row">
         <div class="col" style="max-width: 140px"> <b>Date Created:</b></div>
-        <div class="col"><%= customer.created_at.toLocaleString('en') %></div>
+        <div class="col"><%= customer?.created_at.toLocaleString('en') %></div>
       </div>
     </li>
 
     <li class="list-group-item"> 
       <div class="row">
         <div class="col" style="max-width: 140px"> <b>Expires at:</b></div>
-        <div class="col"><%= customer.expires_at.toLocaleString('en') %></div>
+        <div class="col"><%= customer?.expires_at.toLocaleString('en') %></div>
       </div>
     </li>
 
