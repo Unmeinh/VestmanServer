@@ -322,6 +322,13 @@ exports.listSortPro = async (req, res, next) => {
 }
 
 
+
+
+exports.delete = async (req, res) => {
+  await billModel.deleteOne({_id: req.params.id})
+  res.redirect('/bill');
+};
+
 exports.deletePro = async (req, res) => {
   await billProduct.deleteOne({_id: req.params.id})
   res.redirect('/bill/pro');
