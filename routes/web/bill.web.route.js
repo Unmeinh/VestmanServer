@@ -1,19 +1,19 @@
 var express = require('express');
 var controller = require('../../controllers/web/bill.web.controller');
 var router = express.Router();
-var {do_login, check_adm2} =require('../../midleware/midleware');
+var {do_login, check_adm2, check_adm} =require('../../midleware/midleware');
 
 router.use(do_login);
 
 router.get('/', controller.list);
 router.get('/sort', controller.listSort);
 router.get('/view/:id', controller.view);
-router.delete('/delete/:id', controller.delete);
+router.delete('/delete/:id', check_adm2, controller.delete);
 
 
 router.get('/pro', controller.listPro);
 router.get('/pro/sort', controller.listSortPro);
-router.delete('/pro/delete/:id', controller.deletePro);
+router.delete('/pro/delete/:id', check_adm2, controller.deletePro);
 
 
 router.get('/insert', controller.insert);
