@@ -61,9 +61,9 @@
     <tbody>
       <% clients.forEach(element => { %>
         <tr class="align-middle">
-          <td><%= element.started_at.toLocaleString('en') %></td>
-          <td><%= element.expires_at.toLocaleString('en') %></td>
-          <td><%= element.value %>%</td>
+          <td><%= element?.started_at.toLocaleString('en') %></td>
+          <td><%= element?.expires_at.toLocaleString('en') %></td>
+          <td><%= element?.value %>%</td>
         
           <td class="text-end">
 
@@ -94,11 +94,11 @@
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              <h1 class="modal-title fs-5" id="modalLabel">Delete Product</h1>
+              <h1 class="modal-title fs-5" id="modalLabel">Delete Discount</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-              Confirm product deletion?
+              Confirm discount deletion?
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>

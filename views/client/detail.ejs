@@ -15,12 +15,12 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/">Client</a></li>
-          <li class="breadcrumb-item active"><%= customer.username  %></li>
+          <li class="breadcrumb-item active"><%= customer?.username  %></li>
         </ol>
       </nav>
     </div>
     <div class="col text-end fw-lighter">
-      <!-- <b>Last Updated <%= new Date(customer.updatedAt).toUTCString() %> </b> -->
+      <!-- <b>Last Updated <%= new Date(customer?.updatedAt).toUTCString() %> </b> -->
       <b>Client</b>
     </div>
   </div>
@@ -32,14 +32,14 @@
   <li class="list-group-item"> 
     <div class="row">
       <div class="col" style="max-width: 140px" > <b>Avatar: </b></div>
-      <img class="col" style="max-width: 150px" src="<%= customer.avatar %>" alt="">
+      <img class="col" style="max-width: 150px" src="<%= customer?.avatar %>" alt="">
     </div>
   </li>
 
   <li class="list-group-item"> 
     <div class="row">
       <div class="col" style="max-width: 140px"> <b>Full name:</b></div>
-      <div class="col"><%= customer.full_name %></div>
+      <div class="col"><%= customer?.full_name %></div>
     </div>
   </li>
 
@@ -49,28 +49,28 @@
   <li class="list-group-item"> 
     <div class="row">
       <div class="col" style="max-width: 140px"> <b>Email:</b></div>
-      <div class="col"><%= customer.email %></div>
+      <div class="col"><%= customer?.email %></div>
     </div>
   </li>
 
   <li class="list-group-item"> 
     <div class="row">
       <div class="col" style="max-width: 140px"> <b>Tel:</b></div>
-      <div class="col"><%= customer.phone_number %></div>
+      <div class="col"><%= customer?.phone_number %></div>
     </div>
   </li>
 
   <li class="list-group-item"> 
     <div class="row">
       <div class="col" style="max-width: 140px"> <b>Address:</b></div>
-      <div class="col"><%= customer.address %></div>
+      <div class="col"><%= customer?.address %></div>
     </div>
   </li>
  
   <li class="list-group-item"> 
     <div class="row">
       <div class="col" style="max-width: 140px"> <b>Date Created:</b></div>
-      <div class="col"><%= customer.created_at.toLocaleString('en') %></div>
+      <div class="col"><%= customer?.created_at.toLocaleString('en') %></div>
     </div>
   </li>
 
